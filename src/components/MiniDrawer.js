@@ -15,6 +15,10 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import CableIcon from '@mui/icons-material/Cable';
+import AddTaskIcon from '@mui/icons-material/AddTask';
+import QueryStatsIcon from '@mui/icons-material/QueryStats';
+import CalculateIcon from '@mui/icons-material/Calculate';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 
@@ -115,7 +119,7 @@ export default function MiniDrawer() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Mini variant drawer
+            Project Storming
           </Typography>
         </Toolbar>
       </AppBar>
@@ -127,7 +131,7 @@ export default function MiniDrawer() {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+          {['Connect Workbook', 'Assign Variables', 'Proceed Simulation', 'Check Results'].map((text, index) => (
             <ListItemButton
               key={text}
               sx={{
@@ -143,36 +147,16 @@ export default function MiniDrawer() {
                   justifyContent: 'center',
                 }}
               >
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                {index == 0 ? <CableIcon /> : ''}
+                {index == 1 ? <AddTaskIcon /> : ''}
+                {index == 2 ? <CalculateIcon /> : ''}
+                {index == 3 ? <InboxIcon /> : ''}
               </ListItemIcon>
               <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
           ))}
         </List>
         <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItemButton
-              key={text}
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
-                }}
-              >
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-          ))}
-        </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
