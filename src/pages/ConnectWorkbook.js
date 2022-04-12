@@ -22,20 +22,23 @@ export default function ConnectWorkbook() {
   }
 
   function handleSubmit(e) {
-    e.preventDefault()
-    console.log('testsetse')
-    const url = 'http://localhost:8000/uploadFile';
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('fileName', file.name);
-    const config = {
-      headers: {
-        'content-type': 'multipart/form-data',
-      },
-    };
-    axios.post(url, formData, config).then((response) => {
-      console.log(response.data);
-    });
+    if (file) {
+      e.preventDefault()
+      const url = 'http://127.0.0.1:8000/upload_file';
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('fileName', file.name);
+      const config = {
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+      };
+      axios.post(url, formData, config).then((response) => {
+        console.log(response.data);
+      });
+    } else {
+      console.log("No file")
+    }
   }
 
   return (
@@ -50,12 +53,12 @@ export default function ConnectWorkbook() {
       </Typography>
       <Stack spacing={2} direction="row">
         <Button variant="contained" component="label">
-          File
+          Select
           <input type="file" onChange={handleChange} hidden />
         </Button>
         <Button
           onClick={handleSubmit}
-          variant="contained">Submit</Button>
+          variant="contained">Connect</Button>
       </Stack>
     </>
   )
