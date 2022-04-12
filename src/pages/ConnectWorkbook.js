@@ -26,8 +26,7 @@ export default function ConnectWorkbook() {
       e.preventDefault()
       const url = 'http://127.0.0.1:8000/upload_file';
       const formData = new FormData();
-      formData.append('file', file);
-      formData.append('fileName', file.name);
+      formData.append('uploadfile', file);
       const config = {
         headers: {
           'content-type': 'multipart/form-data',
