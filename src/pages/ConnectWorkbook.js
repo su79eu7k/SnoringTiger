@@ -3,10 +3,15 @@ import { Routes, Route, Outlet, Link } from "react-router-dom";
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import CircularProgress from '@mui/material/CircularProgress';
 import axios from 'axios';
 
 export default function ConnectWorkbook() {
   const [file, setFile] = useState()
+  const [status, setStatus] = useState()
+  const [loading, setLoading] = useState()
 
   function approxBytes(nBytes) {
     let sOutput
@@ -22,6 +27,8 @@ export default function ConnectWorkbook() {
   }
 
   function handleSubmit(e) {
+    setLoading(1)
+    setStatus(0)
     if (file) {
       e.preventDefault()
       const url = 'http://127.0.0.1:8000/upload_file';
@@ -33,10 +40,16 @@ export default function ConnectWorkbook() {
         },
       };
       axios.post(url, formData, config).then((response) => {
-        console.log(response.data);
+        setLoading(0)
+        if (response.data.code == 1) {
+          setStatus(1)
+        } else {
+          setStatus(-1)
+        }
       });
     } else {
-      console.log("No file")
+      setLoading(0)
+      setStatus(-1)
     }
   }
 
@@ -46,19 +59,30 @@ export default function ConnectWorkbook() {
         Connect Workbook
       </Typography>
       <Typography variant="body1">
-        {file && 
-        <Typography variant="caption">{file.name} - Size: {approxBytes(file.size)}</Typography>
+        {file &&
+          <Typography variant="caption">{file.name} - Size: {approxBytes(file.size)}</Typography>
         }
       </Typography>
-      <Stack spacing={2} direction="row">
-        <Button variant="contained" component="label">
-          Select
-          <input type="file" onChange={handleChange} hidden />
-        </Button>
-        <Button
-          onClick={handleSubmit}
-          variant="contained">Connect</Button>
+      {loading == 1 ? <CircularProgress /> : null}
+      <Stack spacing={2} direction="column">
+        <Stack spacing={2} direction="row">
+          <Button variant="contained" component="label">
+            Select
+            <input type="file" onChange={handleChange} hidden />
+          </Button>
+          <Button
+            onClick={handleSubmit}
+            variant="contained">Connect</Button>
+        </Stack>
       </Stack>
+      {status == -1 ? <Alert severity="error">
+        <AlertTitle>Error</AlertTitle>
+        File not selected — <strong>check it out!</strong>
+      </Alert> : null}
+      {status == 1 ? <Alert severity="success">
+        <AlertTitle>Success</AlertTitle>
+        Workbook connected — <strong>check it out!</strong>
+      </Alert> : null}
     </>
   )
 }

@@ -122,7 +122,7 @@ export default function MiniDrawer() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Project Storming
+            Scenario Storming
           </Typography>
         </Toolbar>
       </AppBar>
