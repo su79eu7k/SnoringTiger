@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Routes, Route, Outlet, Link } from "react-router-dom";
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -41,7 +40,7 @@ export default function ConnectWorkbook() {
       };
       axios.post(url, formData, config).then((response) => {
         setLoading(0)
-        if (response.data.code == 1) {
+        if (response.data.code === 1) {
           setStatus(1)
         } else {
           setStatus(-1)
@@ -63,7 +62,7 @@ export default function ConnectWorkbook() {
           <Typography variant="caption">{file.name} - Size: {approxBytes(file.size)}</Typography>
         }
       </Typography>
-      {loading == 1 ? <CircularProgress /> : null}
+      {loading === 1 ? <CircularProgress /> : null}
       <Stack spacing={2} direction="column">
         <Stack spacing={2} direction="row">
           <Button variant="contained" component="label">
@@ -75,11 +74,11 @@ export default function ConnectWorkbook() {
             variant="contained">Connect</Button>
         </Stack>
       </Stack>
-      {status == -1 ? <Alert severity="error">
+      {status === -1 ? <Alert severity="error">
         <AlertTitle>Error</AlertTitle>
         File not selected — <strong>check it out!</strong>
       </Alert> : null}
-      {status == 1 ? <Alert severity="success">
+      {status === 1 ? <Alert severity="success">
         <AlertTitle>Success</AlertTitle>
         Workbook connected — <strong>check it out!</strong>
       </Alert> : null}

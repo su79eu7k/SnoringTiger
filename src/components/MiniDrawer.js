@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Routes, Route, Outlet, Link } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -23,7 +23,6 @@ import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import CalculateIcon from '@mui/icons-material/Calculate';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-import Landing from '../pages/Landing';
 
 const drawerWidth = 240;
 
@@ -122,12 +121,12 @@ export default function MiniDrawer(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
-            Scenario Storming 
+            Scenario Storming
           </Typography>
           <Typography variant="subtitle2" noWrap>
-          {props.conn == 1 ? "Connected to " + props.connWith : ""}
-          {props.conn == 0 ? "Disconnected" : ""}
-          {props.conn == -1 ? "Not connected" : ""}
+            {props.conn === 1 ? "Connected to " + props.connWith : ""}
+            {props.conn === 0 ? "Disconnected" : ""}
+            {props.conn === -1 ? "Not connected" : ""}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -157,11 +156,11 @@ export default function MiniDrawer(props) {
                   justifyContent: 'center',
                 }}
               >
-                {index == 0 ? <HomeIcon /> : ''}
-                {index == 1 ? <CableIcon /> : ''}
-                {index == 2 ? <AddTaskIcon /> : ''}
-                {index == 3 ? <CalculateIcon /> : ''}
-                {index == 4 ? <InboxIcon /> : ''}
+                {index === 0 ? <HomeIcon /> : ''}
+                {index === 1 ? <CableIcon /> : ''}
+                {index === 2 ? <AddTaskIcon /> : ''}
+                {index === 3 ? <CalculateIcon /> : ''}
+                {index === 4 ? <InboxIcon /> : ''}
               </ListItemIcon>
               <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>

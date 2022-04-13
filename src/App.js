@@ -13,7 +13,7 @@ function App() {
   const [connWith, setConnWith] = useState()
 
   useEffect(() => {
-    const checkConn = setInterval(() => {
+    setInterval(() => {
       axios.get("http://127.0.0.1:8000/check_connection").then((response) => {
         setConn(response.data.code)
         setConnWith(response.data.message)
