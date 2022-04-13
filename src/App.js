@@ -1,3 +1,4 @@
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { HashRouter, Routes, Route } from 'react-router-dom'
 import MiniDrawer from './components/MiniDrawer';
 import Landing from './pages/Landing'
@@ -7,6 +8,14 @@ import ProceedSimulation from './pages/ProceedSimulation';
 import CheckResults from './pages/CheckResults';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#2e7d32',
+    },
+  },
+});
 
 function App() {
   const [conn, setConn] = useState()
@@ -22,6 +31,7 @@ function App() {
   }, []);
 
   return (
+    <ThemeProvider theme={theme}>
     <HashRouter>
       <Routes>
         <Route path="/" element={<MiniDrawer conn={conn} connWith={connWith} />}>
@@ -34,6 +44,7 @@ function App() {
         </Route>
       </Routes>
     </HashRouter>
+    </ThemeProvider>
   );
 }
 
