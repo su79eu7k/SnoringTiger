@@ -92,7 +92,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-export default function MiniDrawer() {
+export default function MiniDrawer(props) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -121,8 +121,13 @@ export default function MiniDrawer() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Scenario Storming
+          <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
+            Scenario Storming 
+          </Typography>
+          <Typography variant="subtitle2" noWrap>
+          {props.conn == 1 ? "Connected to " + props.connWith : ""}
+          {props.conn == 0 ? "Disconnected" : ""}
+          {props.conn == -1 ? "Not connected" : ""}
           </Typography>
         </Toolbar>
       </AppBar>
