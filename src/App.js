@@ -6,20 +6,42 @@ import ConnectWorkbook from './pages/ConnectWorkbook';
 import AssignVariables from './pages/AssignVariables';
 import ProceedSimulation from './pages/ProceedSimulation';
 import CheckResults from './pages/CheckResults';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import axios from 'axios';
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#2e7d32',
-    },
-  },
-});
+import ColorModeContext from './contexts/ColorModeContext';
 
 function App() {
   const [conn, setConn] = useState()
   const [connWith, setConnWith] = useState()
+  const [mode, setMode] = useState('light');
+
+  const colorMode = useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+      },
+    }),
+    [],
+  );
+
+  const theme = createTheme({
+    palette: {
+      mode,
+      ...(mode === 'light'
+        ? {
+            // palette values for light mode
+            primary: {
+              main: '#2e7d32'
+            }
+          }
+        : {
+            // palette values for dark mode
+            primary: {
+              main: '#ffffff'
+            }
+          }),
+    },
+  });
 
   useEffect(() => {
     setInterval(() => {
@@ -31,6 +53,7 @@ function App() {
   }, []);
 
   return (
+    <ColorModeContext.Provider value={colorMode}>
     <ThemeProvider theme={theme}>
     <HashRouter>
       <Routes>
@@ -45,6 +68,7 @@ function App() {
       </Routes>
     </HashRouter>
     </ThemeProvider>
+    </ColorModeContext.Provider>
   );
 }
 

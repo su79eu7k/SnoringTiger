@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useContext } from 'react';
 import { Outlet, Link } from "react-router-dom";
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -23,6 +24,9 @@ import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import CalculateIcon from '@mui/icons-material/Calculate';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import ColorModeContext from '../contexts/ColorModeContext';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 const drawerWidth = 240;
 
@@ -92,6 +96,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function MiniDrawer(props) {
+  const colorMode = useContext(ColorModeContext);
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -128,6 +133,9 @@ export default function MiniDrawer(props) {
             {props.conn === 0 ? "Disconnected" : ""}
             {props.conn === -1 ? "Not connected" : ""}
           </Typography>
+          <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
+        {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+      </IconButton>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
