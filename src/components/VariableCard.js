@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Stack from '@mui/material/Stack';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -13,10 +13,59 @@ export default function BasicCard() {
   const [values, setValues] = useState({
     sheet: "Sheet1",
     cell: "A35",
-    start: "",
-    end: "",
-    step: "",
+    start: null,
+    end: null,
+    step: null,
   })
+
+  const [valueIsNaN, setValueIsNaN] = useState({
+    start: null,
+    end: null,
+    step: null,
+  })
+
+  useEffect(() => {
+    return () => {
+      if (isNaN(values.start)) {
+        setValueIsNaN((prevState) => {
+          return { ...prevState, ['start']: false }
+        })
+      } else {
+        setValueIsNaN((prevState) => {
+          return { ...prevState, ['start']: true }
+        })
+      }
+    }
+  }, [values.start])
+
+  useEffect(() => {
+    return () => {
+      if (isNaN(values.end)) {
+        setValueIsNaN((prevState) => {
+          return { ...prevState, ['end']: false }
+        })
+      } else {
+        setValueIsNaN((prevState) => {
+          return { ...prevState, ['end']: true }
+        })
+      }
+    }
+  }, [values.end])
+
+  useEffect(() => {
+    return () => {
+      if (isNaN(values.step)) {
+        setValueIsNaN((prevState) => {
+          return { ...prevState, ['step']: false }
+        })
+      } else {
+        setValueIsNaN((prevState) => {
+          return { ...prevState, ['step']: true }
+        })
+      }
+    }
+  }, [values.step])
+  
 
   const handleChange = (e) => {
     setValues((prevState) => {
@@ -38,30 +87,30 @@ export default function BasicCard() {
           <InputLabel htmlFor="component-outlined">Start</InputLabel>
           <OutlinedInput
             id="component-outlined-start"
-            name="start"
-            onChange={handleChange}
             label="Start"
+            name="start"
             value={values.start}
+            onChange={handleChange}
           />
         </FormControl>
         <FormControl size='small'>
           <InputLabel htmlFor="component-outlined">End</InputLabel>
           <OutlinedInput
             id="component-outlined-end"
-            name="end"
-            onChange={handleChange}
             label="End"
+            name="end"
             value={values.end}
+            onChange={handleChange}
           />
         </FormControl>
         <FormControl size='small'>
           <InputLabel htmlFor="component-outlined">Step</InputLabel>
           <OutlinedInput
             id="component-outlined-step"
-            name="step"
-            onChange={handleChange}
             label="Step"
+            name="step"
             value={values.step}
+            onChange={handleChange}
           />
         </FormControl>
         </Stack>
