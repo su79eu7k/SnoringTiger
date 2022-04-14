@@ -1,14 +1,14 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { HashRouter, Routes, Route } from 'react-router-dom'
+import { useEffect, useState, useMemo } from 'react';
 import MiniDrawer from './components/MiniDrawer';
 import Landing from './pages/Landing'
 import ConnectWorkbook from './pages/ConnectWorkbook';
 import AssignVariables from './pages/AssignVariables';
 import ProceedSimulation from './pages/ProceedSimulation';
 import CheckResults from './pages/CheckResults';
-import { useEffect, useState, useMemo } from 'react';
-import axios from 'axios';
 import ColorModeContext from './contexts/ColorModeContext';
+import axios from 'axios';
 
 function App() {
   const [conn, setConn] = useState()
@@ -29,17 +29,17 @@ function App() {
       mode,
       ...(mode === 'light'
         ? {
-            // palette values for light mode
-            primary: {
-              main: '#2e7d32'
-            }
+          // palette values for light mode
+          primary: {
+            main: '#2e7d32'
           }
+        }
         : {
-            // palette values for dark mode
-            primary: {
-              main: '#ffffff'
-            }
-          }),
+          // palette values for dark mode
+          primary: {
+            main: '#ffffff'
+          }
+        }),
     },
   });
 
@@ -54,20 +54,20 @@ function App() {
 
   return (
     <ColorModeContext.Provider value={colorMode}>
-    <ThemeProvider theme={theme}>
-    <HashRouter>
-      <Routes>
-        <Route path="/" element={<MiniDrawer conn={conn} connWith={connWith} />}>
-          <Route index element={<Landing />} />
-          <Route path="home" element={<Landing />} />
-          <Route path="connect_workbook" element={<ConnectWorkbook />} />
-          <Route path="assign_variables" element={<AssignVariables />} />
-          <Route path="proceed_simulation" element={<ProceedSimulation />} />
-          <Route path="check_results" element={<CheckResults />} />
-        </Route>
-      </Routes>
-    </HashRouter>
-    </ThemeProvider>
+      <ThemeProvider theme={theme}>
+        <HashRouter>
+          <Routes>
+            <Route path="/" element={<MiniDrawer conn={conn} connWith={connWith} />}>
+              <Route index element={<Landing />} />
+              <Route path="home" element={<Landing />} />
+              <Route path="connect_workbook" element={<ConnectWorkbook />} />
+              <Route path="assign_variables" element={<AssignVariables />} />
+              <Route path="proceed_simulation" element={<ProceedSimulation />} />
+              <Route path="check_results" element={<CheckResults />} />
+            </Route>
+          </Routes>
+        </HashRouter>
+      </ThemeProvider>
     </ColorModeContext.Provider>
   );
 }
