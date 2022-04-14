@@ -63,16 +63,14 @@ export default function ConnectWorkbook() {
         }
       </Typography>
       {loading === 1 ? <CircularProgress /> : null}
-      <Stack spacing={2} direction="column">
-        <Stack spacing={2} direction="row">
-          <Button variant="contained" component="label">
-            Select
-            <input type="file" onChange={handleChange} hidden />
-          </Button>
-          <Button
-            onClick={handleSubmit}
-            variant="contained">Connect</Button>
-        </Stack>
+      <Stack spacing={2} direction="row">
+        <Button variant="contained" component="label">
+          Select
+          <input type="file" onChange={handleChange} hidden />
+        </Button>
+        <Button
+          onClick={handleSubmit}
+          variant="contained">Connect</Button>
       </Stack>
       {status === -1 ? <Alert severity="error">
         <AlertTitle>Error</AlertTitle>
