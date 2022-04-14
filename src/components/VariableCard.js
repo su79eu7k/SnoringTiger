@@ -6,63 +6,62 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import FormControl from '@mui/material/FormControl';
-import FormHelperText from '@mui/material/FormHelperText';
-import Input from '@mui/material/Input';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 
 export default function BasicCard() {
-  const [start, setStart] = useState()
-  const [end, setEnd] = useState()
-  const [step, setStep] = useState()
+  const [values, setValues] = useState({
+    sheet: "Sheet1",
+    cell: "A35",
+    start: "",
+    end: "",
+    step: "",
+  })
 
-  const handleStartChange = (e) => {
-    setStart(e.target.value);
-  };
-
-  const handleEndChange = (e) => {
-    setEnd(e.target.value);
-  };
-
-  const handleStepChange = (e) => {
-    setStep(e.target.value);
+  const handleChange = (e) => {
+    setValues((prevState) => {
+      return { ...prevState, [e.target.name]: e.target.value }
+    })
   };
 
   return (
     <Card sx={{ minWidth: 275 }}>
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary">
-          Sheet1
+          {values.sheet}
         </Typography>
         <Typography variant="h5" component="div">
-          A35
+        {values.cell}
         </Typography>
         <Stack spacing={2} direction="row">
         <FormControl size='small'>
           <InputLabel htmlFor="component-outlined">Start</InputLabel>
           <OutlinedInput
             id="component-outlined-start"
-            value={start}
-            onChange={handleStartChange}
+            name="start"
+            onChange={handleChange}
             label="Start"
+            value={values.start}
           />
         </FormControl>
         <FormControl size='small'>
           <InputLabel htmlFor="component-outlined">End</InputLabel>
           <OutlinedInput
             id="component-outlined-end"
-            value={end}
-            onChange={handleEndChange}
+            name="end"
+            onChange={handleChange}
             label="End"
+            value={values.end}
           />
         </FormControl>
         <FormControl size='small'>
           <InputLabel htmlFor="component-outlined">Step</InputLabel>
           <OutlinedInput
             id="component-outlined-step"
-            value={step}
-            onChange={handleStepChange}
+            name="step"
+            onChange={handleChange}
             label="Step"
+            value={values.step}
           />
         </FormControl>
         </Stack>
