@@ -12,6 +12,8 @@ import CableIcon from '@mui/icons-material/Cable';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import LockIcon from '@mui/icons-material/Lock';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 import axios from 'axios';
 
 export default function BasicCard() {
@@ -39,7 +41,7 @@ export default function BasicCard() {
   const [linspace, setLinspace] = useState()
   const [prob, setProb] = useState()
 
-  const [assigned, setAssigned] = useState()
+  const [assigned, setAssigned] = useState(null)
 
   useEffect(() => {
     if (valuesNum.start && valuesNum.end) {
@@ -127,6 +129,7 @@ export default function BasicCard() {
       };
       axios.post(url, data, config).then((response) => {
         setAssigned(false)
+        setProb()
       });
     }
   }
@@ -166,6 +169,7 @@ export default function BasicCard() {
                   name={k}
                   value={values[k]}
                   onChange={handleChange}
+                  disabled={assigned}
                 />
               </FormControl>
             )}
@@ -175,13 +179,13 @@ export default function BasicCard() {
           </Typography>
         </CardContent></> : null}
       <CardActions>
-        <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickConnect}>
+        <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickConnect} disabled={assigned}>
           Connect
         </Button>
-        <Button variant="outlined" startIcon={<BarChartIcon />} onClick={handleClickProbability}>
+        <Button variant="outlined" startIcon={<BarChartIcon />} onClick={handleClickProbability} disabled={assigned}>
           Probability
         </Button>
-        <Button variant="outlined" startIcon={assigned ? <LockIcon /> : <LockOpenIcon />} onClick={handleClickAssign}>
+        <Button variant="outlined" startIcon={assigned ? <LockIcon /> : <LockOpenIcon />} onClick={handleClickAssign} disabled={!prob}>
           {assigned ? "Assigned" : "Assign"}
         </Button>
       </CardActions>
