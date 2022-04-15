@@ -11,14 +11,12 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 
 export default function BasicCard() {
   const [values, setValues] = useState({
-    sheet: "Sheet1",
-    cell: "A35",
     start: "",
     end: "",
     step: "",
   })
 
-  const [valuesAreNum, setValuesAreNum] = useState({
+  const [valuesNum, setValuesNum] = useState({
     start: null,
     end: null,
     step: null,
@@ -28,74 +26,60 @@ export default function BasicCard() {
   const [stepAboveZero, setStepAboveZero] = useState()
 
   useEffect(() => {
-      if (isNaN(values.start)) {
-        setValuesAreNum((prevState) => {
-          return { ...prevState, ['start']: false }
-        })
-      } else {
-        setValuesAreNum((prevState) => {
-          return { ...prevState, ['start']: true }
-        })
-      }
-  }, [values.start])
-
-  useEffect(() => {
-      if (isNaN(values.end)) {
-        setValuesAreNum((prevState) => {
-          return { ...prevState, ['end']: false }
-        })
-      } else {
-        setValuesAreNum((prevState) => {
-          return { ...prevState, ['end']: true }
-        })
-      }
-  }, [values.end])
-
-  useEffect(() => {
-      if (isNaN(values.step)) {
-        setValuesAreNum((prevState) => {
-          return { ...prevState, ['step']: false }
-        })
-      } else {
-        setValuesAreNum((prevState) => {
-          return { ...prevState, ['step']: true }
-        })
-      }
-  }, [values.step])
-
-  useEffect(() => {
-    if (valuesAreNum.start && valuesAreNum.end) {
+    if (valuesNum.start && valuesNum.end) {
       Number(values.end) > Number(values.start) ? setEndGreaterStart(true) : setEndGreaterStart(false)
     } else {
       setEndGreaterStart(null)
     }
-  }, [values.start, values.end, valuesAreNum.start, valuesAreNum.end])
+  }, [values.start, values.end, valuesNum.start, valuesNum.end])
 
   useEffect(() => {
-    if (valuesAreNum.step) {
+    if (valuesNum.step) {
       Number(values.step) > 0 ? setStepAboveZero(true) : setStepAboveZero(false)
     } else {
       setStepAboveZero(null)
     }
-  }, [values.step, valuesAreNum.step])
+  }, [values.step, valuesNum.step])
 
   const handleChange = (e) => {
     setValues((prevState) => {
       return { ...prevState, [e.target.name]: e.target.value }
     })
+
+    if (isNaN(e.target.value)) {
+      setValuesNum((prevState) => {
+        return { ...prevState, [e.target.name]: false }
+      })
+    } else {
+      setValuesNum((prevState) => {
+        return { ...prevState, [e.target.name]: true }
+      })
+    }
   };
 
   return (
     <Card sx={{ minWidth: 275 }}>
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary">
-          {values.sheet}
+          Sheet1
         </Typography>
         <Typography variant="h5" component="div">
-          {values.cell}
+          A35
         </Typography>
         <Stack spacing={2} direction="row">
-          <FormControl size='small'>
+          {Object.keys(values).map((k) =>
+            <FormControl size='small'>
+              <InputLabel htmlFor="component-outlined">{k.toUpperCase()}</InputLabel>
+              <OutlinedInput
+                id={"component-outlined-" + k}
+                label={k.toUpperCase()}
+                name={k}
+                value={values[k]}
+                onChange={handleChange}
+              />
+            </FormControl>
+          )}
+          {/* <FormControl size='small'>
             <InputLabel htmlFor="component-outlined">Start</InputLabel>
             <OutlinedInput
               id="component-outlined-start"
@@ -124,7 +108,7 @@ export default function BasicCard() {
               value={values.step}
               onChange={handleChange}
             />
-          </FormControl>
+          </FormControl> */}
         </Stack>
       </CardContent>
       <CardActions>
