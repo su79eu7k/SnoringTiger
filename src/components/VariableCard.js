@@ -8,8 +8,16 @@ import Typography from '@mui/material/Typography';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
+import CableIcon from '@mui/icons-material/Cable';
+import axios from 'axios';
 
 export default function BasicCard() {
+  const [address, setAddress] = useState({
+    sheet: null,
+    cell: null,
+    currentVal: null,
+  })
+
   const [values, setValues] = useState({
     start: "",
     end: "",
@@ -49,62 +57,56 @@ export default function BasicCard() {
     setValuesNum(prevState => ({ ...prevState, [e.target.name]: !isNaN(e.target.value) }))
   };
 
+  const handleClick = (e) => {
+    axios.get("http://127.0.0.1:8000/get_selection").then((response) => {
+      setAddress({ sheet: response.data.sheet, cell: response.data.range, currentVal: response.data.value })
+    });
+  }
+
   return (
     <Card sx={{ minWidth: 275 }}>
-      <CardContent>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary">
-          Sheet1
-        </Typography>
-        <Typography variant="h5" component="div">
-          A35
-        </Typography>
-        <Stack spacing={2} direction="row">
-          {Object.keys(values).map((k) =>
-            <FormControl size='small'>
-              <InputLabel htmlFor="component-outlined">{k.toUpperCase()}</InputLabel>
-              <OutlinedInput
-                id={"component-outlined-" + k}
-                label={k.toUpperCase()}
-                name={k}
-                value={values[k]}
-                onChange={handleChange}
-              />
-            </FormControl>
-          )}
-          {/* <FormControl size='small'>
-            <InputLabel htmlFor="component-outlined">Start</InputLabel>
-            <OutlinedInput
-              id="component-outlined-start"
-              label="Start"
-              name="start"
-              value={values.start}
-              onChange={handleChange}
-            />
-          </FormControl>
-          <FormControl size='small'>
-            <InputLabel htmlFor="component-outlined">End</InputLabel>
-            <OutlinedInput
-              id="component-outlined-end"
-              label="End"
-              name="end"
-              value={values.end}
-              onChange={handleChange}
-            />
-          </FormControl>
-          <FormControl size='small'>
-            <InputLabel htmlFor="component-outlined">Step</InputLabel>
-            <OutlinedInput
-              id="component-outlined-step"
-              label="Step"
-              name="step"
-              value={values.step}
-              onChange={handleChange}
-            />
-          </FormControl> */}
-        </Stack>
-      </CardContent>
+      {address.cell ? <>
+        <CardContent>
+          <Typography variant="subtitle2" color="text.secondary">
+            Sheet
+          </Typography>
+          <Typography variant="caption">
+            {address.sheet}
+          </Typography>
+          <Typography variant="subtitle2" color="text.secondary">
+            Cell
+          </Typography>
+          <Typography variant="h6">
+            {address.cell}
+          </Typography>
+          <Typography variant="subtitle2" color="text.secondary">
+            Current value
+          </Typography>
+          <Typography variant="caption">
+            {address.currentVal}
+          </Typography>
+          <Typography variant="subtitle2" color="text.secondary">
+            Random variable range
+          </Typography>
+          <Stack spacing={2} direction="row">
+            {Object.keys(values).map((k, i) =>
+              <FormControl key={i} size='small'>
+                <InputLabel htmlFor="component-outlined">{k.toUpperCase()}</InputLabel>
+                <OutlinedInput
+                  id={"component-outlined-" + k}
+                  label={k.toUpperCase()}
+                  name={k}
+                  value={values[k]}
+                  onChange={handleChange}
+                />
+              </FormControl>
+            )}
+          </Stack>
+        </CardContent></> : null}
       <CardActions>
-        <Button size="small">Advanced</Button>
+        <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClick}>
+          Connect Cell
+        </Button>
       </CardActions>
     </Card>
   );
