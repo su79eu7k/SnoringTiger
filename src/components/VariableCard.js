@@ -9,6 +9,7 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import CableIcon from '@mui/icons-material/Cable';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
 import axios from 'axios';
 
 export default function BasicCard() {
@@ -77,9 +78,23 @@ export default function BasicCard() {
     setValuesNum(prevState => ({ ...prevState, [e.target.name]: !isNaN(e.target.value) }))
   };
 
-  const handleClick = (e) => {
+  const handleClickConnectCell = (e) => {
     axios.get("http://127.0.0.1:8000/get_selection").then((response) => {
       setAddress({ sheet: response.data.sheet, cell: response.data.range, currentVal: response.data.value })
+    });
+  }
+
+  const handleClickAssignCell = (e) => {
+    e.preventDefault()
+    const url = 'http://127.0.0.1:8000/io_variable';
+    const data = {start: Number(values.start), end: Number(values.end), num: Number(values.step), dist: 'unif'}
+    const config = {
+      headers: {
+        'content-type': 'application/json',
+      },
+    };
+    axios.post(url, data, config).then((response) => {
+      console.log(response)
     });
   }
 
@@ -127,8 +142,11 @@ export default function BasicCard() {
           </Typography>
         </CardContent></> : null}
       <CardActions>
-        <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClick}>
+        <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickConnectCell}>
           Connect Cell
+        </Button>
+        <Button variant="outlined" startIcon={<LockOpenIcon />} onClick={handleClickAssignCell}>
+          Assign Cell
         </Button>
       </CardActions>
     </Card>
