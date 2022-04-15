@@ -9,7 +9,9 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import CableIcon from '@mui/icons-material/Cable';
+import BarChartIcon from '@mui/icons-material/BarChart';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
+import LockIcon from '@mui/icons-material/Lock';
 import axios from 'axios';
 
 export default function BasicCard() {
@@ -35,6 +37,9 @@ export default function BasicCard() {
   const [stepAboveZero, setStepAboveZero] = useState()
 
   const [linspace, setLinspace] = useState()
+  const [prob, setProb] = useState()
+
+  const [assigned, setAssigned] = useState()
 
   useEffect(() => {
     if (valuesNum.start && valuesNum.end) {
@@ -53,10 +58,10 @@ export default function BasicCard() {
   }, [values.step, valuesNum.step])
 
   useEffect(() => {
-      if (valuesNum.start && valuesNum.end && valuesNum.step && endGreaterStart && stepAboveZero) {
-        setLinspace(calcLinspace(Number(values.start), Number(values.end), Number(values.step)))
-      } else {
-        setLinspace("")
+    if (valuesNum.start && valuesNum.end && valuesNum.step && endGreaterStart && stepAboveZero) {
+      setLinspace(calcLinspace(Number(values.start), Number(values.end), Number(values.step)))
+    } else {
+      setLinspace("")
     }
   }, [values, valuesNum, endGreaterStart, stepAboveZero])
 
@@ -78,24 +83,52 @@ export default function BasicCard() {
     setValuesNum(prevState => ({ ...prevState, [e.target.name]: !isNaN(e.target.value) }))
   };
 
-  const handleClickConnectCell = (e) => {
+  const handleClickConnect = (e) => {
     axios.get("http://127.0.0.1:8000/get_selection").then((response) => {
       setAddress({ sheet: response.data.sheet, cell: response.data.range, currentVal: response.data.value })
     });
   }
 
-  const handleClickAssignCell = (e) => {
+  const handleClickProbability = (e) => {
     e.preventDefault()
     const url = 'http://127.0.0.1:8000/io_variable';
-    const data = {start: Number(values.start), end: Number(values.end), num: Number(values.step), dist: 'unif'}
+    const data = { start: Number(values.start), end: Number(values.end), step: Number(values.step), dist: 'unif' }
     const config = {
       headers: {
         'content-type': 'application/json',
       },
     };
     axios.post(url, data, config).then((response) => {
-      console.log(response)
+      setLinspace(response.data.x)
+      setProb(response.data.prob)
     });
+  }
+
+  const handleClickAssign = (e) => {
+    e.preventDefault()
+    if (!assigned) {
+      const url = 'http://127.0.0.1:8000/assign_variable';
+      const data = { sheet: address.sheet, cell: address.cell, x: linspace, prob: prob }
+      const config = {
+        headers: {
+          'content-type': 'application/json',
+        },
+      };
+      axios.post(url, data, config).then((response) => {
+        setAssigned(true)
+      });
+    } else {
+      const url = 'http://127.0.0.1:8000/unassign_variable';
+      const data = { sheet: address.sheet, cell: address.cell }
+      const config = {
+        headers: {
+          'content-type': 'application/json',
+        },
+      };
+      axios.post(url, data, config).then((response) => {
+        setAssigned(false)
+      });
+    }
   }
 
   return (
@@ -142,11 +175,14 @@ export default function BasicCard() {
           </Typography>
         </CardContent></> : null}
       <CardActions>
-        <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickConnectCell}>
-          Connect Cell
+        <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickConnect}>
+          Connect
         </Button>
-        <Button variant="outlined" startIcon={<LockOpenIcon />} onClick={handleClickAssignCell}>
-          Assign Cell
+        <Button variant="outlined" startIcon={<BarChartIcon />} onClick={handleClickProbability}>
+          Probability
+        </Button>
+        <Button variant="outlined" startIcon={assigned ? <LockIcon /> : <LockOpenIcon />} onClick={handleClickAssign}>
+          {assigned ? "Assigned" : "Assign"}
         </Button>
       </CardActions>
     </Card>
