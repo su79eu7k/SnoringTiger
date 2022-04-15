@@ -42,19 +42,11 @@ export default function BasicCard() {
   }, [values.step, valuesNum.step])
 
   const handleChange = (e) => {
-    setValues((prevState) => {
-      return { ...prevState, [e.target.name]: e.target.value }
-    })
+    setValues(prevState => (
+      { ...prevState, [e.target.name]: e.target.value }
+    ))
 
-    if (isNaN(e.target.value)) {
-      setValuesNum((prevState) => {
-        return { ...prevState, [e.target.name]: false }
-      })
-    } else {
-      setValuesNum((prevState) => {
-        return { ...prevState, [e.target.name]: true }
-      })
-    }
+    setValuesNum(prevState => ({ ...prevState, [e.target.name]: !isNaN(e.target.value) }))
   };
 
   return (
