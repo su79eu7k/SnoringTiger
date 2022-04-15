@@ -37,17 +37,17 @@ export default function BasicCard() {
 
   useEffect(() => {
     if (valuesNum.start && valuesNum.end) {
-      Number(values.end) > Number(values.start) ? setEndGreaterStart(() => true) : setEndGreaterStart(() => false)
+      Number(values.end) > Number(values.start) ? setEndGreaterStart(true) : setEndGreaterStart(false)
     } else {
-      setEndGreaterStart(() => null)
+      setEndGreaterStart(null)
     }
   }, [values.start, values.end, valuesNum.start, valuesNum.end])
 
   useEffect(() => {
     if (valuesNum.step) {
-      Number(values.step) > 0 ? setStepAboveZero(() => true) : setStepAboveZero(() => false)
+      Number(values.step) > 0 ? setStepAboveZero(true) : setStepAboveZero(false)
     } else {
-      setStepAboveZero(() => null)
+      setStepAboveZero(null)
     }
   }, [values.step, valuesNum.step])
 
@@ -123,7 +123,7 @@ export default function BasicCard() {
             )}
           </Stack>
           <Typography variant="caption">
-            {linspace}
+            {linspace ? linspace.map(k => k.toFixed(2)).join(", ") : ""}
           </Typography>
         </CardContent></> : null}
       <CardActions>
