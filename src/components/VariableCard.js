@@ -151,7 +151,7 @@ export default function BasicCard() {
             Current value
           </Typography>
           <Typography variant="caption">
-            {address.currentVal}
+            {address.currentVal === null ? "#Blank" : address.currentVal}
           </Typography>
           <Typography variant="subtitle2" color="text.secondary">
             Random variable range
