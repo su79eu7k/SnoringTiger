@@ -33,21 +33,41 @@ export default function BasicCard() {
   const [endGreaterStart, setEndGreaterStart] = useState()
   const [stepAboveZero, setStepAboveZero] = useState()
 
+  const [linspace, setLinspace] = useState()
+
   useEffect(() => {
     if (valuesNum.start && valuesNum.end) {
-      Number(values.end) > Number(values.start) ? setEndGreaterStart(true) : setEndGreaterStart(false)
+      Number(values.end) > Number(values.start) ? setEndGreaterStart(() => true) : setEndGreaterStart(() => false)
     } else {
-      setEndGreaterStart(null)
+      setEndGreaterStart(() => null)
     }
   }, [values.start, values.end, valuesNum.start, valuesNum.end])
 
   useEffect(() => {
     if (valuesNum.step) {
-      Number(values.step) > 0 ? setStepAboveZero(true) : setStepAboveZero(false)
+      Number(values.step) > 0 ? setStepAboveZero(() => true) : setStepAboveZero(() => false)
     } else {
-      setStepAboveZero(null)
+      setStepAboveZero(() => null)
     }
   }, [values.step, valuesNum.step])
+
+  useEffect(() => {
+      if (valuesNum.start && valuesNum.end && valuesNum.step && endGreaterStart && stepAboveZero) {
+        setLinspace(calcLinspace(Number(values.start), Number(values.end), Number(values.step)))
+      } else {
+        setLinspace("")
+    }
+  }, [values, valuesNum, endGreaterStart, stepAboveZero])
+
+  function calcLinspace(start, end, step) {
+    const result = [];
+    const scale = (end - start) / (step - 1);
+    for (let i = 0; i < step; i++) {
+      result.push(start + (scale * i));
+    }
+    console.log(result)
+    return result;
+  }
 
   const handleChange = (e) => {
     setValues(prevState => (
@@ -102,6 +122,9 @@ export default function BasicCard() {
               </FormControl>
             )}
           </Stack>
+          <Typography variant="caption">
+            {linspace}
+          </Typography>
         </CardContent></> : null}
       <CardActions>
         <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClick}>
