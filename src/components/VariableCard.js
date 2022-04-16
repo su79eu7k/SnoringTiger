@@ -12,11 +12,9 @@ import CableIcon from '@mui/icons-material/Cable';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import LockIcon from '@mui/icons-material/Lock';
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
 import axios from 'axios';
 
-export default function BasicCard() {
+export default function VariableCard(props) {
   const [address, setAddress] = useState({
     sheet: null,
     cell: null,
@@ -118,6 +116,9 @@ export default function BasicCard() {
       };
       axios.post(url, data, config).then((response) => {
         setAssigned(true)
+
+        const addressKey = [address.sheet, address.cell].join('!')
+        props.setAssignedVars((prevState) => ({ ...prevState, [addressKey]: true}))
       });
     } else {
       const url = 'http://127.0.0.1:8000/unassign_variable';
@@ -130,6 +131,9 @@ export default function BasicCard() {
       axios.post(url, data, config).then((response) => {
         setAssigned(false)
         setProb()
+
+        const addressKey = [address.sheet, address.cell].join('!')
+        props.setAssignedVars((prevState) => ({ ...prevState, [addressKey]: false}))
       });
     }
   }
