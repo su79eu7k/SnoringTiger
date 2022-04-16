@@ -10,7 +10,8 @@ export default function AssignVariables() {
       <Typography variant="h6">
         Assign Variables
       </Typography>
-      {[...Array(Object.keys(assignedVars).length + 1).keys()].map((k) => <VariableCard key={k} setAssignedVars={setAssignedVars} />)}
+      {console.log([...Array(Object.keys(assignedVars).length + 1)])}
+      {[...Array(Object.keys(assignedVars).length + 1)].map((v, i) => <VariableCard key={i} id={i} assignedVars={assignedVars} setAssignedVars={setAssignedVars} />)}
     </>
   )
 }

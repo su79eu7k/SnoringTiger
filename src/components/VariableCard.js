@@ -12,6 +12,7 @@ import CableIcon from '@mui/icons-material/Cable';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import LockIcon from '@mui/icons-material/Lock';
+import Alert from '@mui/material/Alert';
 import axios from 'axios';
 
 export default function VariableCard(props) {
@@ -117,8 +118,7 @@ export default function VariableCard(props) {
       axios.post(url, data, config).then((response) => {
         setAssigned(true)
 
-        const addressKey = [address.sheet, address.cell].join('!')
-        props.setAssignedVars((prevState) => ({ ...prevState, [addressKey]: true}))
+        props.setAssignedVars(prevState => ({ ...prevState, [props.id]: [address.sheet, address.cell].join('!') }))
       });
     } else {
       const url = 'http://127.0.0.1:8000/unassign_variable';
@@ -132,10 +132,14 @@ export default function VariableCard(props) {
         setAssigned(false)
         setProb()
 
-        const addressKey = [address.sheet, address.cell].join('!')
-        props.setAssignedVars((prevState) => ({ ...prevState, [addressKey]: false}))
+        props.setAssignedVars(prevState => ({ ...prevState, [props.id]: null }))
       });
     }
+  }
+
+  const testAlreadyAssigned = () => {
+    const addressKey = [address.sheet, address.cell].join('!')
+    return Object.values(props.assignedVars).includes(addressKey) && props.assignedVars[props.id] !== addressKey
   }
 
   return (
@@ -189,10 +193,22 @@ export default function VariableCard(props) {
         <Button variant="outlined" startIcon={<BarChartIcon />} onClick={handleClickProbability} disabled={assigned}>
           Probability
         </Button>
-        <Button variant="outlined" startIcon={assigned ? <LockIcon /> : <LockOpenIcon />} onClick={handleClickAssign} disabled={!prob}>
-          {assigned ? "Assigned" : "Assign"}
-        </Button>
+        {assigned ?
+          <Button variant="outlined" startIcon={<LockIcon />} onClick={handleClickAssign} disabled={!prob}>
+            Assigned
+          </Button> : ""
+        }
+        {!assigned ?
+          <Button variant="outlined" startIcon={<LockOpenIcon />} onClick={handleClickAssign} disabled={!prob || testAlreadyAssigned()}>
+            Assign
+          </Button> : ""
+        }
       </CardActions>
+      {testAlreadyAssigned() ?
+        <Alert variant="outlined" severity="warning">
+          Possible duplicate — check it out!
+        </Alert> : ""
+      }
     </Card>
   );
 }
