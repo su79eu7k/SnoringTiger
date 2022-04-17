@@ -40,7 +40,7 @@ export default function VariableCard(props) {
   const [linspace, setLinspace] = useState()
   const [prob, setProb] = useState()
 
-  const [assigned, setAssigned] = useState(null)
+  const [assigned, setAssigned] = useState()
 
   useEffect(() => {
     if (valuesNum.start && valuesNum.end) {
