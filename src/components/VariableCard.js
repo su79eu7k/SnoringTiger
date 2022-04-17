@@ -19,7 +19,6 @@ export default function VariableCard(props) {
   const [address, setAddress] = useState({
     sheet: null,
     cell: null,
-    currentVal: null,
   })
 
   const [values, setValues] = useState({
@@ -86,7 +85,7 @@ export default function VariableCard(props) {
 
   const handleClickConnect = (e) => {
     axios.get("http://127.0.0.1:8000/get_selection").then((response) => {
-      setAddress({ sheet: response.data.sheet, cell: response.data.range, currentVal: response.data.value })
+      setAddress({ sheet: response.data.sheet, cell: response.data.range })
     });
   }
 
@@ -157,12 +156,6 @@ export default function VariableCard(props) {
           </Typography>
           <Typography variant="h6">
             {address.cell}
-          </Typography>
-          <Typography variant="subtitle2" color="text.secondary">
-            Current value
-          </Typography>
-          <Typography variant="caption">
-            {address.currentVal === null ? "#Blank" : address.currentVal}
           </Typography>
           <Typography variant="subtitle2" color="text.secondary">
             Random variable range
