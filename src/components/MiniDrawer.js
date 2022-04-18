@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -95,8 +95,11 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function MiniDrawer(props) {
+  const navigate = useNavigate()
+
   const colorMode = useContext(ColorModeContext);
   const theme = useTheme();
+  
   const [open, setOpen] = useState(false);
 
   const handleDrawerOpen = () => {
@@ -148,8 +151,9 @@ export default function MiniDrawer(props) {
           {['Home', 'Connect Workbook', 'Assign Variables', 'Proceed Simulation', 'Check Results'].map((text, index) => (
             <ListItemButton
               key={text}
-              component={Link}
-              to={'/' + text.replace(' ', '_').toLowerCase()}
+              // component={Link}
+              // to={'/' + text.replace(' ', '_').toLowerCase()}
+              onClick={() => navigate('/' + text.replace(' ', '_').toLowerCase())}
               sx={{
                 minHeight: 48,
                 justifyContent: open ? 'initial' : 'center',
