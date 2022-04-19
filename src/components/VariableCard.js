@@ -14,6 +14,7 @@ import LockOpenIcon from '@mui/icons-material/LockOpen';
 import LockIcon from '@mui/icons-material/Lock';
 import Alert from '@mui/material/Alert';
 import axios from 'axios';
+import _ from 'lodash'
 
 export default function VariableCard(props) {
   const [address, setAddress] = useState({
@@ -39,7 +40,7 @@ export default function VariableCard(props) {
   const [linspace, setLinspace] = useState()
   const [prob, setProb] = useState()
 
-  const [assigned, setAssigned] = useState()
+  const [assigned, setAssigned] = useState(false)
 
   useEffect(() => {
     if (valuesNum.start && valuesNum.end) {
@@ -64,6 +65,14 @@ export default function VariableCard(props) {
       setLinspace("")
     }
   }, [values, valuesNum, endGreaterStart, stepAboveZero])
+
+  useEffect(() => {
+    props.setAssignedVars(prevState => ({
+      ...prevState, [props.id]: {
+        address: address, values: values, valuesNum: valuesNum, endGreaterStart: endGreaterStart, stepAboveZero: stepAboveZero, linspace: linspace, prob: prob, assigned: assigned
+      }
+    }))
+  }, [address, values, valuesNum, endGreaterStart, stepAboveZero, linspace, prob, assigned])
 
   function calcLinspace(start, end, step) {
     const result = [];
@@ -104,6 +113,11 @@ export default function VariableCard(props) {
     });
   }
 
+  const testDupe = () => {
+    const possibleDupes = _.filter(props.assignedVars, { address: { sheet: address.sheet, cell: address.cell } })
+    return possibleDupes.length >= 2 && !props.assignedVars[props.id].assigned && !_.every(possibleDupes, ['assigned', false])
+  }
+
   const handleClickAssign = (e) => {
     e.preventDefault()
     if (!assigned) {
@@ -116,8 +130,6 @@ export default function VariableCard(props) {
       };
       axios.post(url, data, config).then((response) => {
         setAssigned(true)
-
-        props.setAssignedVars(prevState => ({ ...prevState, [props.id]: [address.sheet, address.cell].join('!') }))
       });
     } else {
       const url = 'http://127.0.0.1:8000/unassign_variable';
@@ -130,16 +142,12 @@ export default function VariableCard(props) {
       axios.post(url, data, config).then((response) => {
         setAssigned(false)
         setProb()
-
-        props.setAssignedVars(prevState => ({ ...prevState, [props.id]: null }))
       });
     }
+    testDupe()
   }
 
-  const testAlreadyAssigned = () => {
-    const addressKey = [address.sheet, address.cell].join('!')
-    return Object.values(props.assignedVars).includes(addressKey) && props.assignedVars[props.id] !== addressKey
-  }
+
 
   return (
     <Card sx={{ minWidth: 275 }}>
@@ -175,8 +183,11 @@ export default function VariableCard(props) {
               </FormControl>
             )}
           </Stack>
-          <Typography variant="caption">
+          <Typography variant="caption" component={'div'}>
             {linspace ? linspace.map(k => k.toFixed(2)).join(", ") : ""}
+          </Typography>
+          <Typography variant="caption" component={'div'}>
+            {prob ? prob.map(k => k.toFixed(2)).join(", ") : ""}
           </Typography>
         </CardContent></> : null}
       <CardActions>
@@ -192,12 +203,12 @@ export default function VariableCard(props) {
           </Button> : ""
         }
         {!assigned ?
-          <Button variant="outlined" startIcon={<LockOpenIcon />} onClick={handleClickAssign} disabled={!prob || testAlreadyAssigned()}>
+          <Button variant="outlined" startIcon={<LockOpenIcon />} onClick={handleClickAssign} disabled={!prob || testDupe()}>
             Assign
           </Button> : ""
         }
       </CardActions>
-      {testAlreadyAssigned() ?
+      {testDupe() ?
         <Alert variant="outlined" severity="warning">
           Possible duplicate — check it out!
         </Alert> : ""
