@@ -20,27 +20,27 @@ export default function VariableCard(props) {
   const [address, setAddress] = useState({
     sheet: null,
     cell: null,
-  })
+  } || props.assignedVars.address)
 
   const [values, setValues] = useState({
     start: "",
     end: "",
     step: "",
-  })
+  } || props.assignedVars.values)
 
   const [valuesNum, setValuesNum] = useState({
     start: null,
     end: null,
     step: null,
-  })
+  } || props.assignedVars.valuesNum)
 
-  const [endGreaterStart, setEndGreaterStart] = useState()
-  const [stepAboveZero, setStepAboveZero] = useState()
+  const [endGreaterStart, setEndGreaterStart] = useState(undefined || props.assignedVars.endGreaterStart)
+  const [stepAboveZero, setStepAboveZero] = useState(undefined || props.assignedVars.stepAboveZero)
 
-  const [linspace, setLinspace] = useState()
-  const [prob, setProb] = useState()
+  const [linspace, setLinspace] = useState(undefined || props.assignedVars.linspace)
+  const [prob, setProb] = useState(undefined || props.assignedVars.prob)
 
-  const [assigned, setAssigned] = useState(false)
+  const [assigned, setAssigned] = useState(false || props.assignedVars.assigned)
 
   useEffect(() => {
     if (valuesNum.start && valuesNum.end) {
