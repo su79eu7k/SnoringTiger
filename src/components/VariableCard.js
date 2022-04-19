@@ -84,7 +84,7 @@ export default function VariableCard(props) {
     return result;
   }
 
-  const handleChange = (e) => {
+  const handleInputChg = (e) => {
     setValues(prevState => (
       { ...prevState, [e.target.name]: e.target.value }
     ))
@@ -92,13 +92,13 @@ export default function VariableCard(props) {
     setValuesNum(prevState => ({ ...prevState, [e.target.name]: !isNaN(e.target.value) }))
   };
 
-  const handleClickConnect = (e) => {
+  const handleClickConn = (e) => {
     axios.get("http://127.0.0.1:8000/get_selection").then((response) => {
       setAddress({ sheet: response.data.sheet, cell: response.data.range })
     });
   }
 
-  const handleClickProbability = (e) => {
+  const handleClickProb = (e) => {
     e.preventDefault()
     const url = 'http://127.0.0.1:8000/io_variable';
     const data = { start: Number(values.start), end: Number(values.end), step: Number(values.step), dist: 'unif' }
@@ -177,7 +177,7 @@ export default function VariableCard(props) {
                   label={k.toUpperCase()}
                   name={k}
                   value={values[k]}
-                  onChange={handleChange}
+                  onChange={handleInputChg}
                   disabled={assigned}
                 />
               </FormControl>
@@ -191,10 +191,10 @@ export default function VariableCard(props) {
           </Typography>
         </CardContent></> : null}
       <CardActions>
-        <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickConnect} disabled={assigned}>
+        <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickConn} disabled={assigned}>
           Connect
         </Button>
-        <Button variant="outlined" startIcon={<BarChartIcon />} onClick={handleClickProbability} disabled={assigned}>
+        <Button variant="outlined" startIcon={<BarChartIcon />} onClick={handleClickProb} disabled={assigned}>
           Probability
         </Button>
         {assigned ?
