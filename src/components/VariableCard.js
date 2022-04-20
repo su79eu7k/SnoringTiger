@@ -17,62 +17,59 @@ import axios from 'axios';
 import _ from 'lodash'
 
 export default function VariableCard(props) {
-  const [address, setAddress] = useState({
-    sheet: null,
-    cell: null,
-  } || props.assignedVars.address)
+  const [addressSheet, setAddressSheet] = useState(null)
+  const [addressCell, setAddressCell] = useState(null)
 
-  const [values, setValues] = useState({
-    start: "",
-    end: "",
-    step: "",
-  } || props.assignedVars.values)
+  const [valueStart, setValueStart] = useState("")
+  const [valueEnd, setValueEnd] = useState("")
+  const [valueStep, setValueStep] = useState("")
 
-  const [valuesNum, setValuesNum] = useState({
-    start: null,
-    end: null,
-    step: null,
-  } || props.assignedVars.valuesNum)
+  const [valueNumStart, setValueNumStart] = useState(null)
+  const [valueNumEnd, setValueNumEnd] = useState(null)
+  const [valueNumStep, setValueNumStep] = useState(null)
 
-  const [endGreaterStart, setEndGreaterStart] = useState(undefined || props.assignedVars.endGreaterStart)
-  const [stepAboveZero, setStepAboveZero] = useState(undefined || props.assignedVars.stepAboveZero)
+  const [endGreaterStart, setEndGreaterStart] = useState(null)
+  const [stepAboveZero, setStepAboveZero] = useState(null)
 
-  const [linspace, setLinspace] = useState(undefined || props.assignedVars.linspace)
-  const [prob, setProb] = useState(undefined || props.assignedVars.prob)
+  const [linspace, setLinspace] = useState(null)
+  const [prob, setProb] = useState(null)
 
-  const [assigned, setAssigned] = useState(false || props.assignedVars.assigned)
+  const [assigned, setAssigned] = useState(false)
 
   useEffect(() => {
-    if (valuesNum.start && valuesNum.end) {
-      Number(values.end) > Number(values.start) ? setEndGreaterStart(true) : setEndGreaterStart(false)
+    if (valueNumStart && valueNumEnd) {
+      Number(valueEnd) > Number(valueStart) ? setEndGreaterStart(true) : setEndGreaterStart(false)
     } else {
       setEndGreaterStart(null)
     }
-  }, [values.start, values.end, valuesNum.start, valuesNum.end])
+  }, [valueStart, valueEnd, valueNumStart, valueNumEnd])
 
   useEffect(() => {
-    if (valuesNum.step) {
-      Number(values.step) > 0 ? setStepAboveZero(true) : setStepAboveZero(false)
+    if (valueNumStep) {
+      Number(valueStep) > 0 ? setStepAboveZero(true) : setStepAboveZero(false)
     } else {
       setStepAboveZero(null)
     }
-  }, [values.step, valuesNum.step])
+  }, [valueStep, valueNumStep])
 
   useEffect(() => {
-    if (valuesNum.start && valuesNum.end && valuesNum.step && endGreaterStart && stepAboveZero) {
-      setLinspace(calcLinspace(Number(values.start), Number(values.end), Number(values.step)))
+    if (valueNumStart && valueNumEnd && valueNumStep && endGreaterStart && stepAboveZero) {
+      setLinspace(calcLinspace(Number(valueStart), Number(valueEnd), Number(valueStep)))
     } else {
       setLinspace("")
     }
-  }, [values, valuesNum, endGreaterStart, stepAboveZero])
+  }, [valueStart, valueEnd, valueStep, valueNumStart, valueNumEnd, valueNumStep, endGreaterStart, stepAboveZero])
 
   useEffect(() => {
     props.setAssignedVars(prevState => ({
       ...prevState, [props.id]: {
-        address: address, values: values, valuesNum: valuesNum, endGreaterStart: endGreaterStart, stepAboveZero: stepAboveZero, linspace: linspace, prob: prob, assigned: assigned
+        addressSheet: addressSheet, addressCell: addressCell,
+        valueStart: valueStart, valueEnd: valueEnd, valueStep: valueStep,
+        valueNumStart: valueNumStart, valueNumEnd: valueNumEnd, valueNumStep: valueNumStep,
+        endGreaterStart: endGreaterStart, stepAboveZero: stepAboveZero, linspace: linspace, prob: prob, assigned: assigned
       }
     }))
-  }, [address, values, valuesNum, endGreaterStart, stepAboveZero, linspace, prob, assigned])
+  }, [addressSheet, addressCell, valueStart, valueEnd, valueStep, valueNumStart, valueNumEnd, valueNumStep, endGreaterStart, stepAboveZero, linspace, prob, assigned])
 
   function calcLinspace(start, end, step) {
     const result = [];
@@ -84,24 +81,32 @@ export default function VariableCard(props) {
     return result;
   }
 
-  const handleInputChg = (e) => {
-    setValues(prevState => (
-      { ...prevState, [e.target.name]: e.target.value }
-    ))
+  const handleChangeStart = (e) => {
+    setValueStart(e.target.value)
+    setValueNumStart(!isNaN(e.target.value))
+  };
 
-    setValuesNum(prevState => ({ ...prevState, [e.target.name]: !isNaN(e.target.value) }))
+  const handleChangeEnd = (e) => {
+    setValueEnd(e.target.value)
+    setValueNumEnd(!isNaN(e.target.value))
+  };
+
+  const handleChangeStep = (e) => {
+    setValueStep(e.target.value)
+    setValueNumStep(!isNaN(e.target.value))
   };
 
   const handleClickConn = (e) => {
     axios.get("http://127.0.0.1:8000/get_selection").then((response) => {
-      setAddress({ sheet: response.data.sheet, cell: response.data.range })
+      setAddressSheet(response.data.sheet)
+      setAddressCell(response.data.range)
     });
   }
 
   const handleClickProb = (e) => {
     e.preventDefault()
     const url = 'http://127.0.0.1:8000/io_variable';
-    const data = { start: Number(values.start), end: Number(values.end), step: Number(values.step), dist: 'unif' }
+    const data = { start: Number(valueStart), end: Number(valueEnd), step: Number(valueStep), dist: 'unif' }
     const config = {
       headers: {
         'content-type': 'application/json',
@@ -114,7 +119,7 @@ export default function VariableCard(props) {
   }
 
   const testDupe = () => {
-    const possibleDupes = _.filter(props.assignedVars, { address: { sheet: address.sheet, cell: address.cell } })
+    const possibleDupes = _.filter(props.assignedVars, { addressSheet: addressSheet, addressCell: addressCell })
     return possibleDupes.length >= 2 && !props.assignedVars[props.id].assigned && !_.every(possibleDupes, ['assigned', false])
   }
 
@@ -122,7 +127,7 @@ export default function VariableCard(props) {
     e.preventDefault()
     if (!assigned) {
       const url = 'http://127.0.0.1:8000/assign_variable';
-      const data = { sheet: address.sheet, cell: address.cell, x: linspace, prob: prob }
+      const data = { sheet: addressSheet, cell: addressCell, x: linspace, prob: prob }
       const config = {
         headers: {
           'content-type': 'application/json',
@@ -133,7 +138,7 @@ export default function VariableCard(props) {
       });
     } else {
       const url = 'http://127.0.0.1:8000/unassign_variable';
-      const data = { sheet: address.sheet, cell: address.cell }
+      const data = { sheet: addressSheet, cell: addressCell }
       const config = {
         headers: {
           'content-type': 'application/json',
@@ -151,37 +156,54 @@ export default function VariableCard(props) {
 
   return (
     <Card sx={{ minWidth: 275 }}>
-      {address.cell ? <>
+      {addressCell ? <>
         <CardContent>
           <Typography variant="subtitle2" color="text.secondary">
             Sheet
           </Typography>
           <Typography variant="caption">
-            {address.sheet}
+            {addressSheet}
           </Typography>
           <Typography variant="subtitle2" color="text.secondary">
             Cell
           </Typography>
           <Typography variant="h6">
-            {address.cell}
+            {addressCell}
           </Typography>
           <Typography variant="subtitle2" color="text.secondary">
             Random variable range
           </Typography>
           <Stack spacing={2} direction="row">
-            {Object.keys(values).map((k, i) =>
-              <FormControl key={i} size='small'>
-                <InputLabel htmlFor="component-outlined">{k.toUpperCase()}</InputLabel>
-                <OutlinedInput
-                  id={"component-outlined-" + k}
-                  label={k.toUpperCase()}
-                  name={k}
-                  value={values[k]}
-                  onChange={handleInputChg}
-                  disabled={assigned}
-                />
-              </FormControl>
-            )}
+            <FormControl size='small'>
+              <InputLabel htmlFor="component-outlined">Start</InputLabel>
+              <OutlinedInput
+                id={"component-outlined-start"}
+                label={"Start"}
+                value={valueStart}
+                onChange={handleChangeStart}
+                disabled={assigned}
+              />
+            </FormControl>
+            <FormControl size='small'>
+              <InputLabel htmlFor="component-outlined">End</InputLabel>
+              <OutlinedInput
+                id={"component-outlined-end"}
+                label={"End"}
+                value={valueEnd}
+                onChange={handleChangeEnd}
+                disabled={assigned}
+              />
+            </FormControl>
+            <FormControl size='small'>
+              <InputLabel htmlFor="component-outlined">Step</InputLabel>
+              <OutlinedInput
+                id={"component-outlined-step"}
+                label={"Step"}
+                value={valueStep}
+                onChange={handleChangeStep}
+                disabled={assigned}
+              />
+            </FormControl>
           </Stack>
           <Typography variant="caption" component={'div'}>
             {linspace ? linspace.map(k => k.toFixed(2)).join(", ") : ""}

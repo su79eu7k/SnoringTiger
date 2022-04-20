@@ -11,7 +11,8 @@ export default function AssignVariables() {
       <Typography variant="h6">
         Assign Variables
       </Typography>
-      {[...Array(_.reject(assignedVars, { address: { sheet: null, cell: null } }).length + 1)].map((v, i) => <VariableCard key={i} id={i} assignedVars={assignedVars} setAssignedVars={setAssignedVars} />)}
+      {[...Array(_.reject(assignedVars, { addressSheet: null, addressCell: null }).length + 1)].map(
+        (v, i) => <VariableCard key={i} id={i} assignedVars={assignedVars} setAssignedVars={setAssignedVars} />)}
     </>
   )
 }
