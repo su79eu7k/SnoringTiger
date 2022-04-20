@@ -5,9 +5,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import OutlinedInput from '@mui/material/OutlinedInput';
+import TextField from '@mui/material/TextField';
 import CableIcon from '@mui/icons-material/Cable';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
@@ -17,8 +15,7 @@ import axios from 'axios';
 import _ from 'lodash'
 
 export default function VariableCard(props) {
-  const { id, variables, setVariables } = props
-  const variable = variables[id]
+  const variable = props.variables[props.id]
 
   const [addressSheet, setAddressSheet] = useState(variable ? variable.addressSheet : null)
   const [addressCell, setAddressCell] = useState(variable ? variable.addressCell : null)
@@ -34,7 +31,7 @@ export default function VariableCard(props) {
   const [endGreaterStart, setEndGreaterStart] = useState(variable ? variable.endGreaterStart : null)
   const [stepAboveZero, setStepAboveZero] = useState(variable ? variable.stepAboveZero : null)
 
-  const [linspace, setLinspace] = useState(variable ? variable.linspace : null)
+  const [x, setX] = useState(variable ? variable.x : null)
   const [prob, setProb] = useState(variable ? variable.prob : null)
 
   const [assigned, setAssigned] = useState(variable ? variable.assigned : false)
@@ -57,22 +54,22 @@ export default function VariableCard(props) {
 
   useEffect(() => {
     if (valueNumStart && valueNumEnd && valueNumStep && endGreaterStart && stepAboveZero) {
-      setLinspace(calcLinspace(Number(valueStart), Number(valueEnd), Number(valueStep)))
+      setX(calcLinspace(Number(valueStart), Number(valueEnd), Number(valueStep)))
     } else {
-      setLinspace("")
+      setX("")
     }
   }, [valueStart, valueEnd, valueStep, valueNumStart, valueNumEnd, valueNumStep, endGreaterStart, stepAboveZero])
 
   useEffect(() => {
-    setVariables(prevState => ({
-      ...prevState, [id]: {
+    props.setVariables(prevState => ({
+      ...prevState, [props.id]: {
         addressSheet: addressSheet, addressCell: addressCell,
         valueStart: valueStart, valueEnd: valueEnd, valueStep: valueStep,
         valueNumStart: valueNumStart, valueNumEnd: valueNumEnd, valueNumStep: valueNumStep,
-        endGreaterStart: endGreaterStart, stepAboveZero: stepAboveZero, linspace: linspace, prob: prob, assigned: assigned
+        endGreaterStart: endGreaterStart, stepAboveZero: stepAboveZero, x: x, prob: prob, assigned: assigned
       }
     }))
-  }, [id, setVariables, addressSheet, addressCell, valueStart, valueEnd, valueStep, valueNumStart, valueNumEnd, valueNumStep, endGreaterStart, stepAboveZero, linspace, prob, assigned])
+  })
 
   function calcLinspace(start, end, step) {
     const result = [];
@@ -115,21 +112,21 @@ export default function VariableCard(props) {
       },
     };
     axios.post(url, data, config).then((response) => {
-      setLinspace(response.data.x)
+      setX(response.data.x)
       setProb(response.data.prob)
     });
   }
 
   const testDupe = () => {
-      const possibleDupes = _.filter(props.variables, { addressSheet: addressSheet, addressCell: addressCell })
-      return !_.every(possibleDupes, ['assigned', false]) && possibleDupes.length >= 2 && !variable.assigned
+    const possibleDupes = _.filter(props.variables, { addressSheet: addressSheet, addressCell: addressCell })
+    return !_.every(possibleDupes, ['assigned', false]) && possibleDupes.length >= 2 && !variable.assigned
   }
 
   const handleClickAssign = (e) => {
     e.preventDefault()
     if (!assigned) {
       const url = 'http://127.0.0.1:8000/assign_variable';
-      const data = { sheet: addressSheet, cell: addressCell, x: linspace, prob: prob }
+      const data = { sheet: addressSheet, cell: addressCell, x: x, prob: prob }
       const config = {
         headers: {
           'content-type': 'application/json',
@@ -174,39 +171,39 @@ export default function VariableCard(props) {
             Random variable range
           </Typography>
           <Stack spacing={2} direction="row">
-            <FormControl size='small'>
-              <InputLabel htmlFor="component-outlined">Start</InputLabel>
-              <OutlinedInput
-                id={"component-outlined-start"}
-                label={"Start"}
-                value={valueStart}
-                onChange={handleChangeStart}
-                disabled={assigned}
-              />
-            </FormControl>
-            <FormControl size='small'>
-              <InputLabel htmlFor="component-outlined">End</InputLabel>
-              <OutlinedInput
-                id={"component-outlined-end"}
-                label={"End"}
-                value={valueEnd}
-                onChange={handleChangeEnd}
-                disabled={assigned}
-              />
-            </FormControl>
-            <FormControl size='small'>
-              <InputLabel htmlFor="component-outlined">Step</InputLabel>
-              <OutlinedInput
-                id={"component-outlined-step"}
-                label={"Step"}
-                value={valueStep}
-                onChange={handleChangeStep}
-                disabled={assigned}
-              />
-            </FormControl>
+            <TextField
+              error={!valueNumStart || endGreaterStart === false}
+              helperText={!valueNumStart ? "Start value is not a number." : endGreaterStart === false ? "Start value is greater than End." : ""}
+              size="small"
+              id="outlined-helperText"
+              label="Start"
+              value={valueStart}
+              onChange={handleChangeStart}
+              disabled={assigned}
+            />
+            <TextField
+              error={!valueNumEnd || endGreaterStart === false}
+              helperText={!valueNumEnd ? "End value is not a number." : endGreaterStart === false ? "Start value is greater than End." : ""}
+              size="small"
+              id="outlined-helperText"
+              label="End"
+              value={valueEnd}
+              onChange={handleChangeEnd}
+              disabled={assigned}
+            />
+            <TextField
+              error={!valueNumStep || !stepAboveZero}
+              helperText={!valueNumStep ? "Step value is not a number." : !stepAboveZero ? "Step value is not above zero." : ""}
+              size="small"
+              id="outlined-helperText"
+              label="Step"
+              value={valueStep}
+              onChange={handleChangeStep}
+              disabled={assigned}
+            />
           </Stack>
           <Typography variant="caption" component={'div'}>
-            {linspace ? linspace.map(k => k.toFixed(2)).join(", ") : ""}
+            {x ? x.map(k => k.toFixed(2)).join(", ") : ""}
           </Typography>
           <Typography variant="caption" component={'div'}>
             {prob ? prob.map(k => k.toFixed(2)).join(", ") : ""}
