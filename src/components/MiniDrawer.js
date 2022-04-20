@@ -153,7 +153,7 @@ export default function MiniDrawer(props) {
               key={text}
               // component={Link}
               // to={'/' + text.replace(' ', '_').toLowerCase()}
-              onClick={() => navigate('/' + text.replace(' ', '_').toLowerCase(), {state: {assignedVars: props.assignedVars}})}
+              onClick={() => navigate('/' + text.replace(' ', '_').toLowerCase())}
               sx={{
                 minHeight: 48,
                 justifyContent: open ? 'initial' : 'center',
