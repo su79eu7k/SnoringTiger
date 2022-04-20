@@ -17,24 +17,28 @@ import axios from 'axios';
 import _ from 'lodash'
 
 export default function VariableCard(props) {
-  const [addressSheet, setAddressSheet] = useState(null)
-  const [addressCell, setAddressCell] = useState(null)
+  console.log('--------------------------------------------------')
+  console.log(props.assignedVars[props.id])
+  console.log(props.id)
+  console.log('--------------------------------------------------')
+  const [addressSheet, setAddressSheet] = useState(props.assignedVars[props.id] ? props.assignedVars[props.id].addressSheet : null)
+  const [addressCell, setAddressCell] = useState(props.assignedVars[props.id] ? props.assignedVars[props.id].addressCell : null)
 
-  const [valueStart, setValueStart] = useState("")
-  const [valueEnd, setValueEnd] = useState("")
-  const [valueStep, setValueStep] = useState("")
+  const [valueStart, setValueStart] = useState(props.assignedVars[props.id] ? props.assignedVars[props.id].valueStart : "")
+  const [valueEnd, setValueEnd] = useState(props.assignedVars[props.id] ? props.assignedVars[props.id].valueEnd : "")
+  const [valueStep, setValueStep] = useState(props.assignedVars[props.id] ? props.assignedVars[props.id].valueStep : "")
 
-  const [valueNumStart, setValueNumStart] = useState(null)
-  const [valueNumEnd, setValueNumEnd] = useState(null)
-  const [valueNumStep, setValueNumStep] = useState(null)
+  const [valueNumStart, setValueNumStart] = useState(props.assignedVars[props.id] ? props.assignedVars[props.id].valueNumStart : null)
+  const [valueNumEnd, setValueNumEnd] = useState(props.assignedVars[props.id] ? props.assignedVars[props.id].valueNumEnd : null)
+  const [valueNumStep, setValueNumStep] = useState(props.assignedVars[props.id] ? props.assignedVars[props.id].valueNumStep : null)
 
-  const [endGreaterStart, setEndGreaterStart] = useState(null)
-  const [stepAboveZero, setStepAboveZero] = useState(null)
+  const [endGreaterStart, setEndGreaterStart] = useState(props.assignedVars[props.id] ? props.assignedVars[props.id].endGreaterStart : null)
+  const [stepAboveZero, setStepAboveZero] = useState(props.assignedVars[props.id] ? props.assignedVars[props.id].stepAboveZero : null)
 
-  const [linspace, setLinspace] = useState(null)
-  const [prob, setProb] = useState(null)
+  const [linspace, setLinspace] = useState(props.assignedVars[props.id] ? props.assignedVars[props.id].linspace : null)
+  const [prob, setProb] = useState(props.assignedVars[props.id] ? props.assignedVars[props.id].prob : null)
 
-  const [assigned, setAssigned] = useState(false)
+  const [assigned, setAssigned] = useState(props.assignedVars[props.id] ? props.assignedVars[props.id].assigned : false)
 
   useEffect(() => {
     if (valueNumStart && valueNumEnd) {
@@ -77,7 +81,6 @@ export default function VariableCard(props) {
     for (let i = 0; i < step; i++) {
       result.push(start + (scale * i));
     }
-    console.log(result)
     return result;
   }
 
@@ -119,8 +122,8 @@ export default function VariableCard(props) {
   }
 
   const testDupe = () => {
-    const possibleDupes = _.filter(props.assignedVars, { addressSheet: addressSheet, addressCell: addressCell })
-    return possibleDupes.length >= 2 && !props.assignedVars[props.id].assigned && !_.every(possibleDupes, ['assigned', false])
+      const possibleDupes = _.filter(props.assignedVars, { addressSheet: addressSheet, addressCell: addressCell })
+      return possibleDupes.length >= 2 && !props.assignedVars[props.id].assigned && !_.every(possibleDupes, ['assigned', false])
   }
 
   const handleClickAssign = (e) => {
@@ -151,8 +154,6 @@ export default function VariableCard(props) {
     }
     testDupe()
   }
-
-
 
   return (
     <Card sx={{ minWidth: 275 }}>

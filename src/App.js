@@ -13,6 +13,7 @@ import axios from 'axios';
 function App() {
   const [conn, setConn] = useState()
   const [connWith, setConnWith] = useState()
+  const [assignedVars, setAssignedVars] = useState({})
   const [mode, setMode] = useState('light');
 
   const colorMode = useMemo(
@@ -57,11 +58,11 @@ function App() {
       <ThemeProvider theme={theme}>
         <HashRouter>
           <Routes>
-            <Route path="/" element={<MiniDrawer conn={conn} connWith={connWith} />}>
+            <Route path="/" element={<MiniDrawer conn={conn} connWith={connWith} assignedVars={assignedVars} />}>
               <Route index element={<Landing />} />
               <Route path="home" element={<Landing />} />
               <Route path="connect_workbook" element={<ConnectWorkbook />} />
-              <Route path="assign_variables" element={<AssignVariables />} />
+              <Route path="assign_variables" element={<AssignVariables assignedVars={assignedVars} setAssignedVars={setAssignedVars} />} />
               <Route path="proceed_simulation" element={<ProceedSimulation />} />
               <Route path="check_results" element={<CheckResults />} />
             </Route>
