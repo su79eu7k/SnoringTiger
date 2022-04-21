@@ -3,7 +3,6 @@ import MonitoringCellCard from '../components/MonitoringCellCard'
 import _ from 'lodash'
 
 export default function AddMonitorCells(props) {
-  console.log(props.monitoringCells)
   return (
     <>
       <Typography variant="h6">

@@ -69,7 +69,7 @@ export default function RandomCellCard(props) {
         endGreaterStart: endGreaterStart, stepAboveZero: stepAboveZero, x: x, prob: prob, assigned: assigned
       }
     }))
-  })
+  }, [addressSheet, addressCell, valueStart, valueEnd, valueStep, valueNumStart, valueNumEnd, valueNumStep, endGreaterStart, stepAboveZero, x, prob, assigned])
 
   function calcLinspace(start, end, step) {
     const result = [];

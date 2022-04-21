@@ -26,7 +26,7 @@ export default function MonitoringCellCard(props) {
         addressSheet: addressSheet, addressCell: addressCell, assigned: assigned
       }
     }))
-  })
+  }, [addressSheet, addressCell, assigned])
 
   const handleClickConn = (e) => {
     axios.get("http://127.0.0.1:8000/get_selection").then((response) => {
