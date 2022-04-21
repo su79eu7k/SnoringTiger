@@ -104,7 +104,7 @@ export default function RandomCellCard(props) {
 
   const handleClickProb = (e) => {
     e.preventDefault()
-    const url = 'http://127.0.0.1:8000/io_variable';
+    const url = 'http://127.0.0.1:8000/prob';
     const data = { start: Number(valueStart), end: Number(valueEnd), step: Number(valueStep), dist: 'unif' }
     const config = {
       headers: {
@@ -125,7 +125,7 @@ export default function RandomCellCard(props) {
   const handleClickAssign = (e) => {
     e.preventDefault()
     if (!assigned) {
-      const url = 'http://127.0.0.1:8000/assign_variable';
+      const url = 'http://127.0.0.1:8000/add_random_cell';
       const data = { sheet: addressSheet, cell: addressCell, x: x, prob: prob }
       const config = {
         headers: {
@@ -136,7 +136,7 @@ export default function RandomCellCard(props) {
         setAssigned(true)
       });
     } else {
-      const url = 'http://127.0.0.1:8000/unassign_variable';
+      const url = 'http://127.0.0.1:8000/remove_random_cell';
       const data = { sheet: addressSheet, cell: addressCell }
       const config = {
         headers: {

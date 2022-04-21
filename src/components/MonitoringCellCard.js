@@ -43,7 +43,7 @@ export default function MonitoringCellCard(props) {
   const handleClickAssign = (e) => {
     e.preventDefault()
     if (!assigned) {
-      const url = 'http://127.0.0.1:8000/assign_monitoring_cell';
+      const url = 'http://127.0.0.1:8000/add_monitoring_cell';
       const data = { sheet: addressSheet, cell: addressCell }
       const config = {
         headers: {
@@ -54,7 +54,7 @@ export default function MonitoringCellCard(props) {
         setAssigned(true)
       });
     } else {
-      const url = 'http://127.0.0.1:8000/unassign_monitoring_cell';
+      const url = 'http://127.0.0.1:8000/remove_monitoring_cell';
       const data = { sheet: addressSheet, cell: addressCell }
       const config = {
         headers: {
