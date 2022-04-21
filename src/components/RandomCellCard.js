@@ -14,27 +14,27 @@ import Alert from '@mui/material/Alert';
 import axios from 'axios';
 import _ from 'lodash'
 
-export default function VariableCard(props) {
-  const variable = props.variables[props.id]
+export default function RandomCellCard(props) {
+  const randomCell = props.randomCells[props.id]
 
-  const [addressSheet, setAddressSheet] = useState(variable ? variable.addressSheet : null)
-  const [addressCell, setAddressCell] = useState(variable ? variable.addressCell : null)
+  const [addressSheet, setAddressSheet] = useState(randomCell ? randomCell.addressSheet : null)
+  const [addressCell, setAddressCell] = useState(randomCell ? randomCell.addressCell : null)
 
-  const [valueStart, setValueStart] = useState(variable ? variable.valueStart : "")
-  const [valueEnd, setValueEnd] = useState(variable ? variable.valueEnd : "")
-  const [valueStep, setValueStep] = useState(variable ? variable.valueStep : "")
+  const [valueStart, setValueStart] = useState(randomCell ? randomCell.valueStart : "")
+  const [valueEnd, setValueEnd] = useState(randomCell ? randomCell.valueEnd : "")
+  const [valueStep, setValueStep] = useState(randomCell ? randomCell.valueStep : "")
 
-  const [valueNumStart, setValueNumStart] = useState(variable ? variable.valueNumStart : null)
-  const [valueNumEnd, setValueNumEnd] = useState(variable ? variable.valueNumEnd : null)
-  const [valueNumStep, setValueNumStep] = useState(variable ? variable.valueNumStep : null)
+  const [valueNumStart, setValueNumStart] = useState(randomCell ? randomCell.valueNumStart : null)
+  const [valueNumEnd, setValueNumEnd] = useState(randomCell ? randomCell.valueNumEnd : null)
+  const [valueNumStep, setValueNumStep] = useState(randomCell ? randomCell.valueNumStep : null)
 
-  const [endGreaterStart, setEndGreaterStart] = useState(variable ? variable.endGreaterStart : null)
-  const [stepAboveZero, setStepAboveZero] = useState(variable ? variable.stepAboveZero : null)
+  const [endGreaterStart, setEndGreaterStart] = useState(randomCell ? randomCell.endGreaterStart : null)
+  const [stepAboveZero, setStepAboveZero] = useState(randomCell ? randomCell.stepAboveZero : null)
 
-  const [x, setX] = useState(variable ? variable.x : null)
-  const [prob, setProb] = useState(variable ? variable.prob : null)
+  const [x, setX] = useState(randomCell ? randomCell.x : null)
+  const [prob, setProb] = useState(randomCell ? randomCell.prob : null)
 
-  const [assigned, setAssigned] = useState(variable ? variable.assigned : false)
+  const [assigned, setAssigned] = useState(randomCell ? randomCell.assigned : false)
 
   useEffect(() => {
     if (valueNumStart && valueNumEnd) {
@@ -61,7 +61,7 @@ export default function VariableCard(props) {
   }, [valueStart, valueEnd, valueStep, valueNumStart, valueNumEnd, valueNumStep, endGreaterStart, stepAboveZero])
 
   useEffect(() => {
-    props.setVariables(prevState => ({
+    props.setRandomCells(prevState => ({
       ...prevState, [props.id]: {
         addressSheet: addressSheet, addressCell: addressCell,
         valueStart: valueStart, valueEnd: valueEnd, valueStep: valueStep,
@@ -118,8 +118,8 @@ export default function VariableCard(props) {
   }
 
   const testDupe = () => {
-    const possibleDupes = _.filter(props.variables, { addressSheet: addressSheet, addressCell: addressCell })
-    return !_.every(possibleDupes, ['assigned', false]) && possibleDupes.length >= 2 && !variable.assigned
+    const possibleDupes = _.filter(props.randomCells, { addressSheet: addressSheet, addressCell: addressCell })
+    return !_.every(possibleDupes, ['assigned', false]) && possibleDupes.length >= 2 && !randomCell.assigned
   }
 
   const handleClickAssign = (e) => {
@@ -168,7 +168,7 @@ export default function VariableCard(props) {
             {addressCell}
           </Typography>
           <Typography variant="subtitle2" color="text.secondary">
-            Random variable range
+            Simulation Range
           </Typography>
           <Stack spacing={2} direction="row">
             <TextField

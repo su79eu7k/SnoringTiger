@@ -4,7 +4,8 @@ import { useEffect, useState, useMemo } from 'react';
 import MiniDrawer from './components/MiniDrawer';
 import Landing from './pages/Landing'
 import ConnectWorkbook from './pages/ConnectWorkbook';
-import AssignVariables from './pages/AssignVariables';
+import AddRandomCells from './pages/AddRandomCells';
+import AddMonitorCells from './pages/AddMonitorCells';
 import ProceedSimulation from './pages/ProceedSimulation';
 import CheckResults from './pages/CheckResults';
 import ColorModeContext from './contexts/ColorModeContext';
@@ -13,7 +14,8 @@ import axios from 'axios';
 function App() {
   const [conn, setConn] = useState()
   const [connWith, setConnWith] = useState()
-  const [variables, setVariables] = useState({})
+  const [randomCells, setRandomCells] = useState({})
+  const [monitoringCells, setMonitoringCells] = useState({})
   const [mode, setMode] = useState('light');
 
   const colorMode = useMemo(
@@ -62,7 +64,8 @@ function App() {
               <Route index element={<Landing />} />
               <Route path="home" element={<Landing />} />
               <Route path="connect_workbook" element={<ConnectWorkbook />} />
-              <Route path="assign_variables" element={<AssignVariables variables={variables} setVariables={setVariables} />} />
+              <Route path="add_random_cells" element={<AddRandomCells randomCells={randomCells} setRandomCells={setRandomCells} />} />
+              <Route path="add_monitor_cells" element={<AddMonitorCells monitoringCells={monitoringCells} setMonitoringCells={setMonitoringCells} />} />
               <Route path="proceed_simulation" element={<ProceedSimulation />} />
               <Route path="check_results" element={<CheckResults />} />
             </Route>

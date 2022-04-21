@@ -19,6 +19,7 @@ import ListItemText from '@mui/material/ListItemText';
 import HomeIcon from '@mui/icons-material/Home';
 import CableIcon from '@mui/icons-material/Cable';
 import AddTaskIcon from '@mui/icons-material/AddTask';
+import AddToQueueIcon from '@mui/icons-material/AddToQueue';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import CalculateIcon from '@mui/icons-material/Calculate';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
@@ -148,12 +149,12 @@ export default function MiniDrawer(props) {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Home', 'Connect Workbook', 'Assign Variables', 'Proceed Simulation', 'Check Results'].map((text, index) => (
+          {['Home', 'Connect Workbook', 'Add Random Cells', 'Add Monitor Cells', 'Proceed Simulation', 'Check Results'].map((text, index) => (
             <ListItemButton
-              key={text}
+              key={index}
               // component={Link}
               // to={'/' + text.replace(' ', '_').toLowerCase()}
-              onClick={() => navigate('/' + text.replace(' ', '_').toLowerCase())}
+              onClick={() => navigate('/' + text.replace(/ /g, '_').toLowerCase())}
               sx={{
                 minHeight: 48,
                 justifyContent: open ? 'initial' : 'center',
@@ -170,8 +171,9 @@ export default function MiniDrawer(props) {
                 {index === 0 ? <HomeIcon /> : ''}
                 {index === 1 ? <CableIcon /> : ''}
                 {index === 2 ? <AddTaskIcon /> : ''}
-                {index === 3 ? <CalculateIcon /> : ''}
-                {index === 4 ? <InboxIcon /> : ''}
+                {index === 3 ? <AddToQueueIcon /> : ''}
+                {index === 4 ? <CalculateIcon /> : ''}
+                {index === 5 ? <InboxIcon /> : ''}
               </ListItemIcon>
               <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
