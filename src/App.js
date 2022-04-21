@@ -5,7 +5,7 @@ import MiniDrawer from './components/MiniDrawer';
 import Landing from './pages/Landing'
 import ConnectWorkbook from './pages/ConnectWorkbook';
 import AddRandomCells from './pages/AddRandomCells';
-import AddMonitorCells from './pages/AddMonitorCells';
+import AddMonitoringCells from './pages/AddMonitoringCells';
 import ProceedSimulation from './pages/ProceedSimulation';
 import CheckResults from './pages/CheckResults';
 import ColorModeContext from './contexts/ColorModeContext';
@@ -65,7 +65,7 @@ function App() {
               <Route path="home" element={<Landing />} />
               <Route path="connect_workbook" element={<ConnectWorkbook />} />
               <Route path="add_random_cells" element={<AddRandomCells randomCells={randomCells} setRandomCells={setRandomCells} />} />
-              <Route path="add_monitor_cells" element={<AddMonitorCells monitoringCells={monitoringCells} setMonitoringCells={setMonitoringCells} />} />
+              <Route path="add_monitoring_cells" element={<AddMonitoringCells monitoringCells={monitoringCells} setMonitoringCells={setMonitoringCells} />} />
               <Route path="proceed_simulation" element={<ProceedSimulation />} />
               <Route path="check_results" element={<CheckResults />} />
             </Route>

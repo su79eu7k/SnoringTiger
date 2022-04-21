@@ -2,7 +2,7 @@ import Typography from '@mui/material/Typography';
 import MonitoringCellCard from '../components/MonitoringCellCard'
 import _ from 'lodash'
 
-export default function AddMonitorCells(props) {
+export default function AddMonitoringCells(props) {
   return (
     <>
       <Typography variant="h6">

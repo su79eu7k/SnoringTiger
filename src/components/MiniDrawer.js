@@ -149,7 +149,7 @@ export default function MiniDrawer(props) {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Home', 'Connect Workbook', 'Add Random Cells', 'Add Monitor Cells', 'Proceed Simulation', 'Check Results'].map((text, index) => (
+          {['Home', 'Connect Workbook', 'Add Random Cells', 'Add Monitoring Cells', 'Proceed Simulation', 'Check Results'].map((text, index) => (
             <ListItemButton
               key={index}
               // component={Link}
