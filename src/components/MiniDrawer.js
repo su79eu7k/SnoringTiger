@@ -18,7 +18,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import HomeIcon from '@mui/icons-material/Home';
 import CableIcon from '@mui/icons-material/Cable';
-import AddTaskIcon from '@mui/icons-material/AddTask';
+import AddchartIcon from '@mui/icons-material/Addchart';
 import AddToQueueIcon from '@mui/icons-material/AddToQueue';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import CalculateIcon from '@mui/icons-material/Calculate';
@@ -170,7 +170,7 @@ export default function MiniDrawer(props) {
               >
                 {index === 0 ? <HomeIcon /> : ''}
                 {index === 1 ? <CableIcon /> : ''}
-                {index === 2 ? <AddTaskIcon /> : ''}
+                {index === 2 ? <AddchartIcon /> : ''}
                 {index === 3 ? <AddToQueueIcon /> : ''}
                 {index === 4 ? <CalculateIcon /> : ''}
                 {index === 5 ? <InboxIcon /> : ''}
