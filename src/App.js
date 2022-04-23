@@ -1,6 +1,7 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { HashRouter, Routes, Route } from 'react-router-dom'
-import { useEffect, useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
+import { useInterval } from './components/useInterval'
 import MiniDrawer from './components/MiniDrawer';
 import Landing from './pages/Landing'
 import ConnectWorkbook from './pages/ConnectWorkbook';
@@ -46,14 +47,12 @@ function App() {
     },
   });
 
-  useEffect(() => {
-    setInterval(() => {
-      axios.get("http://127.0.0.1:8000/check_connection").then((response) => {
-        setConn(response.data.code)
-        setConnWith(response.data.message)
-      });
-    }, 5000)
-  }, []);
+  useInterval(() => {
+    axios.get("http://127.0.0.1:8000/check_connection").then((response) => {
+      setConn(response.data.code)
+      setConnWith(response.data.message)
+    })
+  }, 5000)
 
   return (
     <ColorModeContext.Provider value={colorMode}>
@@ -66,7 +65,7 @@ function App() {
               <Route path="connect_workbook" element={<ConnectWorkbook />} />
               <Route path="add_random_cells" element={<AddRandomCells randomCells={randomCells} setRandomCells={setRandomCells} />} />
               <Route path="add_monitoring_cells" element={<AddMonitoringCells monitoringCells={monitoringCells} setMonitoringCells={setMonitoringCells} />} />
-              <Route path="proceed_simulation" element={<ProceedSimulation />} />
+              <Route path="proceed_simulation" element={<ProceedSimulation randomCellSs={randomCells} monitoringCells={monitoringCells} />} />
               <Route path="check_results" element={<CheckResults />} />
             </Route>
           </Routes>
