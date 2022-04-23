@@ -34,21 +34,30 @@ export default function ProceedSimulation(props) {
   }
 
   useInterval(() => {
-    axios.get("http://127.0.0.1:8000/get_progress").then((response) => {
-      setProgress(response.data.progress * 100)
-    })
+    if (progress != null) {
+      axios.get("http://127.0.0.1:8000/get_progress").then((response) => {
+        setProgress(response.data.progress * 100)
+      })
+    }
   }, delay)
 
   useEffect(() => {
     progress >= 0 && progress < 100 ? setDelay(1000) : setDelay(null)
   }, [progress])
-  
+
+  useEffect(() => {
+    _.filter(props.randomCells, { assigned: true }).length >= 1 &&
+      _.filter(props.monitoringCells, { assigned: true }).length >= 1 ?
+      setReady(true) : setReady(false)
+  }, [props.randomCells, props.monitoringCells])
+
   return (
     <>
       <Button variant="outlined" startIcon={<CalculateIcon />} onClick={handleClickStart} disabled={!ready}>
         Start
       </Button>
 
+      { progress != null ?
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <Box sx={{ width: '100%', mr: 1 }}>
           <LinearProgress variant="determinate" value={progress} />
@@ -56,7 +65,7 @@ export default function ProceedSimulation(props) {
         <Box sx={{ minWidth: 35 }}>
           <Typography variant="body2" color="text.secondary">{`${Math.round(progress)}%`}</Typography>
         </Box>
-      </Box>
+      </Box> : ""}
     </>
   )
 }

@@ -65,7 +65,7 @@ function App() {
               <Route path="connect_workbook" element={<ConnectWorkbook />} />
               <Route path="add_random_cells" element={<AddRandomCells randomCells={randomCells} setRandomCells={setRandomCells} />} />
               <Route path="add_monitoring_cells" element={<AddMonitoringCells monitoringCells={monitoringCells} setMonitoringCells={setMonitoringCells} />} />
-              <Route path="proceed_simulation" element={<ProceedSimulation randomCellSs={randomCells} monitoringCells={monitoringCells} />} />
+              <Route path="proceed_simulation" element={<ProceedSimulation randomCells={randomCells} monitoringCells={monitoringCells} />} />
               <Route path="check_results" element={<CheckResults />} />
             </Route>
           </Routes>
