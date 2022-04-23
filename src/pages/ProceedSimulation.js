@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react'
 import { useInterval } from '../components/useInterval'
 import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import CalculateIcon from '@mui/icons-material/Calculate';
@@ -53,19 +56,29 @@ export default function ProceedSimulation(props) {
 
   return (
     <>
-      <Button variant="outlined" startIcon={<CalculateIcon />} onClick={handleClickStart} disabled={!ready}>
-        Start
-      </Button>
-
-      { progress != null ?
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Box sx={{ width: '100%', mr: 1 }}>
-          <LinearProgress variant="determinate" value={progress} />
-        </Box>
-        <Box sx={{ minWidth: 35 }}>
-          <Typography variant="body2" color="text.secondary">{`${Math.round(progress)}%`}</Typography>
-        </Box>
-      </Box> : ""}
+      <Typography variant="h6">
+        Proceed Simulation
+      </Typography>
+      <Card sx={{ minWidth: 275 }}>
+        <CardContent>
+          <Typography variant="subtitle2" color="text.secondary">
+            Progress
+          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ width: '100%', mr: 1 }}>
+              <LinearProgress variant="determinate" value={progress} />
+            </Box>
+            <Box sx={{ minWidth: 35 }}>
+              <Typography variant="body2" color="text.secondary">{`${Math.round(progress)}%`}</Typography>
+            </Box>
+          </Box>
+        </CardContent>
+        <CardActions>
+          <Button variant="outlined" startIcon={<CalculateIcon />} onClick={handleClickStart} disabled={!ready}>
+            Start
+          </Button>
+        </CardActions>
+      </Card>
     </>
   )
 }
