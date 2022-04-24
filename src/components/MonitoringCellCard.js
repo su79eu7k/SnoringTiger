@@ -86,16 +86,16 @@ export default function MonitoringCellCard(props) {
           </Typography>
         </CardContent></> : null}
       <CardActions>
-        <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickConn} disabled={assigned}>
+        <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickConn} disabled={props.conn !== 1 || assigned}>
           Connect
         </Button>
         {assigned ?
-          <Button variant="outlined" startIcon={<LockIcon />} onClick={handleClickAssign}>
+          <Button variant="outlined" startIcon={<LockIcon />} onClick={handleClickAssign} disabled={props.conn !== 1}>
             Assigned
           </Button> : ""
         }
         {!assigned ?
-          <Button variant="outlined" startIcon={<LockOpenIcon />} onClick={handleClickAssign} disabled={testDupe()}>
+          <Button variant="outlined" startIcon={<LockOpenIcon />} onClick={handleClickAssign} disabled={props.conn !== 1 || testDupe()}>
             Assign
           </Button> : ""
         }

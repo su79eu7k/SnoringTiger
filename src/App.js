@@ -13,8 +13,8 @@ import ColorModeContext from './contexts/ColorModeContext';
 import axios from 'axios';
 
 function App() {
-  const [conn, setConn] = useState()
-  const [connWith, setConnWith] = useState()
+  const [conn, setConn] = useState(-1)
+  const [connWith, setConnWith] = useState(null)
   const [randomCells, setRandomCells] = useState({})
   const [monitoringCells, setMonitoringCells] = useState({})
   const [mode, setMode] = useState('light');
@@ -71,8 +71,8 @@ function App() {
               <Route index element={<Landing />} />
               <Route path="home" element={<Landing />} />
               <Route path="connect_workbook" element={<ConnectWorkbook />} />
-              <Route path="add_random_cells" element={<AddRandomCells randomCells={randomCells} setRandomCells={setRandomCells} />} />
-              <Route path="add_monitoring_cells" element={<AddMonitoringCells monitoringCells={monitoringCells} setMonitoringCells={setMonitoringCells} />} />
+              <Route path="add_random_cells" element={<AddRandomCells conn={conn} randomCells={randomCells} setRandomCells={setRandomCells} />} />
+              <Route path="add_monitoring_cells" element={<AddMonitoringCells conn={conn} monitoringCells={monitoringCells} setMonitoringCells={setMonitoringCells} />} />
               <Route path="proceed_simulation" element={<ProceedSimulation conn={conn} randomCells={randomCells} monitoringCells={monitoringCells} />} />
               <Route path="check_results" element={<CheckResults />} />
             </Route>

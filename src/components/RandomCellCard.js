@@ -210,19 +210,19 @@ export default function RandomCellCard(props) {
           </Typography>
         </CardContent></> : null}
       <CardActions>
-        <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickConn} disabled={assigned}>
+        <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickConn} disabled={props.conn !== 1 || assigned}>
           Connect
         </Button>
-        <Button variant="outlined" startIcon={<BarChartIcon />} onClick={handleClickProb} disabled={assigned}>
+        <Button variant="outlined" startIcon={<BarChartIcon />} onClick={handleClickProb} disabled={props.conn !== 1 || assigned}>
           Probability
         </Button>
         {assigned ?
-          <Button variant="outlined" startIcon={<LockIcon />} onClick={handleClickAssign} disabled={!prob}>
+          <Button variant="outlined" startIcon={<LockIcon />} onClick={handleClickAssign} disabled={props.conn !== 1 || !prob}>
             Assigned
           </Button> : ""
         }
         {!assigned ?
-          <Button variant="outlined" startIcon={<LockOpenIcon />} onClick={handleClickAssign} disabled={!prob || testDupe()}>
+          <Button variant="outlined" startIcon={<LockOpenIcon />} onClick={handleClickAssign} disabled={props.conn !== 1 || !prob || testDupe()}>
             Assign
           </Button> : ""
         }

@@ -32,7 +32,7 @@ export default function ProceedSimulation(props) {
     setProgress(0)
     if (ready) {
       const url = 'http://127.0.0.1:8000/proc_sim';
-      const data = { num_trial: valueTrials }
+      const data = { num_trials: valueTrials }
       const config = {
         headers: {
           'content-type': 'application/json',
