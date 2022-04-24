@@ -210,7 +210,6 @@ export default function RandomCellCard(props) {
           </Typography>
         </CardContent></> : null}
       <CardActions>
-        {console.log(props.conn)}
         <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickConn} disabled={props.conn !== 1 || assigned}>
           Connect
         </Button>
