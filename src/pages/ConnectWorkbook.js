@@ -1,11 +1,21 @@
 import { useState } from 'react'
+import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
+import FolderOpenIcon from '@mui/icons-material/FolderOpen';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import CircularProgress from '@mui/material/CircularProgress';
 import axios from 'axios';
+
+const Input = styled('input')({
+  display: 'none',
+});
 
 export default function ConnectWorkbook() {
   const [file, setFile] = useState()
@@ -57,21 +67,33 @@ export default function ConnectWorkbook() {
       <Typography variant="h6">
         Connect Workbook
       </Typography>
-      <Typography variant="body1">
-        {file &&
-          <Typography variant="caption">{file.name} - Size: {approxBytes(file.size)}</Typography>
-        }
-      </Typography>
-      {loading === 1 ? <CircularProgress /> : null}
-      <Stack spacing={2} direction="row">
-        <Button variant="contained" component="label">
-          Select
-          <input type="file" onChange={handleChange} hidden />
-        </Button>
-        <Button
-          onClick={handleSubmit}
-          variant="contained">Connect</Button>
-      </Stack>
+      <Card sx={{ minWidth: 275 }}>
+        <CardContent>
+          {loading === 1 ? <CircularProgress /> : null}
+          {file && <Typography variant="caption">{file.name} - Size: {approxBytes(file.size)}</Typography>}
+        </CardContent>
+        <CardActions>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <label htmlFor="contained-button-file">
+              <Input
+                accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.ms-excel.sheet.macroEnabled.12,application/vnd.ms-excel.sheet.binary.macroEnabled.12"
+                id="contained-button-file"
+                type="file"
+                onChange={handleChange} />
+              <Button variant="outlined" startIcon={<FolderOpenIcon />} component="span">
+                Select
+              </Button>
+            </label>
+            <Button
+              variant="outlined"
+              onClick={handleSubmit}
+              startIcon={<FileUploadIcon />}
+            >
+              Connect
+            </Button>
+          </Stack>
+        </CardActions>
+      </Card>
       {status === -1 ? <Alert severity="error">
         <AlertTitle>Error</AlertTitle>
         File not selected — <strong>check it out!</strong>
