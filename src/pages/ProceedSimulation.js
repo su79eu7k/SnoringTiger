@@ -66,7 +66,10 @@ export default function ProceedSimulation(props) {
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Box sx={{ width: '100%', mr: 1 }}>
-              <LinearProgress variant="determinate" value={progress} />
+              <LinearProgress variant="determinate" value={progress} sx={{ 
+                height: 10,
+                borderRadius: 5,
+               }} />
             </Box>
             <Box sx={{ minWidth: 35 }}>
               <Typography variant="body2" color="text.secondary">{`${Math.round(progress)}%`}</Typography>
