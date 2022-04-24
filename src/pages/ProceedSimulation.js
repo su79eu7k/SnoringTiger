@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useInterval } from '../components/useInterval'
+import TextField from '@mui/material/TextField';
 import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
@@ -12,9 +13,18 @@ import axios from 'axios';
 import _ from 'lodash'
 
 export default function ProceedSimulation(props) {
+  const [valueTrials, setValueTrials] = useState("")
+  const [valueNumTrials, setValueNumTrials] = useState(null)
+  const [trialsAboveZero, setTrialsAboveZero] = useState(null)
+
   const [ready, setReady] = useState(false)
   const [progress, setProgress] = useState(null)
   const [delay, setDelay] = useState(null)
+
+  const handleChangeTrials = (e) => {
+    setValueTrials(e.target.value)
+    setValueNumTrials(!isNaN(e.target.value))
+  };
 
   const handleClickStart = (e) => {
     e.preventDefault()
@@ -22,7 +32,7 @@ export default function ProceedSimulation(props) {
     setProgress(0)
     if (ready) {
       const url = 'http://127.0.0.1:8000/proc_sim';
-      const data = { num_trial: 500 }
+      const data = { num_trial: valueTrials }
       const config = {
         headers: {
           'content-type': 'application/json',
@@ -35,6 +45,14 @@ export default function ProceedSimulation(props) {
       console.log('cells not ready')
     }
   }
+
+  useEffect(() => {
+    if (valueNumTrials) {
+      Number(valueTrials) > 0 ? setTrialsAboveZero(true) : setTrialsAboveZero(false)
+    } else {
+      setTrialsAboveZero(null)
+    }
+  }, [valueTrials, valueNumTrials])
 
   useInterval(() => {
     if (progress != null) {
@@ -49,10 +67,11 @@ export default function ProceedSimulation(props) {
   }, [progress])
 
   useEffect(() => {
+    props.conn === 1 &&
     _.filter(props.randomCells, { assigned: true }).length >= 1 &&
       _.filter(props.monitoringCells, { assigned: true }).length >= 1 ?
       setReady(true) : setReady(false)
-  }, [props.randomCells, props.monitoringCells])
+  }, [props.conn, props.randomCells, props.monitoringCells])
 
   return (
     <>
@@ -61,6 +80,18 @@ export default function ProceedSimulation(props) {
       </Typography>
       <Card sx={{ minWidth: 275 }}>
         <CardContent>
+        <Typography variant="subtitle2" color="text.secondary">
+            Configuration
+          </Typography>
+        <TextField
+              error={!valueNumTrials || !trialsAboveZero}
+              helperText={!valueNumTrials ? "Number of Trials value is not a number." : !trialsAboveZero ? "Number of Trials value is not above zero." : ""}
+              size="small"
+              id="outlined-helperText"
+              label="Number of Trials"
+              value={valueTrials}
+              onChange={handleChangeTrials}
+            />
           <Typography variant="subtitle2" color="text.secondary">
             Progress
           </Typography>
