@@ -7,7 +7,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
-import FileUploadIcon from '@mui/icons-material/FileUpload';
+import CableIcon from '@mui/icons-material/Cable';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -88,7 +88,7 @@ export default function ConnectWorkbook() {
             <Button
               variant="outlined"
               onClick={handleSubmit}
-              startIcon={<FileUploadIcon />}
+              startIcon={<CableIcon />}
             >
               Connect
             </Button>

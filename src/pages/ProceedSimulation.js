@@ -85,10 +85,10 @@ export default function ProceedSimulation(props) {
           </Typography>
         <TextField
               error={!valueNumTrials || !trialsAboveZero}
-              helperText={!valueNumTrials ? "Number of Trials value is not a number." : !trialsAboveZero ? "Number of Trials value is not above zero." : ""}
+              helperText={!valueNumTrials ? "Trials value is not a number." : !trialsAboveZero ? "Trials value is not above zero." : ""}
               size="small"
               id="outlined-helperText"
-              label="Number of Trials"
+              label="Trials"
               value={valueTrials}
               onChange={handleChangeTrials}
             />
