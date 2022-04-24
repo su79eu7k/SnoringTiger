@@ -9,7 +9,7 @@ export default function AddMonitoringCells(props) {
         Add Monitoring Cells
       </Typography>
       {[...Array(_.reject(props.monitoringCells, { addressSheet: null, addressCell: null }).length + 1)].map(
-        (v, i) => <MonitoringCellCard key={i.toString()} id={i.toString()} monitoringCells={props.monitoringCells} setMonitoringCells={props.setMonitoringCells} />)}
+        (v, i) => <MonitoringCellCard key={i.toString()} id={i.toString()} conn={props.conn} monitoringCells={props.monitoringCells} setMonitoringCells={props.setMonitoringCells} />)}
     </>
   )
 }

@@ -9,7 +9,7 @@ export default function AddRandomCells(props) {
         Add Random Cells
       </Typography>
       {[...Array(_.reject(props.randomCells, { addressSheet: null, addressCell: null }).length + 1)].map(
-        (v, i) => <RandomCellCard key={i.toString()} id={i.toString()} randomCells={props.randomCells} setRandomCells={props.setRandomCells} />)}
+        (v, i) => <RandomCellCard key={i.toString()} id={i.toString()} conn={props.conn} randomCells={props.randomCells} setRandomCells={props.setRandomCells} />)}
     </>
   )
 }
