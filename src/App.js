@@ -41,7 +41,15 @@ function App() {
         : {
           // palette values for dark mode
           primary: {
-            main: '#ffffff'
+            main: '#aad5aa'
+          },
+          background: {
+            default: '#15202b',
+            paper: '#141f2b',
+          },
+          text: {
+            primary: '#ffffff',
+            secondary: '#626a72'
           }
         }),
     },

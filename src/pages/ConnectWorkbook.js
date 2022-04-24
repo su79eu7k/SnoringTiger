@@ -32,6 +32,7 @@ export default function ConnectWorkbook() {
 
   function handleChange(e) {
     setFile(e.target.files[0])
+    // To prevent no action in case user uploads the same filename.
     e.target.value = ''
   }
 
