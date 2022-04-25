@@ -9,6 +9,7 @@ import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import CalculateIcon from '@mui/icons-material/Calculate';
+import CancelIcon from '@mui/icons-material/Cancel';
 import axios from 'axios';
 import _ from 'lodash'
 
@@ -44,6 +45,15 @@ export default function ProceedSimulation(props) {
     } else {
       console.log('cells not ready')
     }
+  }
+
+  const handleClickCancel = (e) => {
+    e.preventDefault()
+
+    setProgress(null)
+    axios.get("http://127.0.0.1:8000/stop_sim").then((response) => {
+      console.log(response)
+    });
   }
 
   useEffect(() => {
@@ -110,6 +120,9 @@ export default function ProceedSimulation(props) {
         <CardActions>
           <Button variant="outlined" startIcon={<CalculateIcon />} onClick={handleClickStart} disabled={!ready}>
             Start
+          </Button>
+          <Button variant="outlined" startIcon={<CancelIcon />} onClick={handleClickCancel} disabled={progress >= 0 || progress < 100}>
+            Stop
           </Button>
         </CardActions>
       </Card>
