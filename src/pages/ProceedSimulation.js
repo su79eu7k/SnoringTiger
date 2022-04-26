@@ -9,7 +9,9 @@ import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import CalculateIcon from '@mui/icons-material/Calculate';
-import CancelIcon from '@mui/icons-material/Cancel';
+import PauseIcon from '@mui/icons-material/Pause';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import StopIcon from '@mui/icons-material/Stop';
 import axios from 'axios';
 import _ from 'lodash'
 
@@ -21,6 +23,8 @@ export default function ProceedSimulation(props) {
   const [ready, setReady] = useState(false)
   const [progress, setProgress] = useState(null)
   const [delay, setDelay] = useState(null)
+
+  const [pause, setPause] = useState(false)
 
   const handleChangeTrials = (e) => {
     setValueTrials(e.target.value)
@@ -50,11 +54,24 @@ export default function ProceedSimulation(props) {
   const handleClickCancel = (e) => {
     e.preventDefault()
 
-    setProgress(null)
-    axios.get("http://127.0.0.1:8000/stop_sim").then((response) => {
-      console.log(response)
+    axios.get("http://127.0.0.1:8000/cancel_sim").then((response) => {
+      setProgress(null)
     });
   }
+
+  const handleClickPause = (e) => {
+    e.preventDefault()
+
+    setPause(true)
+    axios.get("http://127.0.0.1:8000/pause_sim").then((response) => {})
+    }
+
+  const handleClickResume = (e) => {
+    e.preventDefault()
+
+    setPause(false)
+    axios.get("http://127.0.0.1:8000/resume_sim").then((response) => {})
+    }
 
   useEffect(() => {
     if (valueNumTrials) {
@@ -78,7 +95,7 @@ export default function ProceedSimulation(props) {
 
   useEffect(() => {
     props.conn === 1 &&
-    _.filter(props.randomCells, { assigned: true }).length >= 1 &&
+      _.filter(props.randomCells, { assigned: true }).length >= 1 &&
       _.filter(props.monitoringCells, { assigned: true }).length >= 1 ?
       setReady(true) : setReady(false)
   }, [props.conn, props.randomCells, props.monitoringCells])
@@ -90,27 +107,27 @@ export default function ProceedSimulation(props) {
       </Typography>
       <Card sx={{ minWidth: 275 }}>
         <CardContent>
-        <Typography variant="subtitle2" color="text.secondary">
+          <Typography variant="subtitle2" color="text.secondary">
             Configuration
           </Typography>
-        <TextField
-              error={!valueNumTrials || !trialsAboveZero}
-              helperText={!valueNumTrials ? "Trials value is not a number." : !trialsAboveZero ? "Trials value is not above zero." : ""}
-              size="small"
-              id="outlined-helperText"
-              label="Trials"
-              value={valueTrials}
-              onChange={handleChangeTrials}
-            />
+          <TextField
+            error={!valueNumTrials || !trialsAboveZero}
+            helperText={!valueNumTrials ? "Trials value is not a number." : !trialsAboveZero ? "Trials value is not above zero." : ""}
+            size="small"
+            id="outlined-helperText"
+            label="Trials"
+            value={valueTrials}
+            onChange={handleChangeTrials}
+          />
           <Typography variant="subtitle2" color="text.secondary">
             Progress
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Box sx={{ width: '100%', mr: 1 }}>
-              <LinearProgress variant="determinate" value={progress} sx={{ 
+              <LinearProgress variant="determinate" value={progress} sx={{
                 height: 10,
                 borderRadius: 5,
-               }} />
+              }} />
             </Box>
             <Box sx={{ minWidth: 35 }}>
               <Typography variant="body2" color="text.secondary">{`${Math.round(progress)}%`}</Typography>
@@ -121,8 +138,16 @@ export default function ProceedSimulation(props) {
           <Button variant="outlined" startIcon={<CalculateIcon />} onClick={handleClickStart} disabled={!ready}>
             Start
           </Button>
-          <Button variant="outlined" startIcon={<CancelIcon />} onClick={handleClickCancel} disabled={progress >= 0 || progress < 100}>
-            Stop
+          {pause ?
+            <Button variant="outlined" startIcon={<PlayArrowIcon />} onClick={handleClickResume} disabled={!progress || progress == 100}>
+              Resume
+            </Button> :
+            <Button variant="outlined" startIcon={<PauseIcon />} onClick={handleClickPause} disabled={!progress || progress == 100}>
+              Pause
+            </Button>
+          }
+          <Button variant="outlined" startIcon={<StopIcon />} onClick={handleClickCancel} disabled={!progress || progress == 100}>
+            Cancel
           </Button>
         </CardActions>
       </Card>
