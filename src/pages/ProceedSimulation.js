@@ -54,6 +54,7 @@ export default function ProceedSimulation(props) {
   const handleClickCancel = (e) => {
     e.preventDefault()
 
+    setPause(false)
     axios.get("http://127.0.0.1:8000/cancel_sim").then((response) => {
       setProgress(null)
     });
@@ -63,15 +64,15 @@ export default function ProceedSimulation(props) {
     e.preventDefault()
 
     setPause(true)
-    axios.get("http://127.0.0.1:8000/pause_sim").then((response) => {})
-    }
+    axios.get("http://127.0.0.1:8000/pause_sim").then((response) => { })
+  }
 
   const handleClickResume = (e) => {
     e.preventDefault()
 
     setPause(false)
-    axios.get("http://127.0.0.1:8000/resume_sim").then((response) => {})
-    }
+    axios.get("http://127.0.0.1:8000/resume_sim").then((response) => { })
+  }
 
   useEffect(() => {
     if (valueNumTrials) {
@@ -139,14 +140,14 @@ export default function ProceedSimulation(props) {
             Start
           </Button>
           {pause ?
-            <Button variant="outlined" startIcon={<PlayArrowIcon />} onClick={handleClickResume} disabled={!progress || progress == 100}>
+            <Button variant="outlined" startIcon={<PlayArrowIcon />} onClick={handleClickResume} disabled={!progress || progress === 100}>
               Resume
             </Button> :
-            <Button variant="outlined" startIcon={<PauseIcon />} onClick={handleClickPause} disabled={!progress || progress == 100}>
+            <Button variant="outlined" startIcon={<PauseIcon />} onClick={handleClickPause} disabled={!progress || progress === 100}>
               Pause
             </Button>
           }
-          <Button variant="outlined" startIcon={<StopIcon />} onClick={handleClickCancel} disabled={!progress || progress == 100}>
+          <Button variant="outlined" startIcon={<StopIcon />} onClick={handleClickCancel} disabled={!progress || progress === 100}>
             Cancel
           </Button>
         </CardActions>
