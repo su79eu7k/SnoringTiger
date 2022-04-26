@@ -136,7 +136,7 @@ export default function ProceedSimulation(props) {
           </Box>
         </CardContent>
         <CardActions>
-          <Button variant="outlined" startIcon={<CalculateIcon />} onClick={handleClickStart} disabled={!ready}>
+          <Button variant="outlined" startIcon={<CalculateIcon />} onClick={handleClickStart} disabled={!ready || (progress > 0 && progress < 100)}>
             Start
           </Button>
           {pause ?
