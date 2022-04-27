@@ -17,8 +17,7 @@ const Input = styled('input')({
   display: 'none',
 });
 
-export default function ConnectWorkbook() {
-  const [file, setFile] = useState()
+export default function ConnectWorkbook(props) {
   const [status, setStatus] = useState()
   const [loading, setLoading] = useState()
 
@@ -31,7 +30,7 @@ export default function ConnectWorkbook() {
   }
 
   function handleChange(e) {
-    setFile(e.target.files[0])
+    props.setFile(e.target.files[0])
     // To prevent no action in case user uploads the same filename.
     e.target.value = ''
   }
@@ -39,11 +38,11 @@ export default function ConnectWorkbook() {
   function handleSubmit(e) {
     setLoading(1)
     setStatus(0)
-    if (file) {
+    if (props.file) {
       e.preventDefault()
       const url = 'http://127.0.0.1:8000/upload_file';
       const formData = new FormData();
-      formData.append('uploadfile', file);
+      formData.append('uploadfile', props.file);
       const config = {
         headers: {
           'content-type': 'multipart/form-data',
@@ -70,8 +69,19 @@ export default function ConnectWorkbook() {
       </Typography>
       <Card sx={{ minWidth: 275 }}>
         <CardContent>
-          {loading === 1 ? <CircularProgress /> : null}
-          {file && <Typography variant="caption">{file.name} - Size: {approxBytes(file.size)}</Typography>}
+          <Typography variant="subtitle2" color="text.secondary">
+            Original File
+          </Typography>
+          {/* {loading === 1 ? <CircularProgress /> : null} */}
+          <Typography variant="caption">{props.file ? props.file.name : "N/A"}</Typography>
+          <Typography variant="subtitle2" color="text.secondary">
+            Size
+          </Typography>
+          <Typography variant="caption">{props.file ? approxBytes(props.file.size) : "N/A"}</Typography>
+          <Typography variant="subtitle2" color="text.secondary">
+            Connected File
+          </Typography>
+          <Typography variant="caption">{props.conn === 1 ? props.connWith : "N/A"}</Typography>
         </CardContent>
         <CardActions>
           <Stack direction="row" alignItems="center" spacing={1}>
@@ -89,6 +99,7 @@ export default function ConnectWorkbook() {
               variant="outlined"
               onClick={handleSubmit}
               startIcon={<CableIcon />}
+              disabled={props.conn === 1}
             >
               Connect
             </Button>

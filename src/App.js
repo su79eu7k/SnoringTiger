@@ -1,6 +1,6 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { HashRouter, Routes, Route } from 'react-router-dom'
-import { useState, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useInterval } from './components/useInterval'
 import MiniDrawer from './components/MiniDrawer';
 import Landing from './pages/Landing'
@@ -13,6 +13,7 @@ import ColorModeContext from './contexts/ColorModeContext';
 import axios from 'axios';
 
 function App() {
+  const [file, setFile] = useState()
   const [conn, setConn] = useState(-1)
   const [connWith, setConnWith] = useState(null)
   const [randomCells, setRandomCells] = useState({})
@@ -55,12 +56,24 @@ function App() {
     },
   });
 
+  useEffect(() => {
+    axios.get("http://127.0.0.1:8000/reset").then((response) => {
+      console.log(response)
+    })
+    return () => {
+      axios.get("http://127.0.0.1:8000/reset").then((response) => {
+        console.log(response)
+      })
+    }
+  }, [file])
+
+
   useInterval(() => {
     axios.get("http://127.0.0.1:8000/check_connection").then((response) => {
       setConn(response.data.code)
       setConnWith(response.data.message)
     })
-  }, 5000)
+  }, 3000)
 
   return (
     <ColorModeContext.Provider value={colorMode}>
@@ -70,7 +83,7 @@ function App() {
             <Route path="/" element={<MiniDrawer conn={conn} connWith={connWith} />}>
               <Route index element={<Landing />} />
               <Route path="home" element={<Landing />} />
-              <Route path="connect_workbook" element={<ConnectWorkbook />} />
+              <Route path="connect_workbook" element={<ConnectWorkbook file={file} setFile={setFile} conn={conn} connWith={connWith} />} />
               <Route path="add_random_cells" element={<AddRandomCells conn={conn} randomCells={randomCells} setRandomCells={setRandomCells} />} />
               <Route path="add_monitoring_cells" element={<AddMonitoringCells conn={conn} monitoringCells={monitoringCells} setMonitoringCells={setMonitoringCells} />} />
               <Route path="proceed_simulation" element={<ProceedSimulation conn={conn} randomCells={randomCells} monitoringCells={monitoringCells} />} />
