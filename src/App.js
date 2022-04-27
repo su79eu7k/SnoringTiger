@@ -60,10 +60,16 @@ function App() {
     axios.get("http://127.0.0.1:8000/reset").then((response) => {
       console.log(response)
     })
+
+    setRandomCells({})
+    setMonitoringCells({})
     return () => {
       axios.get("http://127.0.0.1:8000/reset").then((response) => {
         console.log(response)
       })
+
+      setRandomCells({})
+      setMonitoringCells({})
     }
   }, [file])
 

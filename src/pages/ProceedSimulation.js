@@ -16,9 +16,9 @@ import axios from 'axios';
 import _ from 'lodash'
 
 export default function ProceedSimulation(props) {
-  const [valueTrials, setValueTrials] = useState("")
-  const [valueNumTrials, setValueNumTrials] = useState(null)
-  const [trialsAboveZero, setTrialsAboveZero] = useState(null)
+  const [valueTrials, setValueTrials] = useState(1000)
+  const [valueNumTrials, setValueNumTrials] = useState(true)
+  const [trialsAboveZero, setTrialsAboveZero] = useState(true)
 
   const [ready, setReady] = useState(false)
   const [progress, setProgress] = useState(null)
@@ -107,7 +107,6 @@ export default function ProceedSimulation(props) {
         Proceed Simulation
       </Typography>
       <Card sx={{ minWidth: 275 }}>
-        {ready ? 
         <CardContent>
           <Typography variant="subtitle2" color="text.secondary">
             Configuration
@@ -120,6 +119,7 @@ export default function ProceedSimulation(props) {
             label="Trials"
             value={valueTrials}
             onChange={handleChangeTrials}
+            disabled={!ready}
           />
           <Typography variant="subtitle2" color="text.secondary">
             Progress
@@ -135,7 +135,7 @@ export default function ProceedSimulation(props) {
               <Typography variant="body2" color="text.secondary">{`${Math.round(progress)}%`}</Typography>
             </Box>
           </Box>
-        </CardContent> : null}
+        </CardContent>
         <CardActions>
           <Button variant="outlined" startIcon={<CalculateIcon />} onClick={handleClickStart} disabled={!(valueTrials && valueNumTrials && trialsAboveZero) || !ready || (progress > 0 && progress < 100)}>
             Start
