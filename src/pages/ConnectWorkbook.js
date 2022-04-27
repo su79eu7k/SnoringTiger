@@ -95,11 +95,11 @@ export default function ConnectWorkbook() {
           </Stack>
         </CardActions>
       </Card>
-      {status === -1 ? <Alert severity="error">
+      {status === -1 ? <Alert severity="error" variant="outlined">
         <AlertTitle>Error</AlertTitle>
         File not selected — <strong>check it out!</strong>
       </Alert> : null}
-      {status === 1 ? <Alert severity="success">
+      {status === 1 ? <Alert severity="success" variant="outlined">
         <AlertTitle>Success</AlertTitle>
         Workbook connected — <strong>check it out!</strong>
       </Alert> : null}

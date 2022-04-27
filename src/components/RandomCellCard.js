@@ -108,7 +108,7 @@ export default function RandomCellCard(props) {
   const handleClickProb = (e) => {
     e.preventDefault()
     const url = 'http://127.0.0.1:8000/prob';
-    const data = { start: Number(valueStart), end: Number(valueEnd), step: Number(valueStep), dist: 'unif' }
+    const data = { start: Number(valueStart), end: Number(valueEnd), step: Number(valueStep), dist: 'expon' }
     const config = {
       headers: {
         'content-type': 'application/json',
