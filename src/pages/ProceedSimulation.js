@@ -107,6 +107,7 @@ export default function ProceedSimulation(props) {
         Proceed Simulation
       </Typography>
       <Card sx={{ minWidth: 275 }}>
+        {ready ? 
         <CardContent>
           <Typography variant="subtitle2" color="text.secondary">
             Configuration
@@ -134,9 +135,9 @@ export default function ProceedSimulation(props) {
               <Typography variant="body2" color="text.secondary">{`${Math.round(progress)}%`}</Typography>
             </Box>
           </Box>
-        </CardContent>
+        </CardContent> : null}
         <CardActions>
-          <Button variant="outlined" startIcon={<CalculateIcon />} onClick={handleClickStart} disabled={!ready || (progress > 0 && progress < 100)}>
+          <Button variant="outlined" startIcon={<CalculateIcon />} onClick={handleClickStart} disabled={!(valueTrials && valueNumTrials && trialsAboveZero) || !ready || (progress > 0 && progress < 100)}>
             Start
           </Button>
           {pause ?
