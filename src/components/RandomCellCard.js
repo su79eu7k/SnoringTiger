@@ -14,7 +14,9 @@ import _ from 'lodash'
 import InputManual from './InputManual';
 
 export default function RandomCellCard(props) {
-  const randomCell = props.randomCells[props.id]
+  const id = props.id
+  const randomCell = props.randomCells[id]
+  const setRandomCells = props.setRandomCells
 
   const [addressSheet, setAddressSheet] = useState(randomCell ? randomCell.addressSheet : null)
   const [addressCell, setAddressCell] = useState(randomCell ? randomCell.addressCell : null)
@@ -25,15 +27,15 @@ export default function RandomCellCard(props) {
   const [assigned, setAssigned] = useState(randomCell ? randomCell.assigned : false)
 
   useEffect(() => {
-    props.setRandomCells(prevState => ({
-      ...prevState, [props.id]: {
-        ...prevState[props.id], 
+    setRandomCells(prevState => ({
+      ...prevState, [id]: {
+        ...prevState[id], 
         addressSheet: addressSheet, addressCell: addressCell,
         x: x, prob: prob, 
         assigned: assigned
       }
     }))
-  }, [addressSheet, addressCell, x, prob, assigned])
+  }, [setRandomCells, id, addressSheet, addressCell, x, prob, assigned])
 
   const handleClickConn = (e) => {
     axios.get("http://127.0.0.1:8000/get_selection").then((response) => {
@@ -93,7 +95,7 @@ export default function RandomCellCard(props) {
             {addressCell}
           </Typography>
 
-          <InputManual id={props.id} conn={props.conn} randomCells={props.randomCells} setRandomCells={props.setRandomCells} setX={setX} setProb={setProb} assigned={assigned} />
+          <InputManual id={id} conn={props.conn} randomCells={props.randomCells} setRandomCells={props.setRandomCells} setX={setX} setProb={setProb} />
 
           <Typography variant="caption" component={'div'}>
             {x ? x.map(k => k.toFixed(2)).join(", ") : ""}

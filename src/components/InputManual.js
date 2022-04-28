@@ -5,10 +5,12 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import axios from 'axios';
-import _ from 'lodash'
 
 export default function InputManual(props) {
-  const randomCell = props.randomCells[props.id]
+  const id = props.id
+  const randomCell = props.randomCells[id]
+  const setRandomCells = props.setRandomCells
+  const setX = props.setX
 
   const [valueStart, setValueStart] = useState(randomCell.valueStart ? randomCell.valueStart : "")
   const [valueEnd, setValueEnd] = useState(randomCell.valueEnd ? randomCell.valueEnd : "")
@@ -35,26 +37,26 @@ export default function InputManual(props) {
     } else {
       setStepEgtTwo(null)
     }
-  }, [valueStep, valueNumStep])
+  }, [valueStep, valueNumStep, setStepEgtTwo])
 
   useEffect(() => {
     if (valueNumStart && valueNumEnd && valueNumStep && endGtStart && stepEgtTwo) {
-      props.setX(calcLinspace(Number(valueStart), Number(valueEnd), Number(valueStep)))
+      setX(calcLinspace(Number(valueStart), Number(valueEnd), Number(valueStep)))
     } else {
-      props.setX("")
+      setX("")
     }
-  }, [valueStart, valueEnd, valueStep, valueNumStart, valueNumEnd, valueNumStep, endGtStart, stepEgtTwo])
+  }, [setX, valueStart, valueEnd, valueStep, valueNumStart, valueNumEnd, valueNumStep, endGtStart, stepEgtTwo])
 
   useEffect(() => {
-    props.setRandomCells(prevState => ({
-      ...prevState, [props.id]: {
-        ...prevState[props.id], 
+    setRandomCells(prevState => ({
+      ...prevState, [id]: {
+        ...prevState[id], 
         valueStart: valueStart, valueEnd: valueEnd, valueStep: valueStep,
         valueNumStart: valueNumStart, valueNumEnd: valueNumEnd, valueNumStep: valueNumStep,
         endGtStart: endGtStart, stepEgtTwo: stepEgtTwo
       }
     }))
-  }, [valueStart, valueEnd, valueStep, valueNumStart, valueNumEnd, valueNumStep, endGtStart, stepEgtTwo])
+  }, [setRandomCells, id, valueStart, valueEnd, valueStep, valueNumStart, valueNumEnd, valueNumStep, endGtStart, stepEgtTwo])
 
   function calcLinspace(start, end, step) {
     const result = [];
@@ -112,7 +114,7 @@ export default function InputManual(props) {
           label="Start"
           value={valueStart}
           onChange={handleChangeStart}
-          disabled={props.assigned}
+          disabled={randomCell.assigned}
         />
         <TextField
           error={!valueNumEnd || endGtStart === false}
@@ -122,7 +124,7 @@ export default function InputManual(props) {
           label="End"
           value={valueEnd}
           onChange={handleChangeEnd}
-          disabled={props.assigned}
+          disabled={randomCell.assigned}
         />
         <TextField
           error={!valueNumStep || !stepEgtTwo}
@@ -132,10 +134,10 @@ export default function InputManual(props) {
           label="Step"
           value={valueStep}
           onChange={handleChangeStep}
-          disabled={props.assigned}
+          disabled={randomCell.assigned}
         />
       </Stack>
-      <Button variant="outlined" startIcon={<BarChartIcon />} onClick={handleClickProb} disabled={props.conn !== 1 || props.assigned}>
+      <Button variant="outlined" startIcon={<BarChartIcon />} onClick={handleClickProb} disabled={props.conn !== 1 || randomCell.assigned}>
           Probability
         </Button>
     </>
