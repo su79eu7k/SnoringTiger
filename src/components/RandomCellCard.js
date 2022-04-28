@@ -28,8 +28,8 @@ export default function RandomCellCard(props) {
   const [valueNumEnd, setValueNumEnd] = useState(randomCell ? randomCell.valueNumEnd : null)
   const [valueNumStep, setValueNumStep] = useState(randomCell ? randomCell.valueNumStep : null)
 
-  const [endGreaterStart, setEndGreaterStart] = useState(randomCell ? randomCell.endGreaterStart : null)
-  const [stepAboveZero, setStepAboveZero] = useState(randomCell ? randomCell.stepAboveZero : null)
+  const [endGtStart, setEndGtStart] = useState(randomCell ? randomCell.endGtStart : null)
+  const [stepEgtTwo, setStepEgtTwo] = useState(randomCell ? randomCell.stepEgtTwo : null)
 
   const [x, setX] = useState(randomCell ? randomCell.x : null)
   const [prob, setProb] = useState(randomCell ? randomCell.prob : null)
@@ -38,27 +38,27 @@ export default function RandomCellCard(props) {
 
   useEffect(() => {
     if (valueNumStart && valueNumEnd) {
-      Number(valueEnd) > Number(valueStart) ? setEndGreaterStart(true) : setEndGreaterStart(false)
+      Number(valueEnd) > Number(valueStart) ? setEndGtStart(true) : setEndGtStart(false)
     } else {
-      setEndGreaterStart(null)
+      setEndGtStart(null)
     }
   }, [valueStart, valueEnd, valueNumStart, valueNumEnd])
 
   useEffect(() => {
     if (valueNumStep) {
-      Number(valueStep) > 0 ? setStepAboveZero(true) : setStepAboveZero(false)
+      (Number.isInteger(Number(valueStep))) && (Number(valueStep) >= 2) ? setStepEgtTwo(true) : setStepEgtTwo(false)
     } else {
-      setStepAboveZero(null)
+      setStepEgtTwo(null)
     }
   }, [valueStep, valueNumStep])
 
   useEffect(() => {
-    if (valueNumStart && valueNumEnd && valueNumStep && endGreaterStart && stepAboveZero) {
+    if (valueNumStart && valueNumEnd && valueNumStep && endGtStart && stepEgtTwo) {
       setX(calcLinspace(Number(valueStart), Number(valueEnd), Number(valueStep)))
     } else {
       setX("")
     }
-  }, [valueStart, valueEnd, valueStep, valueNumStart, valueNumEnd, valueNumStep, endGreaterStart, stepAboveZero])
+  }, [valueStart, valueEnd, valueStep, valueNumStart, valueNumEnd, valueNumStep, endGtStart, stepEgtTwo])
 
   useEffect(() => {
     props.setRandomCells(prevState => ({
@@ -66,10 +66,10 @@ export default function RandomCellCard(props) {
         addressSheet: addressSheet, addressCell: addressCell,
         valueStart: valueStart, valueEnd: valueEnd, valueStep: valueStep,
         valueNumStart: valueNumStart, valueNumEnd: valueNumEnd, valueNumStep: valueNumStep,
-        endGreaterStart: endGreaterStart, stepAboveZero: stepAboveZero, x: x, prob: prob, assigned: assigned
+        endGtStart: endGtStart, stepEgtTwo: stepEgtTwo, x: x, prob: prob, assigned: assigned
       }
     }))
-  }, [addressSheet, addressCell, valueStart, valueEnd, valueStep, valueNumStart, valueNumEnd, valueNumStep, endGreaterStart, stepAboveZero, x, prob, assigned])
+  }, [addressSheet, addressCell, valueStart, valueEnd, valueStep, valueNumStart, valueNumEnd, valueNumStep, endGtStart, stepEgtTwo, x, prob, assigned])
 
   function calcLinspace(start, end, step) {
     const result = [];
@@ -175,8 +175,8 @@ export default function RandomCellCard(props) {
           </Typography>
           <Stack spacing={2} direction="row">
             <TextField
-              error={!valueNumStart || endGreaterStart === false}
-              helperText={!valueNumStart ? "Start value is not a number." : endGreaterStart === false ? "Start value is greater than End." : ""}
+              error={!valueNumStart || endGtStart === false}
+              helperText={!valueNumStart ? "Start value is not a number." : endGtStart === false ? "Start value is greater than End." : ""}
               size="small"
               id="outlined-helperText"
               label="Start"
@@ -185,8 +185,8 @@ export default function RandomCellCard(props) {
               disabled={assigned}
             />
             <TextField
-              error={!valueNumEnd || endGreaterStart === false}
-              helperText={!valueNumEnd ? "End value is not a number." : endGreaterStart === false ? "Start value is greater than End." : ""}
+              error={!valueNumEnd || endGtStart === false}
+              helperText={!valueNumEnd ? "End value is not a number." : endGtStart === false ? "Start value is greater than End." : ""}
               size="small"
               id="outlined-helperText"
               label="End"
@@ -195,8 +195,8 @@ export default function RandomCellCard(props) {
               disabled={assigned}
             />
             <TextField
-              error={!valueNumStep || !stepAboveZero}
-              helperText={!valueNumStep ? "Step value is not a number." : !stepAboveZero ? "Step value is not above zero." : ""}
+              error={!valueNumStep || !stepEgtTwo}
+              helperText={!valueNumStep ? "Step value is not an integer." : !stepEgtTwo ? "Step value is not 2 or more integer." : ""}
               size="small"
               id="outlined-helperText"
               label="Step"
