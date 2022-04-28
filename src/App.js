@@ -18,6 +18,7 @@ function App() {
   const [connWith, setConnWith] = useState(null)
   const [randomCells, setRandomCells] = useState({})
   const [monitoringCells, setMonitoringCells] = useState({})
+  const [simConfig, setSimConfig] = useState({})
   const [mode, setMode] = useState('light');
 
   const colorMode = useMemo(
@@ -92,7 +93,7 @@ function App() {
               <Route path="connect_workbook" element={<ConnectWorkbook file={file} setFile={setFile} conn={conn} connWith={connWith} />} />
               <Route path="add_random_cells" element={<AddRandomCells conn={conn} randomCells={randomCells} setRandomCells={setRandomCells} />} />
               <Route path="add_monitoring_cells" element={<AddMonitoringCells conn={conn} monitoringCells={monitoringCells} setMonitoringCells={setMonitoringCells} />} />
-              <Route path="proceed_simulation" element={<ProceedSimulation conn={conn} randomCells={randomCells} monitoringCells={monitoringCells} />} />
+              <Route path="proceed_simulation" element={<ProceedSimulation conn={conn} randomCells={randomCells} monitoringCells={monitoringCells} simConfig={simConfig} setSimConfig={setSimConfig} />} />
               <Route path="check_results" element={<CheckResults />} />
             </Route>
           </Routes>

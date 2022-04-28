@@ -13,18 +13,21 @@ import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import StopIcon from '@mui/icons-material/Stop';
 import axios from 'axios';
-import _ from 'lodash'
+import _ from 'lodash';
 
 export default function ProceedSimulation(props) {
-  const [valueTrials, setValueTrials] = useState(1000)
-  const [valueNumTrials, setValueNumTrials] = useState(true)
-  const [trialsAboveZero, setTrialsAboveZero] = useState(true)
+  const simConfig = props.simConfig
 
-  const [ready, setReady] = useState(false)
-  const [progress, setProgress] = useState(null)
-  const [delay, setDelay] = useState(null)
+  const [valueTrials, setValueTrials] = useState(!_.isEmpty(simConfig) ? simConfig.valueTrials : 1000)
+  const [valueNumTrials, setValueNumTrials] = useState(!_.isEmpty(simConfig) ? simConfig.valueNumTrials : true)
+  const [trialsAboveZero, setTrialsAboveZero] = useState(!_.isEmpty(simConfig) ? simConfig.trialsAboveZero : true)
 
-  const [pause, setPause] = useState(false)
+  const [dataReady, setDataReady] = useState(!_.isEmpty(simConfig) ? simConfig.dataReady : false)
+  
+  const [progress, setProgress] = useState(!_.isEmpty(simConfig) ? simConfig.progress : null)
+  const [progressDelay, setProgressDelay] = useState(!_.isEmpty(simConfig) ? simConfig.progressDelay : null)
+
+  const [paused, setPaused] = useState(!_.isEmpty(simConfig) ? simConfig.paused : false)
 
   const handleChangeTrials = (e) => {
     setValueTrials(e.target.value)
@@ -35,7 +38,7 @@ export default function ProceedSimulation(props) {
     e.preventDefault()
 
     setProgress(0)
-    if (ready) {
+    if (dataReady) {
       const url = 'http://127.0.0.1:8000/proc_sim';
       const data = { num_trials: valueTrials }
       const config = {
@@ -54,7 +57,7 @@ export default function ProceedSimulation(props) {
   const handleClickCancel = (e) => {
     e.preventDefault()
 
-    setPause(false)
+    setPaused(false)
     axios.get("http://127.0.0.1:8000/cancel_sim").then((response) => {
       setProgress(null)
     });
@@ -63,14 +66,14 @@ export default function ProceedSimulation(props) {
   const handleClickPause = (e) => {
     e.preventDefault()
 
-    setPause(true)
+    setPaused(true)
     axios.get("http://127.0.0.1:8000/pause_sim").then((response) => { })
   }
 
   const handleClickResume = (e) => {
     e.preventDefault()
 
-    setPause(false)
+    setPaused(false)
     axios.get("http://127.0.0.1:8000/resume_sim").then((response) => { })
   }
 
@@ -88,18 +91,26 @@ export default function ProceedSimulation(props) {
         setProgress(response.data.progress * 100)
       })
     }
-  }, delay)
+  }, progressDelay)
 
   useEffect(() => {
-    progress >= 0 && progress < 100 ? setDelay(1000) : setDelay(null)
+    progress >= 0 && progress < 100 ? setProgressDelay(500) : setProgressDelay(null)
   }, [progress])
 
   useEffect(() => {
     props.conn === 1 &&
       _.filter(props.randomCells, { assigned: true }).length >= 1 &&
       _.filter(props.monitoringCells, { assigned: true }).length >= 1 ?
-      setReady(true) : setReady(false)
+      setDataReady(true) : setDataReady(false)
   }, [props.conn, props.randomCells, props.monitoringCells])
+
+  useEffect(() => {
+    props.setSimConfig(prevState => ({
+      ...prevState, valueTrials: valueTrials, valueNumTrials: valueNumTrials, trialsAboveZero: trialsAboveZero, 
+      dataReady: dataReady, progress: progress, progressDelay: progressDelay, paused: paused
+    }))
+  }, [valueTrials, valueNumTrials, trialsAboveZero, dataReady, progress, progressDelay, paused])
+
 
   return (
     <>
@@ -119,7 +130,7 @@ export default function ProceedSimulation(props) {
             label="Trials"
             value={valueTrials}
             onChange={handleChangeTrials}
-            disabled={!ready}
+            disabled={!dataReady}
           />
           <Typography variant="subtitle2" color="text.secondary">
             Progress
@@ -137,10 +148,10 @@ export default function ProceedSimulation(props) {
           </Box>
         </CardContent>
         <CardActions>
-          <Button variant="outlined" startIcon={<CalculateIcon />} onClick={handleClickStart} disabled={!(valueTrials && valueNumTrials && trialsAboveZero) || !ready || (progress > 0 && progress < 100)}>
+          <Button variant="outlined" startIcon={<CalculateIcon />} onClick={handleClickStart} disabled={!(valueTrials && valueNumTrials && trialsAboveZero) || !dataReady || (progress > 0 && progress < 100)}>
             Start
           </Button>
-          {pause ?
+          {paused ?
             <Button variant="outlined" startIcon={<PlayArrowIcon />} onClick={handleClickResume} disabled={!progress || progress === 100}>
               Resume
             </Button> :
