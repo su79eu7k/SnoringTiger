@@ -10,16 +10,16 @@ import _ from 'lodash'
 export default function InputManual(props) {
   const randomCell = props.randomCells[props.id]
 
-  const [valueStart, setValueStart] = useState(randomCell ? randomCell.valueStart : "")
-  const [valueEnd, setValueEnd] = useState(randomCell ? randomCell.valueEnd : "")
-  const [valueStep, setValueStep] = useState(randomCell ? randomCell.valueStep : "")
+  const [valueStart, setValueStart] = useState(randomCell.valueStart ? randomCell.valueStart : "")
+  const [valueEnd, setValueEnd] = useState(randomCell.valueEnd ? randomCell.valueEnd : "")
+  const [valueStep, setValueStep] = useState(randomCell.valueStep ? randomCell.valueStep : "")
 
-  const [valueNumStart, setValueNumStart] = useState(randomCell ? randomCell.valueNumStart : null)
-  const [valueNumEnd, setValueNumEnd] = useState(randomCell ? randomCell.valueNumEnd : null)
-  const [valueNumStep, setValueNumStep] = useState(randomCell ? randomCell.valueNumStep : null)
+  const [valueNumStart, setValueNumStart] = useState(randomCell.valueNumStart ? randomCell.valueNumStart : null)
+  const [valueNumEnd, setValueNumEnd] = useState(randomCell.valueNumEnd ? randomCell.valueNumEnd : null)
+  const [valueNumStep, setValueNumStep] = useState(randomCell.valueNumStep ? randomCell.valueNumStep : null)
 
-  const [endGtStart, setEndGtStart] = useState(randomCell ? randomCell.endGtStart : null)
-  const [stepEgtTwo, setStepEgtTwo] = useState(randomCell ? randomCell.stepEgtTwo : null)
+  const [endGtStart, setEndGtStart] = useState(randomCell.endGtStart ? randomCell.endGtStart : null)
+  const [stepEgtTwo, setStepEgtTwo] = useState(randomCell.stepEgtTwo ? randomCell.stepEgtTwo : null)
 
   useEffect(() => {
     if (valueNumStart && valueNumEnd) {
@@ -48,6 +48,7 @@ export default function InputManual(props) {
   useEffect(() => {
     props.setRandomCells(prevState => ({
       ...prevState, [props.id]: {
+        ...prevState[props.id], 
         valueStart: valueStart, valueEnd: valueEnd, valueStep: valueStep,
         valueNumStart: valueNumStart, valueNumEnd: valueNumEnd, valueNumStep: valueNumStep,
         endGtStart: endGtStart, stepEgtTwo: stepEgtTwo

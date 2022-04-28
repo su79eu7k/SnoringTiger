@@ -27,6 +27,7 @@ export default function RandomCellCard(props) {
   useEffect(() => {
     props.setRandomCells(prevState => ({
       ...prevState, [props.id]: {
+        ...prevState[props.id], 
         addressSheet: addressSheet, addressCell: addressCell,
         x: x, prob: prob, 
         assigned: assigned
@@ -92,7 +93,7 @@ export default function RandomCellCard(props) {
             {addressCell}
           </Typography>
 
-          <InputManual id={props.id} conn={props.conn} randomCells={props.randomCells} setRandomCells={props.setRandomCells} setX={setX} setProb={setProb} assigned={props.assigned} />
+          <InputManual id={props.id} conn={props.conn} randomCells={props.randomCells} setRandomCells={props.setRandomCells} setX={setX} setProb={setProb} assigned={assigned} />
 
           <Typography variant="caption" component={'div'}>
             {x ? x.map(k => k.toFixed(2)).join(", ") : ""}
