@@ -13,13 +13,13 @@ export default function InputManual(props) {
   const setRandomCells = props.setRandomCells
   // const setX = props.setX
 
-  const [inputCount, setInputCount] = useState(0)
+  const [inputCount, setInputCount] = useState(randomCell.inputCount ? randomCell.inputCount : 0)
 
   const [valRandVars, setValRandVars] = useState(randomCell.valRandVars ? randomCell.valRandVars : {})
   const [valLikelihoods, setValLikelihoods] = useState(randomCell.valLikelihoods ? randomCell.valLikelihoods : {})
 
-  const [valNumRandVars, setValNumRandVars] = useState(randomCell.valNumRandVar ? randomCell.valNumRandVar : {})
-  const [valNumLikelihoods, setValNumLikelihoods] = useState(randomCell.valNumLikelihood ? randomCell.valNumLikelihood : {})
+  const [valNumRandVars, setValNumRandVars] = useState(randomCell.valNumRandVars ? randomCell.valNumRandVars : {})
+  const [valNumLikelihoods, setValNumLikelihoods] = useState(randomCell.valNumLikelihoods ? randomCell.valNumLikelihoods : {})
 
   const handleChangeRandVar = (e) => {
     setValRandVars(prevState => ({...prevState, [inputCount]: e.target.value}))
@@ -41,11 +41,12 @@ export default function InputManual(props) {
     setRandomCells(prevState => ({
       ...prevState, [id]: {
         ...prevState[id], 
+        inputCount: inputCount,
         valRandVars: valRandVars, valLikelihoods: valLikelihoods, 
         valNumRandVars: valNumRandVars, valNumLikelihoods: valNumLikelihoods, 
       }
     }))
-  }, [setRandomCells, id, valRandVars, valLikelihoods, valNumRandVars, valNumLikelihoods])
+  }, [setRandomCells, id, inputCount, valRandVars, valLikelihoods, valNumRandVars, valNumLikelihoods])
 
   return (
     <>
