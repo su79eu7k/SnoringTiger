@@ -1,17 +1,20 @@
 import { useState, useEffect } from 'react'
+import InputAuto from './InputAuto';
+import Typography from '@mui/material/Typography';
+import Alert from '@mui/material/Alert';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import CableIcon from '@mui/icons-material/Cable';
+import AutoGraphIcon from '@mui/icons-material/AutoGraph';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import LockIcon from '@mui/icons-material/Lock';
-import Alert from '@mui/material/Alert';
 import axios from 'axios';
 import _ from 'lodash'
-
 import InputManual from './InputManual';
+
 
 export default function RandomCellCard(props) {
   const id = props.id
@@ -21,6 +24,8 @@ export default function RandomCellCard(props) {
   const [addressSheet, setAddressSheet] = useState(randomCell ? randomCell.addressSheet : null)
   const [addressCell, setAddressCell] = useState(randomCell ? randomCell.addressCell : null)
 
+  const [cellTypeAuto, setCellTypeAuto] = useState(randomCell ? randomCell.assigned : true)
+
   const [x, setX] = useState(randomCell ? randomCell.x : null)
   const [prob, setProb] = useState(randomCell ? randomCell.prob : null)
 
@@ -29,9 +34,9 @@ export default function RandomCellCard(props) {
   useEffect(() => {
     setRandomCells(prevState => ({
       ...prevState, [id]: {
-        ...prevState[id], 
+        ...prevState[id],
         addressSheet: addressSheet, addressCell: addressCell,
-        x: x, prob: prob, 
+        x: x, prob: prob,
         assigned: assigned
       }
     }))
@@ -42,6 +47,10 @@ export default function RandomCellCard(props) {
       setAddressSheet(response.data.sheet)
       setAddressCell(response.data.range)
     });
+  }
+
+  const handleClickCellTypeAuto = (e) => {
+    setCellTypeAuto(!cellTypeAuto)
   }
 
   const testDupe = () => {
@@ -95,7 +104,10 @@ export default function RandomCellCard(props) {
             {addressCell}
           </Typography>
 
-          <InputManual id={id} conn={props.conn} randomCells={props.randomCells} setRandomCells={props.setRandomCells} setX={setX} setProb={setProb} />
+          {cellTypeAuto ?
+            <InputAuto id={id} conn={props.conn} randomCells={props.randomCells} setRandomCells={props.setRandomCells} setX={setX} setProb={setProb} /> :
+            <InputManual id={id} conn={props.conn} randomCells={props.randomCells} setRandomCells={props.setRandomCells} setX={setX} setProb={setProb} />
+          }
 
           <Typography variant="caption" component={'div'}>
             {x ? x.map(k => k.toFixed(2)).join(", ") : ""}
@@ -108,6 +120,16 @@ export default function RandomCellCard(props) {
         <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickConn} disabled={props.conn !== 1 || assigned}>
           Connect
         </Button>
+        {cellTypeAuto ?
+          <Button variant="outlined" startIcon={<AccountTreeIcon />} onClick={handleClickCellTypeAuto} disabled={props.conn !== 1 || assigned}>
+            Manual
+          </Button> : ""
+        }
+        {!cellTypeAuto ?
+          <Button variant="outlined" startIcon={<AutoGraphIcon />} onClick={handleClickCellTypeAuto} disabled={props.conn !== 1 || assigned}>
+            Auto
+          </Button> : ""
+        }
         {assigned ?
           <Button variant="outlined" startIcon={<LockIcon />} onClick={handleClickAssign} disabled={props.conn !== 1 || !prob}>
             Assigned
