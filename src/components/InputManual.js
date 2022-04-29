@@ -72,22 +72,22 @@ export default function InputManual(props) {
         <Stack key={i.toString()} spacing={2} direction="row">
           <TextField
             id={i.toString()}
-            error={!valNumRandVars[i]}
-            helperText={!valNumRandVars[i] ? "Value is not a number." : ""}
-            size="small"
-            label="Random Variable"
             value={valRandVars[i] || ""}
             onChange={handleChangeRandVar}
+            size="small"
+            label="Random Variable"
+            error={!valNumRandVars[i]}
+            helperText={!valNumRandVars[i] ? "Value is not a number." : ""}
             disabled={randomCell.assigned}
           />
           <TextField
             id={i.toString()}
-            error={!valNumLikelihoods[i]}
-            helperText={!valNumLikelihoods[i] ? "Value is not a number." : ""}
-            size="small"
-            label="Likelihood"
             value={valLikelihoods[i] || ""}
             onChange={handleChangeLikelihood}
+            size="small"
+            label="Likelihood"
+            error={!valNumLikelihoods[i]}
+            helperText={!valNumLikelihoods[i] ? "Value is not a number." : ""}
             disabled={randomCell.assigned}
           />
         </Stack>
