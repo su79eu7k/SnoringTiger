@@ -38,10 +38,12 @@ export default function InputManual(props) {
   const handleRemove = (e) => {
     setInputCount(prevState => Math.max(prevState - 1, 0))
 
-    setValRandVars(prevState => (delete prevState[inputCount], prevState))
-    setValNumRandVars(prevState => (delete prevState[inputCount], prevState))
-    setValLikelihoods(prevState => (delete prevState[inputCount], prevState))
-    setValNumLikelihoods(prevState => (delete prevState[inputCount], prevState))
+    if (inputCount > 0) {
+      setValRandVars(prevState => (delete prevState[inputCount], prevState))
+      setValNumRandVars(prevState => (delete prevState[inputCount], prevState))
+      setValLikelihoods(prevState => (delete prevState[inputCount], prevState))
+      setValNumLikelihoods(prevState => (delete prevState[inputCount], prevState))
+    }
   }
 
   useEffect(() => {
