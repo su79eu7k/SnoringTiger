@@ -3,7 +3,9 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 import _ from 'lodash'
 
 
@@ -22,19 +24,24 @@ export default function InputManual(props) {
   const [valNumLikelihoods, setValNumLikelihoods] = useState(randomCell.valNumLikelihoods ? randomCell.valNumLikelihoods : {})
 
   const handleChangeRandVar = (e) => {
-    setValRandVars(prevState => ({...prevState, [inputCount]: e.target.value}))
-    setValNumRandVars(prevState => ({...prevState, [inputCount]: !isNaN(e.target.value)}))
+    setValRandVars(prevState => ({...prevState, [e.target.id]: e.target.value}))
+    setValNumRandVars(prevState => ({...prevState, [e.target.id]: !isNaN(e.target.value)}))
     props.setProb(null)
   };
 
   const handleChangeLikelihood = (e) => {
-    setValLikelihoods(prevState => ({...prevState, [inputCount]: e.target.value}))
-    setValNumLikelihoods(prevState => ({...prevState, [inputCount]: !isNaN(e.target.value)}))
+    setValLikelihoods(prevState => ({...prevState, [e.target.id]: e.target.value}))
+    setValNumLikelihoods(prevState => ({...prevState, [e.target.id]: !isNaN(e.target.value)}))
     props.setProb(null)
   };
 
-  const handleClickAdd = (e) => {
-    setInputCount(prevState => prevState + 1)
+  const handleRemove = (e) => {
+    setInputCount(prevState => Math.max(prevState - 1, 0))
+
+    setValRandVars(prevState => (delete prevState[inputCount], prevState))
+    setValNumRandVars(prevState => (delete prevState[inputCount], prevState))
+    setValLikelihoods(prevState => (delete prevState[inputCount], prevState))
+    setValNumLikelihoods(prevState => (delete prevState[inputCount], prevState))
   }
 
   useEffect(() => {
@@ -53,35 +60,36 @@ export default function InputManual(props) {
       <Typography variant="subtitle2" color="text.secondary">
         Simulation Range
       </Typography>
+      <IconButton onClick={() => setInputCount(prevState => prevState + 1)} disabled={props.conn !== 1 || randomCell.assigned}>
+        <AddIcon />
+      </IconButton>
+      <IconButton onClick={handleRemove} disabled={props.conn !== 1 || randomCell.assigned}>
+        <RemoveIcon />
+      </IconButton>
       {_.range(inputCount + 1).map((_, i) => 
-        <Stack key={"stack-" + i} spacing={2} direction="row">
+        <Stack key={i.toString()} spacing={2} direction="row">
           <TextField
-            key={"valRandVar-" + i}
+            id={i.toString()}
             error={!valNumRandVars[i]}
             helperText={!valNumRandVars[i] ? "Value is not a number." : ""}
             size="small"
-            id="outlined-helperText"
-            label="Start"
+            label="Random Variable"
             value={valRandVars[i] || ""}
             onChange={handleChangeRandVar}
             disabled={randomCell.assigned}
           />
           <TextField
-            key={"valLikelihood-" + i}
+            id={i.toString()}
             error={!valNumLikelihoods[i]}
             helperText={!valNumLikelihoods[i] ? "Value is not a number." : ""}
             size="small"
-            id="outlined-helperText"
-            label="End"
+            label="Likelihood"
             value={valLikelihoods[i] || ""}
             onChange={handleChangeLikelihood}
             disabled={randomCell.assigned}
           />
         </Stack>
       )}
-      <Button variant="outlined" startIcon={<AddIcon />} onClick={handleClickAdd} disabled={props.conn !== 1 || randomCell.assigned}>
-          Add
-      </Button>
     </>
   );
 }
