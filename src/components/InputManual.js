@@ -13,7 +13,8 @@ export default function InputManual(props) {
   const id = props.id
   const randomCell = props.randomCells[id]
   const setRandomCells = props.setRandomCells
-  // const setX = props.setX
+  const setX = props.setX
+  const setProb = props.setProb
 
   const [inputCount, setInputCount] = useState(randomCell.inputCount ? randomCell.inputCount : 0)
 
@@ -39,10 +40,10 @@ export default function InputManual(props) {
     setInputCount(prevState => Math.max(prevState - 1, 0))
 
     if (inputCount > 0) {
-      setValRandVars(prevState => (delete prevState[inputCount], prevState))
-      setValNumRandVars(prevState => (delete prevState[inputCount], prevState))
-      setValLikelihoods(prevState => (delete prevState[inputCount], prevState))
-      setValNumLikelihoods(prevState => (delete prevState[inputCount], prevState))
+      setValRandVars(prevState => _.omit(prevState, inputCount))
+      setValNumRandVars(prevState => _.omit(prevState, inputCount))
+      setValLikelihoods(prevState => _.omit(prevState, inputCount))
+      setValNumLikelihoods(prevState => _.omit(prevState, inputCount))
     }
   }
 

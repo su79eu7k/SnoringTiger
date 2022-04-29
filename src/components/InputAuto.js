@@ -12,6 +12,7 @@ export default function InputAuto(props) {
   const randomCell = props.randomCells[id]
   const setRandomCells = props.setRandomCells
   const setX = props.setX
+  const setProb = props.setProb
 
   const [valueStart, setValueStart] = useState(randomCell.valueStart ? randomCell.valueStart : "")
   const [valueEnd, setValueEnd] = useState(randomCell.valueEnd ? randomCell.valueEnd : "")
@@ -71,19 +72,19 @@ export default function InputAuto(props) {
   const handleChangeStart = (e) => {
     setValueStart(e.target.value)
     setValueNumStart(!isNaN(e.target.value))
-    props.setProb(null)
+    setProb(null)
   };
 
   const handleChangeEnd = (e) => {
     setValueEnd(e.target.value)
     setValueNumEnd(!isNaN(e.target.value))
-    props.setProb(null)
+    setProb(null)
   };
 
   const handleChangeStep = (e) => {
     setValueStep(e.target.value)
     setValueNumStep(!isNaN(e.target.value))
-    props.setProb(null)
+    setProb(null)
   };
 
   const handleClickProb = (e) => {
@@ -96,8 +97,8 @@ export default function InputAuto(props) {
       },
     };
     axios.post(url, data, config).then((response) => {
-      props.setX(response.data.x)
-      props.setProb(response.data.prob)
+      setX(response.data.x)
+      setProb(response.data.prob)
     });
   }
 
