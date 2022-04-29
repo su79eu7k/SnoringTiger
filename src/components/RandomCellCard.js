@@ -24,7 +24,7 @@ export default function RandomCellCard(props) {
   const [addressSheet, setAddressSheet] = useState(randomCell ? randomCell.addressSheet : null)
   const [addressCell, setAddressCell] = useState(randomCell ? randomCell.addressCell : null)
 
-  const [cellTypeAuto, setCellTypeAuto] = useState(randomCell ? randomCell.assigned : true)
+  const [cellTypeAuto, setCellTypeAuto] = useState(randomCell ? randomCell.cellTypeAuto : true)
 
   const [x, setX] = useState(randomCell ? randomCell.x : null)
   const [prob, setProb] = useState(randomCell ? randomCell.prob : null)
@@ -36,11 +36,12 @@ export default function RandomCellCard(props) {
       ...prevState, [id]: {
         ...prevState[id],
         addressSheet: addressSheet, addressCell: addressCell,
+        cellTypeAuto: cellTypeAuto, 
         x: x, prob: prob,
         assigned: assigned
       }
     }))
-  }, [setRandomCells, id, addressSheet, addressCell, x, prob, assigned])
+  }, [setRandomCells, id, addressSheet, addressCell, cellTypeAuto, x, prob, assigned])
 
   const handleClickConn = (e) => {
     axios.get("http://127.0.0.1:8000/get_selection").then((response) => {

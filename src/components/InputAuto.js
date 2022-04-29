@@ -71,19 +71,19 @@ export default function InputAuto(props) {
 
   const handleChangeStart = (e) => {
     setValueStart(e.target.value)
-    setValueNumStart(!isNaN(e.target.value))
+    setValueNumStart(!(isNaN(e.target.value) || e.target.value === ""))
     setProb(null)
   };
 
   const handleChangeEnd = (e) => {
     setValueEnd(e.target.value)
-    setValueNumEnd(!isNaN(e.target.value))
+    setValueNumEnd(!(isNaN(e.target.value) || e.target.value === ""))
     setProb(null)
   };
 
   const handleChangeStep = (e) => {
     setValueStep(e.target.value)
-    setValueNumStep(!isNaN(e.target.value))
+    setValueNumStep(!(isNaN(e.target.value) || e.target.value === ""))
     setProb(null)
   };
 

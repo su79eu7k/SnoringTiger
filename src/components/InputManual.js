@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -25,15 +24,15 @@ export default function InputManual(props) {
   const [valNumLikelihoods, setValNumLikelihoods] = useState(randomCell.valNumLikelihoods ? randomCell.valNumLikelihoods : {})
 
   const handleChangeRandVar = (e) => {
-    setValRandVars(prevState => ({...prevState, [e.target.id]: e.target.value}))
-    setValNumRandVars(prevState => ({...prevState, [e.target.id]: !isNaN(e.target.value)}))
-    props.setProb(null)
+    setValRandVars(prevState => ({ ...prevState, [e.target.id]: e.target.value }))
+    setValNumRandVars(prevState => ({ ...prevState, [e.target.id]: !(isNaN(e.target.value) || e.target.value === "") }))
+    setProb(null)
   };
 
   const handleChangeLikelihood = (e) => {
-    setValLikelihoods(prevState => ({...prevState, [e.target.id]: e.target.value}))
-    setValNumLikelihoods(prevState => ({...prevState, [e.target.id]: !isNaN(e.target.value)}))
-    props.setProb(null)
+    setValLikelihoods(prevState => ({ ...prevState, [e.target.id]: e.target.value }))
+    setValNumLikelihoods(prevState => ({ ...prevState, [e.target.id]: !(isNaN(e.target.value) || e.target.value === "") }))
+    setProb(null)
   };
 
   const handleRemove = (e) => {
@@ -50,13 +49,24 @@ export default function InputManual(props) {
   useEffect(() => {
     setRandomCells(prevState => ({
       ...prevState, [id]: {
-        ...prevState[id], 
+        ...prevState[id],
         inputCount: inputCount,
-        valRandVars: valRandVars, valLikelihoods: valLikelihoods, 
-        valNumRandVars: valNumRandVars, valNumLikelihoods: valNumLikelihoods, 
+        valRandVars: valRandVars, valLikelihoods: valLikelihoods,
+        valNumRandVars: valNumRandVars, valNumLikelihoods: valNumLikelihoods,
       }
     }))
-  }, [setRandomCells, id, inputCount, valRandVars, valLikelihoods, valNumRandVars, valNumLikelihoods])
+
+    if (_.values(valNumRandVars).length === _.values(valNumLikelihoods).length &&
+      _.values(valNumRandVars).every(v => v === true) && _.values(valNumLikelihoods).every(v => v === true)) {
+      setX(_.values(valRandVars).map(v => Number(v)))
+      const _total = _.sum(_.values(valLikelihoods).map(v => Number(v)))
+      setProb(_.values(valLikelihoods).map(v => Number(v) / _total))
+    } else {
+      setX(null)
+      setProb(null)
+    }
+
+  }, [setRandomCells, id, inputCount, valRandVars, valLikelihoods, valNumRandVars, valNumLikelihoods, setX, setProb])
 
   return (
     <>
@@ -69,7 +79,7 @@ export default function InputManual(props) {
       <IconButton onClick={handleRemove} disabled={props.conn !== 1 || randomCell.assigned}>
         <RemoveIcon />
       </IconButton>
-      {_.range(inputCount + 1).map((_, i) => 
+      {_.range(inputCount + 1).map((_, i) =>
         <Stack key={i.toString()} spacing={2} direction="row">
           <TextField
             id={i.toString()}
