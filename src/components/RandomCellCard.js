@@ -14,6 +14,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import axios from 'axios';
 import _ from 'lodash'
 import InputManual from './InputManual';
+import ProbPreview from './ProbPreview';
 
 
 export default function RandomCellCard(props) {
@@ -25,11 +26,12 @@ export default function RandomCellCard(props) {
   const [addressCell, setAddressCell] = useState(randomCell ? randomCell.addressCell : null)
 
   const [cellTypeAuto, setCellTypeAuto] = useState(randomCell ? randomCell.cellTypeAuto : true)
+  
+  const [assigned, setAssigned] = useState(randomCell ? randomCell.assigned : false)
 
   const [x, setX] = useState(randomCell ? randomCell.x : null)
   const [prob, setProb] = useState(randomCell ? randomCell.prob : null)
-
-  const [assigned, setAssigned] = useState(randomCell ? randomCell.assigned : false)
+  const [coords, setCoords] = useState([])
 
   useEffect(() => {
     setRandomCells(prevState => ({
@@ -43,6 +45,15 @@ export default function RandomCellCard(props) {
     }))
   }, [setRandomCells, id, addressSheet, addressCell, cellTypeAuto, x, prob, assigned])
 
+  useEffect(() => {
+    if (x && prob) {
+      setCoords(_.values(x).map((v, i) => ({x: v, y: _.values(prob)[i]})))
+    } else {
+      setCoords([])
+    }
+  }, [x, prob, setCoords])
+  
+
   const handleClickConn = (e) => {
     axios.get("http://127.0.0.1:8000/get_selection").then((response) => {
       setAddressSheet(response.data.sheet)
@@ -52,6 +63,7 @@ export default function RandomCellCard(props) {
 
   const handleClickCellTypeAuto = (e) => {
     setCellTypeAuto(!cellTypeAuto)
+    setProb()
   }
 
   const testDupe = () => {
@@ -116,6 +128,7 @@ export default function RandomCellCard(props) {
           <Typography variant="caption" component={'div'}>
             {prob ? prob.map(k => k.toFixed(2)).join(", ") : ""}
           </Typography>
+          <ProbPreview id={id} x={x} prob={prob} coords={coords} cellTypeAuto={cellTypeAuto} />
         </CardContent></> : null}
       <CardActions>
         <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickConn} disabled={props.conn !== 1 || assigned}>
