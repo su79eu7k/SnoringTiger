@@ -19,11 +19,34 @@ export default React.memo(function PropPreview(props) {
         labels: x.map(v => v.toFixed(4)),
         datasets: [{
           data: cellTypeAuto ? coords : prob,
-          borderColor: theme.palette.text.secondary,
-          backgroundColor: theme.palette.text.secondary,
+          borderColor: theme.palette.text.primary,
+          backgroundColor: theme.palette.text.primary,
+          borderWidth: cellTypeAuto ? 1 : 0,
+          pointRadius: 2,
+          pointHoverRadius: 4,
         }]
       },
       options: {
+        scales: {
+          x: {
+            grid: {
+              color: theme.palette.text.secondary,
+              borderWidth: 1,
+              borderColor: theme.palette.text.secondary,
+              display: false,
+              lineWidth: 0.3,
+            },
+          },
+          y: {
+            grid: {
+              color: theme.palette.text.secondary,
+              borderColor: theme.palette.text.secondary,
+              borderWidth: 1,
+              display: true,
+              lineWidth: 0.3,
+            },
+          }
+        },
         plugins: {
           legend: {
             display: false
