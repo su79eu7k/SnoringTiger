@@ -2,7 +2,6 @@ import { useRef, useEffect } from 'react'
 import Chart from "chart.js/auto";
 import _ from 'lodash'
 
-let probChart
 export default function PropPreview(props) {
   const id = props.id
   const x = _.values(props.x)
@@ -10,12 +9,10 @@ export default function PropPreview(props) {
   const coords = props.coords
   const cellTypeAuto = props.cellTypeAuto
   const canvasRef = useRef(document.getElementById('canv_' + id))
-  
-  useEffect(() => {
-    if (typeof probChart !== "undefined") probChart.destroy();
 
+  useEffect(() => {
     const ctx = canvasRef.current.getContext("2d")
-    probChart = new Chart(ctx, {
+    const probChart = new Chart(ctx, {
       type: cellTypeAuto ? 'line' : 'bar',
       data: {
         labels: x.map(v => v.toFixed(4)),
@@ -24,6 +21,10 @@ export default function PropPreview(props) {
         }]
       }
     })
+
+    return () => {
+      probChart.destroy()
+    }
   }, [x, prob, coords, cellTypeAuto])
 
   return (

@@ -31,6 +31,7 @@ export default function RandomCellCard(props) {
 
   const [x, setX] = useState(randomCell ? randomCell.x : null)
   const [prob, setProb] = useState(randomCell ? randomCell.prob : null)
+
   const [coords, setCoords] = useState([])
 
   useEffect(() => {
