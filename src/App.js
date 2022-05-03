@@ -13,7 +13,7 @@ import ColorModeContext from './contexts/ColorModeContext';
 import axios from 'axios';
 
 function App() {
-  const [file, setFile] = useState()
+  const [file, setFile] = useState(null)
   const [conn, setConn] = useState(-1)
   const [connWith, setConnWith] = useState(null)
   const [randomCells, setRandomCells] = useState({})
@@ -58,13 +58,7 @@ function App() {
   });
 
   useEffect(() => {
-    axios.get("http://127.0.0.1:8000/reset").then((response) => {
-      console.log(response)
-    })
-
-    setRandomCells({})
-    setMonitoringCells({})
-    return () => {
+    const init = () => {
       axios.get("http://127.0.0.1:8000/reset").then((response) => {
         console.log(response)
       })
@@ -72,8 +66,11 @@ function App() {
       setRandomCells({})
       setMonitoringCells({})
     }
+    init()
+    return () => {
+      init()
+    }
   }, [file])
-
 
   useInterval(() => {
     axios.get("http://127.0.0.1:8000/check_connection").then((response) => {
