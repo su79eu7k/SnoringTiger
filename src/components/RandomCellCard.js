@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import InputAuto from './InputAuto';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
@@ -129,7 +129,7 @@ export default function RandomCellCard(props) {
           <Typography variant="caption" component={'div'}>
             {prob ? prob.map(k => k.toFixed(2)).join(", ") : ""}
           </Typography>
-          <ProbPreview id={id} x={x} prob={prob} coords={coords} cellTypeAuto={cellTypeAuto} />
+          <ProbPreview x={x} prob={prob} coords={coords} cellTypeAuto={cellTypeAuto} />
         </CardContent></> : null}
       <CardActions>
         <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickConn} disabled={props.conn !== 1 || assigned}>
