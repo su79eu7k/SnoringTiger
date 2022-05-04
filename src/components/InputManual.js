@@ -73,7 +73,7 @@ export default function InputManual(props) {
 
   return (
     <>
-      <Grid container spacing={1}>
+      <Grid container>
         <Grid item xs={12}>
           <Typography variant="subtitle2" color="text.secondary">
             Random Variables
@@ -97,7 +97,7 @@ export default function InputManual(props) {
         </Grid>
         {_.range(inputCount + 1).map((_, i) =>
           <Grid item xs={12}>
-            <Stack key={i.toString()} spacing={2} direction="row" justifyContent="flex-end">
+            <Stack key={i.toString()} direction="row" spacing={2} justifyContent="flex-end">
               <TextField
                 id={i.toString()}
                 value={valRandVars[i] || ""}

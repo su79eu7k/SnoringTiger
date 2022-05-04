@@ -107,14 +107,14 @@ export default function InputAuto(props) {
 
   return (
     <>
-      <Grid container spacing={1}>
+      <Grid container>
         <Grid item xs={12}>
           <Typography variant="subtitle2" color="text.secondary">
             Random Variables
           </Typography>
         </Grid>
         <Grid item xs={12}>
-          <Stack direction="row" alignItems="flex-end" justifyContent="flex-end">
+          <Stack direction="row" justifyContent="flex-end">
             <IconButton variant="outlined" onClick={handleClickProb} disabled={props.conn !== 1 || randomCell.assigned}>
               <BarChartIcon />
             </IconButton>
@@ -127,7 +127,7 @@ export default function InputAuto(props) {
           </Stack>
         </Grid>
         <Grid item xs={12}>
-          <Stack direction="row" spacing={2}>
+          <Stack direction="row" spacing={2} justifyContent="flex-end">
             <TextField
               error={!valueNumStart || endGtStart === false}
               helperText={!valueNumStart ? "Start value is not a number." : endGtStart === false ? "Start value is greater than End." : ""}
