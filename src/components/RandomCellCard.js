@@ -125,7 +125,7 @@ export default function RandomCellCard(props) {
                 {addressCell}
               </Typography>
             </Grid>
-            <Grid item xs container spacing={2}>
+            <Grid item xs={10} container spacing={2}>
               <Grid item xs={12}>
                 {cellTypeAuto ?
                   <InputAuto id={id} conn={props.conn} randomCells={props.randomCells} setRandomCells={props.setRandomCells} setX={setX} setProb={setProb} /> :
@@ -140,7 +140,7 @@ export default function RandomCellCard(props) {
           </Typography> */}
               {/* </Grid>
             <Grid item xs={10}> */}
-              <Grid item xs>
+              <Grid item xs={12}>
                 <ProbPreview x={x} prob={prob} coords={coords} cellTypeAuto={cellTypeAuto} theme={theme} />
               </Grid>
             </Grid>
