@@ -6,6 +6,9 @@ import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import _ from 'lodash'
+import Grid from '@mui/material/Grid';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 
 
 export default function InputManual(props) {
@@ -70,39 +73,55 @@ export default function InputManual(props) {
 
   return (
     <>
-      <Typography variant="subtitle2" color="text.secondary">
-        Simulation Range
-      </Typography>
-      <IconButton onClick={() => setInputCount(prevState => prevState + 1)} disabled={props.conn !== 1 || randomCell.assigned}>
-        <AddIcon />
-      </IconButton>
-      <IconButton onClick={handleRemove} disabled={props.conn !== 1 || randomCell.assigned}>
-        <RemoveIcon />
-      </IconButton>
-      {_.range(inputCount + 1).map((_, i) =>
-        <Stack key={i.toString()} spacing={2} direction="row">
-          <TextField
-            id={i.toString()}
-            value={valRandVars[i] || ""}
-            onChange={handleChangeRandVar}
-            size="small"
-            label="Random Variable"
-            error={!valNumRandVars[i]}
-            helperText={!valNumRandVars[i] ? "Value is not a number." : ""}
-            disabled={randomCell.assigned}
-          />
-          <TextField
-            id={i.toString()}
-            value={valLikelihoods[i] || ""}
-            onChange={handleChangeLikelihood}
-            size="small"
-            label="Likelihood"
-            error={!valNumLikelihoods[i]}
-            helperText={!valNumLikelihoods[i] ? "Value is not a number." : ""}
-            disabled={randomCell.assigned}
-          />
-        </Stack>
-      )}
+      <Grid container spacing={1}>
+        <Grid item xs={12}>
+          <Typography variant="subtitle2" color="text.secondary">
+            Random Variables
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Stack direction="row" alignItems="flex-end" justifyContent="flex-end">
+            <IconButton onClick={() => setInputCount(prevState => prevState + 1)} disabled={props.conn !== 1 || randomCell.assigned}>
+              <AddIcon />
+            </IconButton>
+            <IconButton onClick={handleRemove} disabled={props.conn !== 1 || randomCell.assigned}>
+              <RemoveIcon />
+            </IconButton>
+            <IconButton variant="outlined" disabled={props.conn !== 1 || randomCell.assigned}>
+              <ArrowLeftIcon />
+            </IconButton>
+            <IconButton variant="outlined" disabled={props.conn !== 1 || randomCell.assigned}>
+              <ArrowRightIcon />
+            </IconButton>
+          </Stack>
+        </Grid>
+        {_.range(inputCount + 1).map((_, i) =>
+          <Grid item xs={12}>
+            <Stack key={i.toString()} spacing={2} direction="row" justifyContent="flex-end">
+              <TextField
+                id={i.toString()}
+                value={valRandVars[i] || ""}
+                onChange={handleChangeRandVar}
+                size="small"
+                label="Random Variable"
+                error={!valNumRandVars[i]}
+                helperText={!valNumRandVars[i] ? "Value is not a number." : ""}
+                disabled={randomCell.assigned}
+              />
+              <TextField
+                id={i.toString()}
+                value={valLikelihoods[i] || ""}
+                onChange={handleChangeLikelihood}
+                size="small"
+                label="Likelihood"
+                error={!valNumLikelihoods[i]}
+                helperText={!valNumLikelihoods[i] ? "Value is not a number." : ""}
+                disabled={randomCell.assigned}
+              />
+            </Stack>
+          </Grid>
+        )}
+      </Grid>
     </>
   );
 }

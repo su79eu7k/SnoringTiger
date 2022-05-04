@@ -16,6 +16,9 @@ import _ from 'lodash'
 import InputManual from './InputManual';
 import ProbPreview from './ProbPreview';
 import { useTheme } from '@mui/styles'
+import Grid from '@mui/material/Grid';
+import Stack from '@mui/material/Stack';
+
 
 export default function RandomCellCard(props) {
   const id = props.id
@@ -26,7 +29,7 @@ export default function RandomCellCard(props) {
   const [addressCell, setAddressCell] = useState(randomCell ? randomCell.addressCell : null)
 
   const [cellTypeAuto, setCellTypeAuto] = useState(randomCell ? randomCell.cellTypeAuto : true)
-  
+
   const [assigned, setAssigned] = useState(randomCell ? randomCell.assigned : false)
 
   const [x, setX] = useState(randomCell ? randomCell.x : null)
@@ -41,7 +44,7 @@ export default function RandomCellCard(props) {
       ...prevState, [id]: {
         ...prevState[id],
         addressSheet: addressSheet, addressCell: addressCell,
-        cellTypeAuto: cellTypeAuto, 
+        cellTypeAuto: cellTypeAuto,
         x: x, prob: prob,
         assigned: assigned
       }
@@ -50,12 +53,12 @@ export default function RandomCellCard(props) {
 
   useEffect(() => {
     if (x && prob) {
-      setCoords(_.values(x).map((v, i) => ({x: v, y: _.values(prob)[i]})))
+      setCoords(_.values(x).map((v, i) => ({ x: v, y: _.values(prob)[i] })))
     } else {
       setCoords([])
     }
   }, [x, prob, setCoords])
-  
+
 
   const handleClickConn = (e) => {
     axios.get("http://127.0.0.1:8000/get_selection").then((response) => {
@@ -107,56 +110,73 @@ export default function RandomCellCard(props) {
     <Card sx={{ minWidth: 275 }}>
       {addressCell ? <>
         <CardContent>
-          <Typography variant="subtitle2" color="text.secondary">
-            Sheet
-          </Typography>
-          <Typography variant="caption">
-            {addressSheet}
-          </Typography>
-          <Typography variant="subtitle2" color="text.secondary">
-            Cell
-          </Typography>
-          <Typography variant="h6">
-            {addressCell}
-          </Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={2}>
+              <Typography variant="subtitle2" color="text.secondary">
+                Sheet
+              </Typography>
+              <Typography variant="subtitle2">
+                {addressSheet}
+              </Typography>
+              <Typography variant="subtitle2" color="text.secondary">
+                Cell
+              </Typography>
+              <Typography variant="h5">
+                {addressCell}
+              </Typography>
+            </Grid>
+            <Grid item xs={10} container spacing={2}>
+              <Grid item>
+              {cellTypeAuto ?
+                <InputAuto id={id} conn={props.conn} randomCells={props.randomCells} setRandomCells={props.setRandomCells} setX={setX} setProb={setProb} /> :
+                <InputManual id={id} conn={props.conn} randomCells={props.randomCells} setRandomCells={props.setRandomCells} setX={setX} setProb={setProb} />
+              }</Grid>
 
-          {cellTypeAuto ?
-            <InputAuto id={id} conn={props.conn} randomCells={props.randomCells} setRandomCells={props.setRandomCells} setX={setX} setProb={setProb} /> :
-            <InputManual id={id} conn={props.conn} randomCells={props.randomCells} setRandomCells={props.setRandomCells} setX={setX} setProb={setProb} />
-          }
-
-          <Typography variant="caption" component={'div'}>
+              {/* <Typography variant="caption" component={'div'}>
             {x ? x.map(k => k.toFixed(2)).join(", ") : ""}
           </Typography>
           <Typography variant="caption" component={'div'}>
             {prob ? prob.map(k => k.toFixed(2)).join(", ") : ""}
-          </Typography>
-          <ProbPreview x={x} prob={prob} coords={coords} cellTypeAuto={cellTypeAuto} theme={theme} />
+          </Typography> */}
+            {/* </Grid>
+            <Grid item xs={10}> */}
+            <Grid item xs>
+              <ProbPreview x={x} prob={prob} coords={coords} cellTypeAuto={cellTypeAuto} theme={theme} />
+              </Grid>
+              </Grid>
+          </Grid>
         </CardContent></> : null}
       <CardActions>
-        <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickConn} disabled={props.conn !== 1 || assigned}>
-          Connect
-        </Button>
-        {cellTypeAuto ?
-          <Button variant="outlined" startIcon={<AccountTreeIcon />} onClick={handleClickCellTypeAuto} disabled={props.conn !== 1 || assigned}>
-            Manual
-          </Button> : ""
-        }
-        {!cellTypeAuto ?
-          <Button variant="outlined" startIcon={<AutoGraphIcon />} onClick={handleClickCellTypeAuto} disabled={props.conn !== 1 || assigned}>
-            Auto
-          </Button> : ""
-        }
-        {assigned ?
-          <Button variant="outlined" startIcon={<LockIcon />} onClick={handleClickAssign} disabled={props.conn !== 1 || !prob}>
-            Assigned
-          </Button> : ""
-        }
-        {!assigned ?
-          <Button variant="outlined" startIcon={<LockOpenIcon />} onClick={handleClickAssign} disabled={props.conn !== 1 || !prob || testDupe()}>
-            Assign
-          </Button> : ""
-        }
+        <Grid container spacing={0}>
+          <Grid item xs={2}></Grid>
+          <Grid item xs={10}>
+          <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1}>
+            <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickConn} disabled={props.conn !== 1 || assigned}>
+              Connect
+            </Button>
+            {cellTypeAuto ?
+              <Button variant="outlined" startIcon={<AccountTreeIcon />} onClick={handleClickCellTypeAuto} disabled={props.conn !== 1 || assigned}>
+                Manual
+              </Button> : ""
+            }
+            {!cellTypeAuto ?
+              <Button variant="outlined" startIcon={<AutoGraphIcon />} onClick={handleClickCellTypeAuto} disabled={props.conn !== 1 || assigned}>
+                Auto
+              </Button> : ""
+            }
+            {assigned ?
+              <Button variant="outlined" startIcon={<LockIcon />} onClick={handleClickAssign} disabled={props.conn !== 1 || !prob}>
+                Assigned
+              </Button> : ""
+            }
+            {!assigned ?
+              <Button variant="outlined" startIcon={<LockOpenIcon />} onClick={handleClickAssign} disabled={props.conn !== 1 || !prob || testDupe()}>
+                Assign
+              </Button> : ""
+            }
+            </Stack>
+          </Grid>
+        </Grid>
       </CardActions>
       {testDupe() ?
         <Alert variant="outlined" severity="warning">

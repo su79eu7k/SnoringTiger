@@ -3,8 +3,12 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import axios from 'axios';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
+import Grid from '@mui/material/Grid';
 
 
 export default function InputAuto(props) {
@@ -52,7 +56,7 @@ export default function InputAuto(props) {
   useEffect(() => {
     setRandomCells(prevState => ({
       ...prevState, [id]: {
-        ...prevState[id], 
+        ...prevState[id],
         valueStart: valueStart, valueEnd: valueEnd, valueStep: valueStep,
         valueNumStart: valueNumStart, valueNumEnd: valueNumEnd, valueNumStep: valueNumStep,
         endGtStart: endGtStart, stepEgtTwo: stepEgtTwo
@@ -104,44 +108,60 @@ export default function InputAuto(props) {
 
   return (
     <>
-      <Typography variant="subtitle2" color="text.secondary">
-        Simulation Range
-      </Typography>
-      <Stack spacing={2} direction="row">
-        <TextField
-          error={!valueNumStart || endGtStart === false}
-          helperText={!valueNumStart ? "Start value is not a number." : endGtStart === false ? "Start value is greater than End." : ""}
-          size="small"
-          id="outlined-helperText"
-          label="Start"
-          value={valueStart}
-          onChange={handleChangeStart}
-          disabled={randomCell.assigned}
-        />
-        <TextField
-          error={!valueNumEnd || endGtStart === false}
-          helperText={!valueNumEnd ? "End value is not a number." : endGtStart === false ? "Start value is greater than End." : ""}
-          size="small"
-          id="outlined-helperText"
-          label="End"
-          value={valueEnd}
-          onChange={handleChangeEnd}
-          disabled={randomCell.assigned}
-        />
-        <TextField
-          error={!valueNumStep || !stepEgtTwo}
-          helperText={!valueNumStep ? "Step value is not an integer." : !stepEgtTwo ? "Step value is not 2 or more integer." : ""}
-          size="small"
-          id="outlined-helperText"
-          label="Step"
-          value={valueStep}
-          onChange={handleChangeStep}
-          disabled={randomCell.assigned}
-        />
-      </Stack>
-      <Button variant="outlined" startIcon={<BarChartIcon />} onClick={handleClickProb} disabled={props.conn !== 1 || randomCell.assigned}>
-          Probability
-        </Button>
+      <Grid container spacing={1}>
+        <Grid item xs={12}>
+          <Typography variant="subtitle2" color="text.secondary">
+            Random Variables
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Stack direction="row" alignItems="flex-end" justifyContent="flex-end">
+            <IconButton variant="outlined" onClick={handleClickProb} disabled={props.conn !== 1 || randomCell.assigned}>
+              <BarChartIcon />
+            </IconButton>
+            <IconButton variant="outlined" disabled={props.conn !== 1 || randomCell.assigned}>
+              <ArrowLeftIcon />
+            </IconButton>
+            <IconButton variant="outlined" disabled={props.conn !== 1 || randomCell.assigned}>
+              <ArrowRightIcon />
+            </IconButton>
+          </Stack>
+        </Grid>
+        <Grid item xs={12}>
+          <Stack direction="row" spacing={2}>
+            <TextField
+              error={!valueNumStart || endGtStart === false}
+              helperText={!valueNumStart ? "Start value is not a number." : endGtStart === false ? "Start value is greater than End." : ""}
+              size="small"
+              id="outlined-helperText"
+              label="Start"
+              value={valueStart}
+              onChange={handleChangeStart}
+              disabled={randomCell.assigned}
+            />
+            <TextField
+              error={!valueNumEnd || endGtStart === false}
+              helperText={!valueNumEnd ? "End value is not a number." : endGtStart === false ? "Start value is greater than End." : ""}
+              size="small"
+              id="outlined-helperText"
+              label="End"
+              value={valueEnd}
+              onChange={handleChangeEnd}
+              disabled={randomCell.assigned}
+            />
+            <TextField
+              error={!valueNumStep || !stepEgtTwo}
+              helperText={!valueNumStep ? "Step value is not an integer." : !stepEgtTwo ? "Step value is not 2 or more integer." : ""}
+              size="small"
+              id="outlined-helperText"
+              label="Step"
+              value={valueStep}
+              onChange={handleChangeStep}
+              disabled={randomCell.assigned}
+            />
+          </Stack>
+        </Grid>
+      </Grid>
     </>
   );
 }
