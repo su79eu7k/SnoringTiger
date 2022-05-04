@@ -127,10 +127,10 @@ export default function RandomCellCard(props) {
             </Grid>
             <Grid item xs={10} container spacing={2}>
               <Grid item>
-              {cellTypeAuto ?
-                <InputAuto id={id} conn={props.conn} randomCells={props.randomCells} setRandomCells={props.setRandomCells} setX={setX} setProb={setProb} /> :
-                <InputManual id={id} conn={props.conn} randomCells={props.randomCells} setRandomCells={props.setRandomCells} setX={setX} setProb={setProb} />
-              }</Grid>
+                {cellTypeAuto ?
+                  <InputAuto id={id} conn={props.conn} randomCells={props.randomCells} setRandomCells={props.setRandomCells} setX={setX} setProb={setProb} /> :
+                  <InputManual id={id} conn={props.conn} randomCells={props.randomCells} setRandomCells={props.setRandomCells} setX={setX} setProb={setProb} />
+                }</Grid>
 
               {/* <Typography variant="caption" component={'div'}>
             {x ? x.map(k => k.toFixed(2)).join(", ") : ""}
@@ -138,42 +138,42 @@ export default function RandomCellCard(props) {
           <Typography variant="caption" component={'div'}>
             {prob ? prob.map(k => k.toFixed(2)).join(", ") : ""}
           </Typography> */}
-            {/* </Grid>
+              {/* </Grid>
             <Grid item xs={10}> */}
-            <Grid item xs>
-              <ProbPreview x={x} prob={prob} coords={coords} cellTypeAuto={cellTypeAuto} theme={theme} />
+              <Grid item xs>
+                <ProbPreview x={x} prob={prob} coords={coords} cellTypeAuto={cellTypeAuto} theme={theme} />
               </Grid>
-              </Grid>
+            </Grid>
           </Grid>
         </CardContent></> : null}
       <CardActions>
         <Grid container spacing={0}>
           <Grid item xs={2}></Grid>
           <Grid item xs={10}>
-          <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1}>
-            <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickConn} disabled={props.conn !== 1 || assigned}>
-              Connect
-            </Button>
-            {cellTypeAuto ?
-              <Button variant="outlined" startIcon={<AccountTreeIcon />} onClick={handleClickCellTypeAuto} disabled={props.conn !== 1 || assigned}>
-                Manual
-              </Button> : ""
-            }
-            {!cellTypeAuto ?
-              <Button variant="outlined" startIcon={<AutoGraphIcon />} onClick={handleClickCellTypeAuto} disabled={props.conn !== 1 || assigned}>
-                Auto
-              </Button> : ""
-            }
-            {assigned ?
-              <Button variant="outlined" startIcon={<LockIcon />} onClick={handleClickAssign} disabled={props.conn !== 1 || !prob}>
-                Assigned
-              </Button> : ""
-            }
-            {!assigned ?
-              <Button variant="outlined" startIcon={<LockOpenIcon />} onClick={handleClickAssign} disabled={props.conn !== 1 || !prob || testDupe()}>
-                Assign
-              </Button> : ""
-            }
+            <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1}>
+              <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickConn} disabled={props.conn !== 1 || assigned}>
+                Connect
+              </Button>
+              {cellTypeAuto ?
+                <Button variant="outlined" startIcon={<AccountTreeIcon />} onClick={handleClickCellTypeAuto} disabled={props.conn !== 1 || assigned}>
+                  Manual
+                </Button> : ""
+              }
+              {!cellTypeAuto ?
+                <Button variant="outlined" startIcon={<AutoGraphIcon />} onClick={handleClickCellTypeAuto} disabled={props.conn !== 1 || assigned}>
+                  Auto
+                </Button> : ""
+              }
+              {assigned ?
+                <Button variant="outlined" startIcon={<LockIcon />} onClick={handleClickAssign} disabled={props.conn !== 1 || !prob}>
+                  Assigned
+                </Button> : ""
+              }
+              {!assigned ?
+                <Button variant="outlined" startIcon={<LockOpenIcon />} onClick={handleClickAssign} disabled={props.conn !== 1 || !prob || testDupe()}>
+                  Assign
+                </Button> : ""
+              }
             </Stack>
           </Grid>
         </Grid>

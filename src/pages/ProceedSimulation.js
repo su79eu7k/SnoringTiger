@@ -14,6 +14,9 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import StopIcon from '@mui/icons-material/Stop';
 import axios from 'axios';
 import _ from 'lodash';
+import Grid from '@mui/material/Grid';
+import Stack from '@mui/material/Stack';
+
 
 export default function ProceedSimulation(props) {
   const simConfig = props.simConfig
@@ -24,7 +27,7 @@ export default function ProceedSimulation(props) {
   const [trialsAboveZero, setTrialsAboveZero] = useState(!_.isEmpty(simConfig) ? simConfig.trialsAboveZero : true)
 
   const [dataReady, setDataReady] = useState(!_.isEmpty(simConfig) ? simConfig.dataReady : false)
-  
+
   const [progress, setProgress] = useState(!_.isEmpty(simConfig) ? simConfig.progress : null)
   const [progressDelay, setProgressDelay] = useState(!_.isEmpty(simConfig) ? simConfig.progressDelay : null)
 
@@ -107,7 +110,7 @@ export default function ProceedSimulation(props) {
 
   useEffect(() => {
     setSimConfig(prevState => ({
-      ...prevState, valueTrials: valueTrials, valueNumTrials: valueNumTrials, trialsAboveZero: trialsAboveZero, 
+      ...prevState, valueTrials: valueTrials, valueNumTrials: valueNumTrials, trialsAboveZero: trialsAboveZero,
       dataReady: dataReady, progress: progress, progressDelay: progressDelay, paused: paused
     }))
   }, [valueTrials, valueNumTrials, trialsAboveZero, dataReady, progress, progressDelay, paused, setSimConfig])
@@ -115,56 +118,78 @@ export default function ProceedSimulation(props) {
 
   return (
     <>
-      <Typography variant="h6">
-        Proceed Simulation
-      </Typography>
-      <Card sx={{ minWidth: 275 }}>
-        <CardContent>
-          <Typography variant="subtitle2" color="text.secondary">
-            Configuration
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Typography variant="h6">
+            Proceed Simulation
           </Typography>
-          <TextField
-            error={!valueNumTrials || !trialsAboveZero}
-            helperText={!valueNumTrials ? "Trials value is not a number." : !trialsAboveZero ? "Trials value is not above zero." : ""}
-            size="small"
-            id="outlined-helperText"
-            label="Trials"
-            value={valueTrials}
-            onChange={handleChangeTrials}
-            disabled={!dataReady}
-          />
-          <Typography variant="subtitle2" color="text.secondary">
-            Progress
-          </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Box sx={{ width: '100%', mr: 1 }}>
-              <LinearProgress variant="determinate" value={progress} sx={{
-                height: 10,
-                borderRadius: 5,
-              }} />
-            </Box>
-            <Box sx={{ minWidth: 35 }}>
-              <Typography variant="body2" color="text.secondary">{`${Math.round(progress)}%`}</Typography>
-            </Box>
-          </Box>
-        </CardContent>
-        <CardActions>
-          <Button variant="outlined" startIcon={<CalculateIcon />} onClick={handleClickStart} disabled={!(valueTrials && valueNumTrials && trialsAboveZero) || !dataReady || (progress > 0 && progress < 100)}>
-            Start
-          </Button>
-          {paused ?
-            <Button variant="outlined" startIcon={<PlayArrowIcon />} onClick={handleClickResume} disabled={!progress || progress === 100}>
-              Resume
-            </Button> :
-            <Button variant="outlined" startIcon={<PauseIcon />} onClick={handleClickPause} disabled={!progress || progress === 100}>
-              Pause
-            </Button>
-          }
-          <Button variant="outlined" startIcon={<StopIcon />} onClick={handleClickCancel} disabled={!progress || progress === 100}>
-            Cancel
-          </Button>
-        </CardActions>
-      </Card>
+        </Grid>
+        <Grid item xs={12}>
+          <Card sx={{ minWidth: 275 }}>
+            <CardContent>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    Configuration
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    error={!valueNumTrials || !trialsAboveZero}
+                    helperText={!valueNumTrials ? "Trials value is not a number." : !trialsAboveZero ? "Trials value is not above zero." : ""}
+                    size="small"
+                    id="outlined-helperText"
+                    label="Trials"
+                    value={valueTrials}
+                    onChange={handleChangeTrials}
+                    disabled={!dataReady}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    Progress
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Box sx={{ width: '100%', mr: 1 }}>
+                      <LinearProgress variant="determinate" value={progress} sx={{
+                        height: 10,
+                        borderRadius: 5,
+                      }} />
+                    </Box>
+                    <Box sx={{ minWidth: 35 }}>
+                      <Typography variant="body2" color="text.secondary">{`${Math.round(progress)}%`}</Typography>
+                    </Box>
+                  </Box>
+                </Grid>
+              </Grid>
+            </CardContent>
+            <CardActions>
+              <Grid container spacing={0}>
+                <Grid item xs={12}>
+                  <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1}>
+                    <Button variant="outlined" startIcon={<CalculateIcon />} onClick={handleClickStart} disabled={!(valueTrials && valueNumTrials && trialsAboveZero) || !dataReady || (progress > 0 && progress < 100)}>
+                      Start
+                    </Button>
+                    {paused ?
+                      <Button variant="outlined" startIcon={<PlayArrowIcon />} onClick={handleClickResume} disabled={!progress || progress === 100}>
+                        Resume
+                      </Button> :
+                      <Button variant="outlined" startIcon={<PauseIcon />} onClick={handleClickPause} disabled={!progress || progress === 100}>
+                        Pause
+                      </Button>
+                    }
+                    <Button variant="outlined" startIcon={<StopIcon />} onClick={handleClickCancel} disabled={!progress || progress === 100}>
+                      Cancel
+                    </Button>
+                  </Stack>
+                </Grid>
+              </Grid>
+            </CardActions>
+          </Card>
+        </Grid>
+      </Grid>
     </>
   )
 }

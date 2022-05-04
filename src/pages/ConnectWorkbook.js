@@ -12,6 +12,7 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import axios from 'axios';
 import LoadingButton from '@mui/lab/LoadingButton';
+import Grid from '@mui/material/Grid';
 
 
 const Input = styled('input')({
@@ -71,57 +72,75 @@ export default function ConnectWorkbook(props) {
 
   return (
     <>
-      <Typography variant="h6">
-        Connect Workbook
-      </Typography>
-      <Card sx={{ minWidth: 275 }}>
-        <CardContent>
-          <Typography variant="subtitle2" color="text.secondary">
-            Original File
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Typography variant="h6">
+            Connect Workbook
           </Typography>
-          <Typography variant="caption">{props.file ? props.file.name : "N/A"}</Typography>
-          <Typography variant="subtitle2" color="text.secondary">
-            Size
-          </Typography>
-          <Typography variant="caption">{props.file ? approxBytes(props.file.size) : "N/A"}</Typography>
-          <Typography variant="subtitle2" color="text.secondary">
-            Connected File
-          </Typography>
-          <Typography variant="caption">{props.conn === 1 ? props.connWith : "N/A"}</Typography>
-        </CardContent>
-        <CardActions>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <label htmlFor="contained-button-file">
-              <Input
-                accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.ms-excel.sheet.macroEnabled.12,application/vnd.ms-excel.sheet.binary.macroEnabled.12"
-                id="contained-button-file"
-                type="file"
-                onChange={handleChange} />
-              <Button variant="outlined" startIcon={<FolderOpenIcon />} component="span">
-                Select
-              </Button>
-            </label>
-            <LoadingButton
-              variant="outlined"
-              onClick={handleSubmit}
-              startIcon={<CableIcon />}
-              disabled={props.conn === 1}
-              loading={loading}
-              loadingPosition={'start'}
-            >
-              Connect
-            </LoadingButton>
-          </Stack>
-        </CardActions>
-      </Card>
-      {status === -1 ? <Alert severity="error" variant="outlined">
-        <AlertTitle>Error</AlertTitle>
-        File not selected — <strong>check it out!</strong>
-      </Alert> : null}
-      {status === 1 ? <Alert severity="success" variant="outlined">
-        <AlertTitle>Success</AlertTitle>
-        Workbook connected — <strong>check it out!</strong>
-      </Alert> : null}
+        </Grid>
+        <Grid item xs={12}>
+          <Card sx={{ minWidth: 275 }}>
+            <CardContent>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    Original File
+                  </Typography>
+                  <Typography variant="subtitle2">{props.file ? props.file.name : "N/A"}</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    Size
+                  </Typography>
+                  <Typography variant="subtitle2">{props.file ? approxBytes(props.file.size) : "N/A"}</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    Connected File
+                  </Typography>
+                  <Typography variant="subtitle2">{props.conn === 1 ? props.connWith : "N/A"}</Typography>
+                </Grid>
+              </Grid>
+            </CardContent>
+            <CardActions>
+              <Grid container spacing={0}>
+                <Grid item xs={12}>
+                  <Stack direction="row" alignItems="flex-end" justifyContent="flex-end" spacing={1}>
+                    <label htmlFor="contained-button-file">
+                      <Input
+                        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.ms-excel.sheet.macroEnabled.12,application/vnd.ms-excel.sheet.binary.macroEnabled.12"
+                        id="contained-button-file"
+                        type="file"
+                        onChange={handleChange} />
+                      <Button variant="outlined" startIcon={<FolderOpenIcon />} component="span">
+                        Select
+                      </Button>
+                    </label>
+                    <LoadingButton
+                      variant="outlined"
+                      onClick={handleSubmit}
+                      startIcon={<CableIcon />}
+                      disabled={props.conn === 1}
+                      loading={loading}
+                      loadingPosition={'start'}
+                    >
+                      Connect
+                    </LoadingButton>
+                  </Stack>
+                </Grid>
+              </Grid>
+            </CardActions>
+          </Card>
+        </Grid>
+        {status === -1 ? <Alert severity="error" variant="outlined">
+          <AlertTitle>Error</AlertTitle>
+          File not selected — <strong>check it out!</strong>
+        </Alert> : null}
+        {status === 1 ? <Alert severity="success" variant="outlined">
+          <AlertTitle>Success</AlertTitle>
+          Workbook connected — <strong>check it out!</strong>
+        </Alert> : null}
+      </Grid>
     </>
   )
 }

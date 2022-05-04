@@ -10,6 +10,8 @@ import LockIcon from '@mui/icons-material/Lock';
 import Alert from '@mui/material/Alert';
 import axios from 'axios';
 import _ from 'lodash'
+import Grid from '@mui/material/Grid';
+import Stack from '@mui/material/Stack';
 
 export default function MonitoringCellCard(props) {
   const id = props.id
@@ -73,33 +75,45 @@ export default function MonitoringCellCard(props) {
     <Card sx={{ minWidth: 275 }}>
       {addressCell ? <>
         <CardContent>
-          <Typography variant="subtitle2" color="text.secondary">
-            Sheet
-          </Typography>
-          <Typography variant="caption">
-            {addressSheet}
-          </Typography>
-          <Typography variant="subtitle2" color="text.secondary">
-            Cell
-          </Typography>
-          <Typography variant="h6">
-            {addressCell}
-          </Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={2}>
+              <Typography variant="subtitle2" color="text.secondary">
+                Sheet
+              </Typography>
+              <Typography variant="subtitle2">
+                {addressSheet}
+              </Typography>
+              <Typography variant="subtitle2" color="text.secondary">
+                Cell
+              </Typography>
+              <Typography variant="h5">
+                {addressCell}
+              </Typography>
+            </Grid>
+            <Grid item xs={10}></Grid>
+          </Grid>
         </CardContent></> : null}
       <CardActions>
-        <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickConn} disabled={props.conn !== 1 || assigned}>
-          Connect
-        </Button>
-        {assigned ?
-          <Button variant="outlined" startIcon={<LockIcon />} onClick={handleClickAssign} disabled={props.conn !== 1}>
-            Assigned
-          </Button> : ""
-        }
-        {!assigned ?
-          <Button variant="outlined" startIcon={<LockOpenIcon />} onClick={handleClickAssign} disabled={props.conn !== 1 || testDupe()}>
-            Assign
-          </Button> : ""
-        }
+        <Grid container spacing={0}>
+          <Grid item xs={2}></Grid>
+          <Grid item xs={10}>
+            <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1}>
+              <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickConn} disabled={props.conn !== 1 || assigned}>
+                Connect
+              </Button>
+              {assigned ?
+                <Button variant="outlined" startIcon={<LockIcon />} onClick={handleClickAssign} disabled={props.conn !== 1}>
+                  Assigned
+                </Button> : ""
+              }
+              {!assigned ?
+                <Button variant="outlined" startIcon={<LockOpenIcon />} onClick={handleClickAssign} disabled={props.conn !== 1 || testDupe()}>
+                  Assign
+                </Button> : ""
+              }
+            </Stack>
+          </Grid>
+        </Grid>
       </CardActions>
       {testDupe() ?
         <Alert variant="outlined" severity="warning">
