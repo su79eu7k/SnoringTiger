@@ -5,7 +5,6 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import CableIcon from '@mui/icons-material/Cable';
-import BarChartIcon from '@mui/icons-material/BarChart';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import LockIcon from '@mui/icons-material/Lock';
 import Alert from '@mui/material/Alert';
@@ -13,7 +12,9 @@ import axios from 'axios';
 import _ from 'lodash'
 
 export default function MonitoringCellCard(props) {
-  const monitoringCell = props.monitoringCells[props.id]
+  const id = props.id
+  const monitoringCell = props.monitoringCells[id]
+  const setMonitoringCells = props.setMonitoringCells
 
   const [addressSheet, setAddressSheet] = useState(monitoringCell ? monitoringCell.addressSheet : null)
   const [addressCell, setAddressCell] = useState(monitoringCell ? monitoringCell.addressCell : null)
@@ -21,12 +22,12 @@ export default function MonitoringCellCard(props) {
   const [assigned, setAssigned] = useState(monitoringCell ? monitoringCell.assigned : false)
 
   useEffect(() => {
-    props.setMonitoringCells(prevState => ({
-      ...prevState, [props.id]: {
+    setMonitoringCells(prevState => ({
+      ...prevState, [id]: {
         addressSheet: addressSheet, addressCell: addressCell, assigned: assigned
       }
     }))
-  }, [addressSheet, addressCell, assigned])
+  }, [id, addressSheet, addressCell, assigned, setMonitoringCells])
 
   const handleClickConn = (e) => {
     axios.get("http://127.0.0.1:8000/get_selection").then((response) => {

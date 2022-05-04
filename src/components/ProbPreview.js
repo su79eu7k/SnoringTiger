@@ -60,7 +60,7 @@ export default React.memo(function PropPreview(props) {
     return () => {
       probChart.destroy()
     }
-  }, [x, prob, coords, cellTypeAuto])
+  }, [x, prob, coords, cellTypeAuto, theme])
 
   return (
     <canvas ref={canvasRef}></canvas>

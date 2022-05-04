@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import { Outlet, Link, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -20,10 +20,8 @@ import HomeIcon from '@mui/icons-material/Home';
 import CableIcon from '@mui/icons-material/Cable';
 import AddchartIcon from '@mui/icons-material/Addchart';
 import AddToQueueIcon from '@mui/icons-material/AddToQueue';
-import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import CalculateIcon from '@mui/icons-material/Calculate';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import ColorModeContext from '../contexts/ColorModeContext';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';

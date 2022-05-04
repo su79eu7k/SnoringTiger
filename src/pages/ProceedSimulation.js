@@ -17,6 +17,7 @@ import _ from 'lodash';
 
 export default function ProceedSimulation(props) {
   const simConfig = props.simConfig
+  const setSimConfig = props.setSimConfig
 
   const [valueTrials, setValueTrials] = useState(!_.isEmpty(simConfig) ? simConfig.valueTrials : 1000)
   const [valueNumTrials, setValueNumTrials] = useState(!_.isEmpty(simConfig) ? simConfig.valueNumTrials : true)
@@ -105,11 +106,11 @@ export default function ProceedSimulation(props) {
   }, [props.conn, props.randomCells, props.monitoringCells])
 
   useEffect(() => {
-    props.setSimConfig(prevState => ({
+    setSimConfig(prevState => ({
       ...prevState, valueTrials: valueTrials, valueNumTrials: valueNumTrials, trialsAboveZero: trialsAboveZero, 
       dataReady: dataReady, progress: progress, progressDelay: progressDelay, paused: paused
     }))
-  }, [valueTrials, valueNumTrials, trialsAboveZero, dataReady, progress, progressDelay, paused])
+  }, [valueTrials, valueNumTrials, trialsAboveZero, dataReady, progress, progressDelay, paused, setSimConfig])
 
 
   return (
