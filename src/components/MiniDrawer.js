@@ -98,7 +98,7 @@ export default function MiniDrawer(props) {
 
   const colorMode = useContext(ColorModeContext);
   const theme = useTheme();
-  
+
   const [open, setOpen] = useState(false);
 
   const handleDrawerOpen = () => {

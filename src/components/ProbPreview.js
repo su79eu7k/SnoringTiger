@@ -10,9 +10,9 @@ export default React.memo(function PropPreview(props) {
   const cellTypeAuto = props.cellTypeAuto
 
   const canvasRef = useRef()
-  
+
   const theme = props.theme
- 
+
   useEffect(() => {
     const ctx = canvasRef.current.getContext("2d")
     const probChart = new Chart(ctx, {
@@ -66,6 +66,6 @@ export default React.memo(function PropPreview(props) {
     <canvas ref={canvasRef}></canvas>
   );
 }, (prevProps, nextProps) => (
-  JSON.stringify(prevProps.coords) === JSON.stringify(nextProps.coords) 
+  JSON.stringify(prevProps.coords) === JSON.stringify(nextProps.coords)
   && prevProps.theme.palette.mode === nextProps.theme.palette.mode
 ))
