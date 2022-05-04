@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import InputAuto from './InputAuto';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
@@ -14,7 +14,8 @@ import LockIcon from '@mui/icons-material/Lock';
 import axios from 'axios';
 import _ from 'lodash'
 import InputManual from './InputManual';
-
+import ProbPreview from './ProbPreview';
+import { useTheme } from '@mui/styles'
 
 export default function RandomCellCard(props) {
   const id = props.id
@@ -25,11 +26,15 @@ export default function RandomCellCard(props) {
   const [addressCell, setAddressCell] = useState(randomCell ? randomCell.addressCell : null)
 
   const [cellTypeAuto, setCellTypeAuto] = useState(randomCell ? randomCell.cellTypeAuto : true)
+  
+  const [assigned, setAssigned] = useState(randomCell ? randomCell.assigned : false)
 
   const [x, setX] = useState(randomCell ? randomCell.x : null)
   const [prob, setProb] = useState(randomCell ? randomCell.prob : null)
 
-  const [assigned, setAssigned] = useState(randomCell ? randomCell.assigned : false)
+  const [coords, setCoords] = useState([])
+
+  const theme = useTheme()
 
   useEffect(() => {
     setRandomCells(prevState => ({
@@ -43,6 +48,15 @@ export default function RandomCellCard(props) {
     }))
   }, [setRandomCells, id, addressSheet, addressCell, cellTypeAuto, x, prob, assigned])
 
+  useEffect(() => {
+    if (x && prob) {
+      setCoords(_.values(x).map((v, i) => ({x: v, y: _.values(prob)[i]})))
+    } else {
+      setCoords([])
+    }
+  }, [x, prob, setCoords])
+  
+
   const handleClickConn = (e) => {
     axios.get("http://127.0.0.1:8000/get_selection").then((response) => {
       setAddressSheet(response.data.sheet)
@@ -52,6 +66,7 @@ export default function RandomCellCard(props) {
 
   const handleClickCellTypeAuto = (e) => {
     setCellTypeAuto(!cellTypeAuto)
+    setProb()
   }
 
   const testDupe = () => {
@@ -116,6 +131,7 @@ export default function RandomCellCard(props) {
           <Typography variant="caption" component={'div'}>
             {prob ? prob.map(k => k.toFixed(2)).join(", ") : ""}
           </Typography>
+          <ProbPreview x={x} prob={prob} coords={coords} cellTypeAuto={cellTypeAuto} theme={theme} />
         </CardContent></> : null}
       <CardActions>
         <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickConn} disabled={props.conn !== 1 || assigned}>
