@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react'
-import { useTheme } from '@mui/styles';
 import Chart from "chart.js/auto";
 import _ from 'lodash'
+
 
 export default React.memo(function PropPreview(props) {
   const x = _.values(props.x)
@@ -9,7 +9,7 @@ export default React.memo(function PropPreview(props) {
   const coords = props.coords
   const cellTypeAuto = props.cellTypeAuto
   const canvasRef = useRef()
-  const theme = useTheme();
+  const theme = props.theme
  
   useEffect(() => {
     const ctx = canvasRef.current.getContext("2d")
@@ -63,4 +63,4 @@ export default React.memo(function PropPreview(props) {
   return (
     <canvas ref={canvasRef}></canvas>
   );
-})
+}, (prevProps, nextProps) => JSON.stringify(prevProps.coords) === JSON.stringify(nextProps.coords))

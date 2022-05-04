@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import InputAuto from './InputAuto';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
@@ -15,7 +15,7 @@ import axios from 'axios';
 import _ from 'lodash'
 import InputManual from './InputManual';
 import ProbPreview from './ProbPreview';
-
+import { useTheme } from '@mui/styles'
 
 export default function RandomCellCard(props) {
   const id = props.id
@@ -33,6 +33,8 @@ export default function RandomCellCard(props) {
   const [prob, setProb] = useState(randomCell ? randomCell.prob : null)
 
   const [coords, setCoords] = useState([])
+
+  const theme = useTheme()
 
   useEffect(() => {
     setRandomCells(prevState => ({
@@ -129,7 +131,7 @@ export default function RandomCellCard(props) {
           <Typography variant="caption" component={'div'}>
             {prob ? prob.map(k => k.toFixed(2)).join(", ") : ""}
           </Typography>
-          <ProbPreview x={x} prob={prob} coords={coords} cellTypeAuto={cellTypeAuto} />
+          <ProbPreview x={x} prob={prob} coords={coords} cellTypeAuto={cellTypeAuto} theme={theme} />
         </CardContent></> : null}
       <CardActions>
         <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickConn} disabled={props.conn !== 1 || assigned}>
