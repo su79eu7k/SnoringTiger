@@ -87,7 +87,7 @@ function App() {
             <Route path="/" element={<MiniDrawer conn={conn} connWith={connWith} />}>
               <Route index element={<Landing />} />
               <Route path="home" element={<Landing />} />
-              <Route path="connect_workbook" element={<ConnectWorkbook file={file} setFile={setFile} conn={conn} connWith={connWith} />} />
+              <Route path="connect_workbook" element={<ConnectWorkbook file={file} setFile={setFile} conn={conn} setConn={setConn} connWith={connWith} setConnWith={setConnWith} />} />
               <Route path="add_random_cells" element={<AddRandomCells conn={conn} randomCells={randomCells} setRandomCells={setRandomCells} />} />
               <Route path="add_monitoring_cells" element={<AddMonitoringCells conn={conn} monitoringCells={monitoringCells} setMonitoringCells={setMonitoringCells} />} />
               <Route path="proceed_simulation" element={<ProceedSimulation conn={conn} randomCells={randomCells} monitoringCells={monitoringCells} simConfig={simConfig} setSimConfig={setSimConfig} />} />

@@ -10,8 +10,9 @@ import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import CableIcon from '@mui/icons-material/Cable';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
-import CircularProgress from '@mui/material/CircularProgress';
 import axios from 'axios';
+import LoadingButton from '@mui/lab/LoadingButton';
+
 
 const Input = styled('input')({
   display: 'none',
@@ -19,7 +20,7 @@ const Input = styled('input')({
 
 export default function ConnectWorkbook(props) {
   const [status, setStatus] = useState()
-  const [loading, setLoading] = useState()
+  const [loading, setLoading] = useState(false)
 
   function approxBytes(nBytes) {
     let sOutput
@@ -36,10 +37,11 @@ export default function ConnectWorkbook(props) {
   }
 
   function handleSubmit(e) {
-    setLoading(1)
+    e.preventDefault()
+
+    setLoading(true)
     setStatus(0)
     if (props.file) {
-      e.preventDefault()
       const url = 'http://127.0.0.1:8000/upload_file';
       const formData = new FormData();
       formData.append('uploadfile', props.file);
@@ -49,15 +51,20 @@ export default function ConnectWorkbook(props) {
         },
       };
       axios.post(url, formData, config).then((response) => {
-        setLoading(0)
         if (response.data.code === 1) {
-          setStatus(1)
+          axios.get("http://127.0.0.1:8000/check_connection").then((response) => {
+            props.setConn(response.data.code)
+            props.setConnWith(response.data.message)
+            setLoading(false)
+            setStatus(1)
+          })
         } else {
+          setLoading(false)
           setStatus(-1)
         }
       });
     } else {
-      setLoading(0)
+      setLoading(false)
       setStatus(-1)
     }
   }
@@ -72,7 +79,6 @@ export default function ConnectWorkbook(props) {
           <Typography variant="subtitle2" color="text.secondary">
             Original File
           </Typography>
-          {/* {loading === 1 ? <CircularProgress /> : null} */}
           <Typography variant="caption">{props.file ? props.file.name : "N/A"}</Typography>
           <Typography variant="subtitle2" color="text.secondary">
             Size
@@ -95,14 +101,16 @@ export default function ConnectWorkbook(props) {
                 Select
               </Button>
             </label>
-            <Button
+            <LoadingButton
               variant="outlined"
               onClick={handleSubmit}
               startIcon={<CableIcon />}
               disabled={props.conn === 1}
+              loading={loading}
+              loadingPosition={'start'}
             >
               Connect
-            </Button>
+            </LoadingButton>
           </Stack>
         </CardActions>
       </Card>
