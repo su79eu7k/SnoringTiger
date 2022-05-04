@@ -8,7 +8,9 @@ export default React.memo(function PropPreview(props) {
   const prob = _.values(props.prob)
   const coords = props.coords
   const cellTypeAuto = props.cellTypeAuto
+
   const canvasRef = useRef()
+  
   const theme = props.theme
  
   useEffect(() => {
@@ -19,8 +21,8 @@ export default React.memo(function PropPreview(props) {
         labels: x.map(v => v.toFixed(4)),
         datasets: [{
           data: cellTypeAuto ? coords : prob,
-          borderColor: theme.palette.text.primary,
-          backgroundColor: theme.palette.text.primary,
+          borderColor: theme.palette.text.secondary,
+          backgroundColor: theme.palette.text.secondary,
           borderWidth: cellTypeAuto ? 1 : 0,
           pointRadius: 2,
           pointHoverRadius: 4,
@@ -63,4 +65,7 @@ export default React.memo(function PropPreview(props) {
   return (
     <canvas ref={canvasRef}></canvas>
   );
-}, (prevProps, nextProps) => JSON.stringify(prevProps.coords) === JSON.stringify(nextProps.coords))
+}, (prevProps, nextProps) => (
+  JSON.stringify(prevProps.coords) === JSON.stringify(nextProps.coords) 
+  && prevProps.theme.palette.mode === nextProps.theme.palette.mode
+))
