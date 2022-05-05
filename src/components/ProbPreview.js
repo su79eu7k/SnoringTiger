@@ -29,6 +29,13 @@ export default React.memo(function PropPreview(props) {
         }]
       },
       options: {
+        transitions: {
+          'resize': {
+            animation: {
+              duration: 400
+            }
+          }
+        },
         scales: {
           x: {
             grid: {
@@ -56,6 +63,7 @@ export default React.memo(function PropPreview(props) {
         }
       }
     })
+    console.log(probChart)
 
     return () => {
       probChart.destroy()

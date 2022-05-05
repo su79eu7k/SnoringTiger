@@ -96,8 +96,8 @@ export default function InputManual(props) {
           </Stack>
         </Grid>
         {_.range(inputCount + 1).map((_, i) =>
-          <Grid item xs={12}>
-            <Stack key={i.toString()} direction="row" spacing={2} justifyContent="flex-end">
+          <Grid item xs={12} key={i.toString()} >
+            <Stack direction="row" spacing={2} justifyContent="flex-end">
               <TextField
                 id={i.toString()}
                 value={valRandVars[i] || ""}

@@ -14,8 +14,8 @@ export default function AddRandomCells(props) {
         </Grid>
         {[...Array(_.reject(props.randomCells, { addressSheet: null, addressCell: null }).length + 1)].map(
           (v, i) => (
-            <Grid item xs={12}>
-              <RandomCellCard key={i.toString()} id={i.toString()} conn={props.conn} randomCells={props.randomCells} setRandomCells={props.setRandomCells} />
+            <Grid item xs={12} key={i.toString()}>
+              <RandomCellCard id={i.toString()} conn={props.conn} randomCells={props.randomCells} setRandomCells={props.setRandomCells} />
             </Grid>
           )
         )}
