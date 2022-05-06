@@ -194,7 +194,7 @@ export default function ProceedSimulation(props) {
           </Card>
         </Grid>
         <Grid item xs={12}>
-          <ResultPreview />
+          <ResultPreview connStatus={connStatus} randomCells={randomCells} monitoringCells={monitoringCells} />
         </Grid>
       </Grid>
     </>
