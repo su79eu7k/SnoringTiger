@@ -16,6 +16,7 @@ export default function InputAuto(props) {
   const setRandomCells = props.setRandomCells
   const setX = props.setX
   const setProb = props.setProb
+  const setDecimal = props.setDecimal
 
   const [valueStart, setValueStart] = useState(randomCell.valueStart ? randomCell.valueStart : "")
   const [valueEnd, setValueEnd] = useState(randomCell.valueEnd ? randomCell.valueEnd : "")
@@ -105,6 +106,15 @@ export default function InputAuto(props) {
     });
   }
 
+  const handleClickDecimalLeft = (e) => {
+    setDecimal(prevState => Math.max(prevState - 1, 0))
+
+  }
+
+  const handleClickDecimalRight = (e) => {
+    setDecimal(prevState => prevState + 1)
+  }
+
   return (
     <>
       <Grid container>
@@ -118,10 +128,10 @@ export default function InputAuto(props) {
             <IconButton variant="outlined" onClick={handleClickProb} disabled={props.conn !== 1 || randomCell.assigned}>
               <BarChartIcon />
             </IconButton>
-            <IconButton variant="outlined" disabled={props.conn !== 1 || randomCell.assigned}>
+            <IconButton variant="outlined" onClick={handleClickDecimalLeft} disabled={props.conn !== 1 || randomCell.assigned}>
               <ArrowLeftIcon />
             </IconButton>
-            <IconButton variant="outlined" disabled={props.conn !== 1 || randomCell.assigned}>
+            <IconButton variant="outlined" onClick={handleClickDecimalRight} disabled={props.conn !== 1 || randomCell.assigned}>
               <ArrowRightIcon />
             </IconButton>
           </Stack>

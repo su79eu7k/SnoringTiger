@@ -34,8 +34,9 @@ export default function RandomCellCard(props) {
 
   const [x, setX] = useState(randomCell ? randomCell.x : null)
   const [prob, setProb] = useState(randomCell ? randomCell.prob : null)
-
   const [coords, setCoords] = useState([])
+
+  const [decimal, setDecimal] = useState(2)
 
   const theme = useTheme()
 
@@ -128,8 +129,8 @@ export default function RandomCellCard(props) {
             <Grid item xs={10} container spacing={2}>
               <Grid item xs={12}>
                 {cellTypeAuto ?
-                  <InputAuto id={id} conn={props.conn} randomCells={props.randomCells} setRandomCells={props.setRandomCells} setX={setX} setProb={setProb} /> :
-                  <InputManual id={id} conn={props.conn} randomCells={props.randomCells} setRandomCells={props.setRandomCells} setX={setX} setProb={setProb} />
+                  <InputAuto id={id} conn={props.conn} randomCells={props.randomCells} setRandomCells={props.setRandomCells} setX={setX} setProb={setProb} setDecimal={setDecimal} /> :
+                  <InputManual id={id} conn={props.conn} randomCells={props.randomCells} setRandomCells={props.setRandomCells} setX={setX} setProb={setProb} setDecimal={setDecimal} />
                 }</Grid>
 
               {/* <Typography variant="caption" component={'div'}>
@@ -141,7 +142,7 @@ export default function RandomCellCard(props) {
               {/* </Grid>
             <Grid item xs={10}> */}
               <Grid item xs={12}>
-                <ProbPreview x={x} prob={prob} coords={coords} cellTypeAuto={cellTypeAuto} theme={theme} />
+                <ProbPreview x={x} prob={prob} coords={coords} cellTypeAuto={cellTypeAuto} theme={theme} decimal={decimal} />
               </Grid>
             </Grid>
           </Grid>

@@ -4,10 +4,11 @@ import _ from 'lodash'
 
 
 export default React.memo(function PropPreview(props) {
+  const cellTypeAuto = props.cellTypeAuto
   const x = _.values(props.x)
   const prob = _.values(props.prob)
   const coords = props.coords
-  const cellTypeAuto = props.cellTypeAuto
+  const decimal = props.decimal
 
   const canvasRef = useRef()
 
@@ -18,7 +19,7 @@ export default React.memo(function PropPreview(props) {
     const probChart = new Chart(ctx, {
       type: cellTypeAuto ? 'line' : 'bar',
       data: {
-        labels: x.map(v => v.toFixed(4)),
+        labels: x.map(v => v.toFixed(decimal)),
         datasets: [{
           data: cellTypeAuto ? coords : prob,
           borderColor: theme.palette.text.secondary,
@@ -68,12 +69,13 @@ export default React.memo(function PropPreview(props) {
     return () => {
       probChart.destroy()
     }
-  }, [x, prob, coords, cellTypeAuto, theme])
+  }, [x, prob, coords, cellTypeAuto, theme, decimal])
 
   return (
     <canvas ref={canvasRef}></canvas>
   );
 }, (prevProps, nextProps) => (
   JSON.stringify(prevProps.coords) === JSON.stringify(nextProps.coords)
+  && JSON.stringify(prevProps.decimal) === JSON.stringify(nextProps.decimal)
   && prevProps.theme.palette.mode === nextProps.theme.palette.mode
 ))

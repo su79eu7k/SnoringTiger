@@ -17,6 +17,7 @@ export default function InputManual(props) {
   const setRandomCells = props.setRandomCells
   const setX = props.setX
   const setProb = props.setProb
+  const setDecimal = props.setDecimal
 
   const [inputCount, setInputCount] = useState(randomCell.inputCount ? randomCell.inputCount : 0)
 
@@ -47,6 +48,15 @@ export default function InputManual(props) {
       setValLikelihoods(prevState => _.omit(prevState, inputCount))
       setValNumLikelihoods(prevState => _.omit(prevState, inputCount))
     }
+  }
+
+  const handleClickDecimalLeft = (e) => {
+    setDecimal(prevState => Math.max(prevState - 1, 0))
+
+  }
+
+  const handleClickDecimalRight = (e) => {
+    setDecimal(prevState => prevState + 1)
   }
 
   useEffect(() => {
@@ -87,10 +97,10 @@ export default function InputManual(props) {
             <IconButton onClick={handleRemove} disabled={props.conn !== 1 || randomCell.assigned}>
               <RemoveIcon />
             </IconButton>
-            <IconButton variant="outlined" disabled={props.conn !== 1 || randomCell.assigned}>
+            <IconButton onClick={handleClickDecimalLeft} variant="outlined" disabled={props.conn !== 1 || randomCell.assigned}>
               <ArrowLeftIcon />
             </IconButton>
-            <IconButton variant="outlined" disabled={props.conn !== 1 || randomCell.assigned}>
+            <IconButton onClick={handleClickDecimalRight} variant="outlined" disabled={props.conn !== 1 || randomCell.assigned}>
               <ArrowRightIcon />
             </IconButton>
           </Stack>
