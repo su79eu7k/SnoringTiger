@@ -84,7 +84,7 @@ export default function InputManual(props) {
 
   return (
     <>
-      <Grid container>
+      <Grid container spacing={2}>
         <Grid item xs={12}>
           <Typography variant="subtitle2" color="text.secondary">
             Random Variables
@@ -106,32 +106,34 @@ export default function InputManual(props) {
             </IconButton>
           </Stack>
         </Grid>
+        <Grid item xs={12} container spacing={2}>
         {_.range(inputCount + 1).map((_, i) =>
-          <Grid item xs={12} key={i.toString()} >
-            <Stack direction="row" spacing={2} justifyContent="flex-end">
+            <Grid item xs={12} justifyContent="flex-end" container spacing={2}>
+              <Grid item>
               <TextField
                 id={i.toString()}
                 value={valRandVars[i] || ""}
                 onChange={handleChangeRandVar}
                 size="small"
-                label="Random Variable"
+                label={"Random Variable " + (i + 1).toString()}
                 error={!valNumRandVars[i]}
                 helperText={!valNumRandVars[i] ? "Value is not a number." : ""}
                 disabled={randomCell.assigned}
-              />
+              /></Grid>
+              <Grid item>
               <TextField
                 id={i.toString()}
                 value={valLikelihoods[i] || ""}
                 onChange={handleChangeLikelihood}
                 size="small"
-                label="Likelihood"
+                label={"Likelihood " + (i + 1).toString()}
                 error={!valNumLikelihoods[i]}
                 helperText={!valNumLikelihoods[i] ? "Value is not a number." : ""}
                 disabled={randomCell.assigned}
-              />
-            </Stack>
-          </Grid>
+              /></Grid>
+            </Grid>
         )}
+        </Grid>
       </Grid>
     </>
   );
