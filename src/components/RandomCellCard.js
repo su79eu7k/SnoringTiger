@@ -22,7 +22,9 @@ import Stack from '@mui/material/Stack';
 
 export default function RandomCellCard(props) {
   const id = props.id
-  const randomCell = props.randomCells[id]
+  const connStatus = props.connStatus
+  const randomCells = props.randomCells
+  const randomCell = randomCells[id]
   const setRandomCells = props.setRandomCells
 
   const [addressSheet, setAddressSheet] = useState(randomCell ? randomCell.addressSheet : null)
@@ -74,7 +76,7 @@ export default function RandomCellCard(props) {
   }
 
   const testDupe = () => {
-    const possibleDupes = _.filter(props.randomCells, { addressSheet: addressSheet, addressCell: addressCell })
+    const possibleDupes = _.filter(randomCells, { addressSheet: addressSheet, addressCell: addressCell })
     return !_.every(possibleDupes, ['assigned', false]) && possibleDupes.length >= 2 && !randomCell.assigned
   }
 
@@ -129,8 +131,8 @@ export default function RandomCellCard(props) {
             <Grid item xs={10} container spacing={2}>
               <Grid item xs={12}>
                 {cellTypeAuto ?
-                  <InputAuto id={id} conn={props.conn} randomCells={props.randomCells} setRandomCells={props.setRandomCells} setX={setX} setProb={setProb} setDecimal={setDecimal} /> :
-                  <InputManual id={id} conn={props.conn} randomCells={props.randomCells} setRandomCells={props.setRandomCells} setX={setX} setProb={setProb} setDecimal={setDecimal} />
+                  <InputAuto connStatus={connStatus} id={id} randomCells={randomCells} setRandomCells={setRandomCells} setX={setX} setProb={setProb} setDecimal={setDecimal} /> :
+                  <InputManual connStatus={connStatus} id={id} randomCells={randomCells} setRandomCells={setRandomCells} setX={setX} setProb={setProb} setDecimal={setDecimal} />
                 }</Grid>
 
               {/* <Typography variant="caption" component={'div'}>
@@ -152,26 +154,26 @@ export default function RandomCellCard(props) {
           <Grid item xs={2}></Grid>
           <Grid item xs={10}>
             <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1}>
-              <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickConn} disabled={props.conn !== 1 || assigned}>
+              <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickConn} disabled={connStatus !== 1 || assigned}>
                 Connect
               </Button>
               {cellTypeAuto ?
-                <Button variant="outlined" startIcon={<AccountTreeIcon />} onClick={handleClickCellTypeAuto} disabled={props.conn !== 1 || assigned}>
+                <Button variant="outlined" startIcon={<AccountTreeIcon />} onClick={handleClickCellTypeAuto} disabled={connStatus !== 1 || assigned}>
                   Manual
                 </Button> : ""
               }
               {!cellTypeAuto ?
-                <Button variant="outlined" startIcon={<AutoGraphIcon />} onClick={handleClickCellTypeAuto} disabled={props.conn !== 1 || assigned}>
+                <Button variant="outlined" startIcon={<AutoGraphIcon />} onClick={handleClickCellTypeAuto} disabled={connStatus !== 1 || assigned}>
                   Auto
                 </Button> : ""
               }
               {assigned ?
-                <Button variant="outlined" startIcon={<LockIcon />} onClick={handleClickAssign} disabled={props.conn !== 1 || !prob}>
+                <Button variant="outlined" startIcon={<LockIcon />} onClick={handleClickAssign} disabled={connStatus !== 1 || !prob}>
                   Assigned
                 </Button> : ""
               }
               {!assigned ?
-                <Button variant="outlined" startIcon={<LockOpenIcon />} onClick={handleClickAssign} disabled={props.conn !== 1 || !prob || testDupe()}>
+                <Button variant="outlined" startIcon={<LockOpenIcon />} onClick={handleClickAssign} disabled={connStatus !== 1 || !prob || testDupe()}>
                   Assign
                 </Button> : ""
               }

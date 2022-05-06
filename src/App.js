@@ -14,8 +14,10 @@ import axios from 'axios';
 
 function App() {
   const [file, setFile] = useState(null)
-  const [conn, setConn] = useState(-1)
-  const [connWith, setConnWith] = useState(null)
+  const [loadingWorkbook, setLoadingWorkbook] = useState(false)
+  const [connReqStatus, setConnReqStatus] = useState()
+  const [connStatus, setConnStatus] = useState(-1)
+  const [connedFile, setConnedFile] = useState(null)
   const [randomCells, setRandomCells] = useState({})
   const [monitoringCells, setMonitoringCells] = useState({})
   const [simConfig, setSimConfig] = useState({})
@@ -74,8 +76,8 @@ function App() {
 
   useInterval(() => {
     axios.get("http://127.0.0.1:8000/check_connection").then((response) => {
-      setConn(response.data.code)
-      setConnWith(response.data.message)
+      setConnStatus(response.data.code)
+      setConnedFile(response.data.message)
     })
   }, 3000)
 
@@ -84,13 +86,35 @@ function App() {
       <ThemeProvider theme={theme}>
         <HashRouter>
           <Routes>
-            <Route path="/" element={<MiniDrawer conn={conn} connWith={connWith} />}>
+            <Route path="/" element={<MiniDrawer connStatus={connStatus} connedFile={connedFile} />}>
               <Route index element={<Landing />} />
               <Route path="home" element={<Landing />} />
-              <Route path="connect_workbook" element={<ConnectWorkbook file={file} setFile={setFile} conn={conn} setConn={setConn} connWith={connWith} setConnWith={setConnWith} />} />
-              <Route path="add_random_cells" element={<AddRandomCells conn={conn} randomCells={randomCells} setRandomCells={setRandomCells} />} />
-              <Route path="add_monitoring_cells" element={<AddMonitoringCells conn={conn} monitoringCells={monitoringCells} setMonitoringCells={setMonitoringCells} />} />
-              <Route path="proceed_simulation" element={<ProceedSimulation conn={conn} randomCells={randomCells} monitoringCells={monitoringCells} simConfig={simConfig} setSimConfig={setSimConfig} />} />
+              <Route path="connect_workbook" element={
+                <ConnectWorkbook
+                  file={file} setFile={setFile}
+                  loadingWorkbook={loadingWorkbook} setLoadingWorkbook={setLoadingWorkbook}
+                  connReqStatus={connReqStatus} setConnReqStatus={setConnReqStatus}
+                  conn={connStatus} setConn={setConnStatus}
+                  connWith={connedFile} setConnWith={setConnedFile} />
+              } />
+              <Route path="add_random_cells" element={
+                <AddRandomCells
+                  connStatus={connStatus}
+                  randomCells={randomCells} setRandomCells={setRandomCells}
+                />
+              } />
+              <Route path="add_monitoring_cells" element={
+                <AddMonitoringCells
+                  connStatus={connStatus}
+                  monitoringCells={monitoringCells} setMonitoringCells={setMonitoringCells} />
+              } />
+              <Route path="proceed_simulation" element={
+                <ProceedSimulation
+                  connStatus={connStatus}
+                  randomCells={randomCells}
+                  monitoringCells={monitoringCells}
+                  simConfig={simConfig} setSimConfig={setSimConfig} />
+              } />
               <Route path="check_results" element={<CheckResults />} />
             </Route>
           </Routes>

@@ -15,6 +15,7 @@ import Stack from '@mui/material/Stack';
 
 export default function MonitoringCellCard(props) {
   const id = props.id
+  const connStatus = props.connStatus
   const monitoringCell = props.monitoringCells[id]
   const setMonitoringCells = props.setMonitoringCells
 
@@ -98,16 +99,16 @@ export default function MonitoringCellCard(props) {
           <Grid item xs={2}></Grid>
           <Grid item xs={10}>
             <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1}>
-              <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickConn} disabled={props.conn !== 1 || assigned}>
+              <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickConn} disabled={connStatus !== 1 || assigned}>
                 Connect
               </Button>
               {assigned ?
-                <Button variant="outlined" startIcon={<LockIcon />} onClick={handleClickAssign} disabled={props.conn !== 1}>
+                <Button variant="outlined" startIcon={<LockIcon />} onClick={handleClickAssign} disabled={connStatus !== 1}>
                   Assigned
                 </Button> : ""
               }
               {!assigned ?
-                <Button variant="outlined" startIcon={<LockOpenIcon />} onClick={handleClickAssign} disabled={props.conn !== 1 || testDupe()}>
+                <Button variant="outlined" startIcon={<LockOpenIcon />} onClick={handleClickAssign} disabled={connStatus !== 1 || testDupe()}>
                   Assign
                 </Button> : ""
               }

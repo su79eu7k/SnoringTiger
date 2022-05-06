@@ -20,8 +20,10 @@ const Input = styled('input')({
 });
 
 export default function ConnectWorkbook(props) {
-  const [status, setStatus] = useState()
-  const [loading, setLoading] = useState(false)
+  const loadingWorkbook = props.loadingWorkbook
+  const setLoadingWorkbook = props.setLoadingWorkbook
+  const connReqStatus = props.connReqStatus
+  const setConnReqStatus = props.setConnReqStatus
 
   function approxBytes(nBytes) {
     let sOutput
@@ -40,8 +42,8 @@ export default function ConnectWorkbook(props) {
   function handleSubmit(e) {
     e.preventDefault()
 
-    setLoading(true)
-    setStatus(0)
+    setLoadingWorkbook(true)
+    setConnReqStatus(0)
     if (props.file) {
       const url = 'http://127.0.0.1:8000/upload_file';
       const formData = new FormData();
@@ -56,17 +58,17 @@ export default function ConnectWorkbook(props) {
           axios.get("http://127.0.0.1:8000/check_connection").then((response) => {
             props.setConn(response.data.code)
             props.setConnWith(response.data.message)
-            setLoading(false)
-            setStatus(1)
+            setLoadingWorkbook(false)
+            setConnReqStatus(1)
           })
         } else {
-          setLoading(false)
-          setStatus(-1)
+          setLoadingWorkbook(false)
+          setConnReqStatus(-1)
         }
       });
     } else {
-      setLoading(false)
-      setStatus(-1)
+      setLoadingWorkbook(false)
+      setConnReqStatus(-1)
     }
   }
 
@@ -121,7 +123,7 @@ export default function ConnectWorkbook(props) {
                       onClick={handleSubmit}
                       startIcon={<CableIcon />}
                       disabled={props.conn === 1}
-                      loading={loading}
+                      loading={loadingWorkbook}
                       loadingPosition={'start'}
                     >
                       Connect
@@ -132,14 +134,16 @@ export default function ConnectWorkbook(props) {
             </CardActions>
           </Card>
         </Grid>
-        {status === -1 ? <Alert severity="error" variant="outlined">
+        <Grid item xs={12}>
+        {connReqStatus === -1 ? <Alert severity="error" variant="outlined">
           <AlertTitle>Error</AlertTitle>
           File not selected — <strong>check it out!</strong>
         </Alert> : null}
-        {status === 1 ? <Alert severity="success" variant="outlined">
+        {connReqStatus === 1 ? <Alert severity="success" variant="outlined">
           <AlertTitle>Success</AlertTitle>
           Workbook connected — <strong>check it out!</strong>
         </Alert> : null}
+        </Grid>
       </Grid>
     </>
   )

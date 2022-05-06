@@ -94,6 +94,9 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function MiniDrawer(props) {
+  const connStatus = props.connStatus
+  const connedFile = props.connedFile
+
   const navigate = useNavigate()
 
   const colorMode = useContext(ColorModeContext);
@@ -130,9 +133,9 @@ export default function MiniDrawer(props) {
             Scenario Storming
           </Typography>
           <Typography variant="subtitle2" noWrap>
-            {props.conn === 1 ? "Connected to " + props.connWith : ""}
-            {props.conn === 0 ? "Disconnected" : ""}
-            {props.conn === -1 ? "Not connected" : ""}
+            {connStatus === 1 ? "Connected to " + connedFile : ""}
+            {connStatus === 0 ? "Disconnected" : ""}
+            {connStatus === -1 ? "Not connected" : ""}
           </Typography>
           <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
             {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}

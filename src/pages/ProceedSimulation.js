@@ -19,6 +19,9 @@ import Stack from '@mui/material/Stack';
 
 
 export default function ProceedSimulation(props) {
+  const connStatus = props.connStatus
+  const randomCells = props.randomCells
+  const monitoringCells = props.monitoringCells
   const simConfig = props.simConfig
   const setSimConfig = props.setSimConfig
 
@@ -102,11 +105,11 @@ export default function ProceedSimulation(props) {
   }, [progress])
 
   useEffect(() => {
-    props.conn === 1 &&
-      _.filter(props.randomCells, { assigned: true }).length >= 1 &&
-      _.filter(props.monitoringCells, { assigned: true }).length >= 1 ?
+    connStatus === 1 &&
+      _.filter(randomCells, { assigned: true }).length >= 1 &&
+      _.filter(monitoringCells, { assigned: true }).length >= 1 ?
       setDataReady(true) : setDataReady(false)
-  }, [props.conn, props.randomCells, props.monitoringCells])
+  }, [connStatus, randomCells, monitoringCells])
 
   useEffect(() => {
     setSimConfig(prevState => ({

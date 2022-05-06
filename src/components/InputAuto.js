@@ -11,6 +11,7 @@ import Grid from '@mui/material/Grid';
 
 
 export default function InputAuto(props) {
+  const connStatus = props.connStatus
   const id = props.id
   const randomCell = props.randomCells[id]
   const setRandomCells = props.setRandomCells
@@ -125,13 +126,13 @@ export default function InputAuto(props) {
         </Grid>
         <Grid item xs={12}>
           <Stack direction="row" justifyContent="flex-end">
-            <IconButton variant="outlined" onClick={handleClickProb} disabled={props.conn !== 1 || randomCell.assigned}>
+            <IconButton variant="outlined" onClick={handleClickProb} disabled={connStatus !== 1 || randomCell.assigned}>
               <BarChartIcon />
             </IconButton>
-            <IconButton variant="outlined" onClick={handleClickDecimalLeft} disabled={props.conn !== 1 || randomCell.assigned}>
+            <IconButton variant="outlined" onClick={handleClickDecimalLeft} disabled={connStatus !== 1 || randomCell.assigned}>
               <ArrowLeftIcon />
             </IconButton>
-            <IconButton variant="outlined" onClick={handleClickDecimalRight} disabled={props.conn !== 1 || randomCell.assigned}>
+            <IconButton variant="outlined" onClick={handleClickDecimalRight} disabled={connStatus !== 1 || randomCell.assigned}>
               <ArrowRightIcon />
             </IconButton>
           </Stack>

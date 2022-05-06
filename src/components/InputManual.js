@@ -12,6 +12,7 @@ import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 
 
 export default function InputManual(props) {
+  const connStatus = props.connStatus
   const id = props.id
   const randomCell = props.randomCells[id]
   const setRandomCells = props.setRandomCells
@@ -91,16 +92,16 @@ export default function InputManual(props) {
         </Grid>
         <Grid item xs={12}>
           <Stack direction="row" alignItems="flex-end" justifyContent="flex-end">
-            <IconButton onClick={() => setInputCount(prevState => prevState + 1)} disabled={props.conn !== 1 || randomCell.assigned}>
+            <IconButton onClick={() => setInputCount(prevState => prevState + 1)} disabled={connStatus !== 1 || randomCell.assigned}>
               <AddIcon />
             </IconButton>
-            <IconButton onClick={handleRemove} disabled={props.conn !== 1 || randomCell.assigned}>
+            <IconButton onClick={handleRemove} disabled={connStatus !== 1 || randomCell.assigned}>
               <RemoveIcon />
             </IconButton>
-            <IconButton onClick={handleClickDecimalLeft} variant="outlined" disabled={props.conn !== 1 || randomCell.assigned}>
+            <IconButton onClick={handleClickDecimalLeft} variant="outlined" disabled={connStatus !== 1 || randomCell.assigned}>
               <ArrowLeftIcon />
             </IconButton>
-            <IconButton onClick={handleClickDecimalRight} variant="outlined" disabled={props.conn !== 1 || randomCell.assigned}>
+            <IconButton onClick={handleClickDecimalRight} variant="outlined" disabled={connStatus !== 1 || randomCell.assigned}>
               <ArrowRightIcon />
             </IconButton>
           </Stack>

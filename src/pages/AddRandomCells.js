@@ -4,6 +4,10 @@ import Grid from '@mui/material/Grid';
 import _ from 'lodash'
 
 export default function AddRandomCells(props) {
+  const connStatus = props.connStatus
+  const randomCells = props.randomCells
+  const setRandomCells = props.setRandomCells
+
   return (
     <>
       <Grid container spacing={2}>
@@ -12,10 +16,10 @@ export default function AddRandomCells(props) {
             Add Random Cells
           </Typography>
         </Grid>
-        {[...Array(_.reject(props.randomCells, { addressSheet: null, addressCell: null }).length + 1)].map(
+        {[...Array(_.reject(randomCells, { addressSheet: null, addressCell: null }).length + 1)].map(
           (v, i) => (
             <Grid item xs={12} key={i.toString()}>
-              <RandomCellCard id={i.toString()} conn={props.conn} randomCells={props.randomCells} setRandomCells={props.setRandomCells} />
+              <RandomCellCard id={i.toString()} connStatus={connStatus} randomCells={randomCells} setRandomCells={setRandomCells} />
             </Grid>
           )
         )}
