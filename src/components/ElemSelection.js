@@ -8,6 +8,7 @@ import { useTheme } from '@mui/styles'
 function ElemSelection(props) {
   const addressSheet = props.addressSheet
   const addressCell = props.addressCell
+  const type = props.type
 
   const [selected, setSelected] = useState(false)
 
@@ -21,16 +22,19 @@ function ElemSelection(props) {
     <ButtonBase
       onClick={handleClick}
       sx={{
-          color: theme.palette.mode === "light" ? "#2e7d32" : "#aad5aa",
-          border: theme.palette.mode === "light" ? "1px solid rgba(46, 125, 50, 0.5)" : "1px solid rgba(170, 213, 170, 0.5)",
+          borderStyle: 'solid',
+          borderWidth: '1px',
           borderRadius: 1,
+          backgroundColor: selected ? theme.palette.mode === "light" ? "rgba(46, 125, 50, 0.20)" : "rgba(170, 213, 170, 0.20)" : "none",
+          color: theme.palette.mode === "light" ? "#2e7d32" : "#aad5aa",
+          borderColor: theme.palette.mode === "light" ? "rgba(46, 125, 50, 0.5)" : "rgba(170, 213, 170, 0.5)",
         "&:hover": {
-          backgroundColor: "rgba(46, 125, 50, 0.04)",
-          border: "1px solid #2e7d32",
+          backgroundColor: theme.palette.mode === "light" ? "rgba(46, 125, 50, 0.04)" : "rgba(170, 213, 170, 0.08)",
+          borderColor: theme.palette.mode === "light" ? "#2e7d32" : "#aad5aa",
         },
         "&.Mui-disabled": {
           color: theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.26)" : "rgba(255, 255, 255, 0.3)",
-          border: theme.palette.mode === "light" ? "1px solid rgba(0, 0, 0, 0.12)" : "1px solid rgba(255, 255, 255, 0.12)",
+          borderColor: theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.12)" : "rgba(255, 255, 255, 0.12)",
         },
       }}>
       <Box

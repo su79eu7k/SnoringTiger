@@ -39,12 +39,12 @@ export default function ResultPreview(props) {
           <Grid item xs={12} container spacing={2} justifyContent="center">
             {asndRandCells.map((e, i) => (
             <Grid item>
-              <ElemSelection key={"R-" + i} addressSheet={e.addressSheet} addressCell={e.addressCell} />
+              <ElemSelection key={"R-" + i} addressSheet={e.addressSheet} addressCell={e.addressCell} type={'rand'} />
             </Grid>
             ))}
             {asndMonitCells.map((e, i) => (
             <Grid item>
-              <ElemSelection key={"M-" + i} addressSheet={e.addressSheet} addressCell={e.addressCell} />
+              <ElemSelection key={"M-" + i} addressSheet={e.addressSheet} addressCell={e.addressCell} type={'monit'} />
             </Grid>
             ))}
           </Grid>
