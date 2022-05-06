@@ -64,7 +64,6 @@ export default React.memo(function PropPreview(props) {
         }
       }
     })
-    console.log(probChart)
 
     return () => {
       probChart.destroy()
