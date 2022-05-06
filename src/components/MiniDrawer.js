@@ -25,6 +25,8 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import ColorModeContext from '../contexts/ColorModeContext';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
+import Grid from '@mui/material/Grid';
+
 
 const drawerWidth = 240;
 
@@ -183,8 +185,12 @@ export default function MiniDrawer(props) {
         <Divider />
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
-        <Outlet />
+        <Grid container justifyContent={"center"}>
+          <Grid item xs={12} md={10} xl={8}>
+            <DrawerHeader />
+            <Outlet />
+          </Grid>
+        </Grid>
       </Box>
     </Box>
   );
