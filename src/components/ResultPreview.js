@@ -18,8 +18,8 @@ export default function ResultPreview(props) {
   const randomCells = props.randomCells
   const monitoringCells = props.monitoringCells
 
-  const [asndRandCells, setAsndRandCells] = useState([{addressSheet: 'result', addressCell: 'K11'}, {addressSheet: 'result', addressCell: 'K11'}])
-  const [asndMonitCells, setAsndMonitCells] = useState([{addressSheet: 'result', addressCell: 'K11'}, {addressSheet: 'result', addressCell: 'K11'}])
+  const [asndRandCells, setAsndRandCells] = useState([{addressSheet: 'sheet1', addressCell: 'A5'}, {addressSheet: 'sheet2', addressCell: 'K11'}])
+  const [asndMonitCells, setAsndMonitCells] = useState([{addressSheet: 'thisIsMonitSheet', addressCell: 'D29'}, {addressSheet: 'notRandSheet', addressCell: 'K11'}])
 
   // useEffect(() => {
   //   setAsndRandCells(_.filter(_.values(randomCells), ['assigned', true]))
@@ -36,17 +36,17 @@ export default function ResultPreview(props) {
               Result Preview
             </Typography>
           </Grid>
-          <Grid item xs={12} container>
-          <Grid item xs={6}>
+          <Grid item xs={12} container spacing={2} justifyContent="center">
             {asndRandCells.map((e, i) => (
+            <Grid item>
               <ElemSelection key={"R-" + i} addressSheet={e.addressSheet} addressCell={e.addressCell} />
+            </Grid>
             ))}
-          </Grid>
-          <Grid item xs={6}>
             {asndMonitCells.map((e, i) => (
+            <Grid item>
               <ElemSelection key={"M-" + i} addressSheet={e.addressSheet} addressCell={e.addressCell} />
+            </Grid>
             ))}
-          </Grid>
           </Grid>
           <Grid item xs={12}>
           <Divider variant="middle" />
