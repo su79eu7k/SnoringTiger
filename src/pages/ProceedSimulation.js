@@ -16,6 +16,7 @@ import axios from 'axios';
 import _ from 'lodash';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
+import ResultPreview from '../components/ResultPreview';
 
 
 export default function ProceedSimulation(props) {
@@ -191,6 +192,9 @@ export default function ProceedSimulation(props) {
               </Grid>
             </CardActions>
           </Card>
+        </Grid>
+        <Grid item xs={12}>
+          <ResultPreview connStatus={connStatus} randomCells={randomCells} monitoringCells={monitoringCells} />
         </Grid>
       </Grid>
     </>

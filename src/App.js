@@ -52,8 +52,8 @@ function App() {
             paper: '#141f2b',
           },
           text: {
-            primary: '#ffffff',
-            secondary: '#626a72'
+            primary: 'rgba(229, 229, 229, 1)',
+            secondary: 'rgba(102, 102, 102, 1)'
           }
         }),
     },
