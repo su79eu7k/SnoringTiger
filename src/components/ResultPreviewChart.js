@@ -3,10 +3,7 @@ import Chart from "chart.js/auto";
 import _ from 'lodash'
 
 
-export default React.memo(function PropPreview(props) {
-  const cellTypeAuto = props.cellTypeAuto
-  const x = _.values(props.x)
-  const prob = _.values(props.prob)
+export default React.memo(function ResultPreviewChart(props) {
   const coords = props.coords
   const decimal = props.decimal
 
@@ -16,17 +13,13 @@ export default React.memo(function PropPreview(props) {
 
   useEffect(() => {
     const ctx = canvasRef.current.getContext("2d")
-    const probChart = new Chart(ctx, {
-      type: cellTypeAuto ? 'line' : 'bar',
+    const previewChart = new Chart(ctx, {
+      type: 'scatter',
       data: {
-        labels: x.map(v => v.toFixed(decimal)),
         datasets: [{
-          data: cellTypeAuto ? coords : prob,
-          borderColor: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, .2)' : 'rgba(229, 229, 229, .2)',
+          labels: 'Scatter Dataset',
+          data: coords,
           backgroundColor: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, .2)' : 'rgba(229, 229, 229, .2)',
-          borderWidth: cellTypeAuto ? 1 : 0,
-          pointRadius: 2,
-          pointHoverRadius: 4,
         }]
       },
       options: {
@@ -66,9 +59,9 @@ export default React.memo(function PropPreview(props) {
     })
 
     return () => {
-      probChart.destroy()
+      previewChart.destroy()
     }
-  }, [x, prob, coords, cellTypeAuto, theme, decimal])
+  }, [coords, theme, decimal])
 
   return (
     <canvas ref={canvasRef}></canvas>
