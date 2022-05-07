@@ -21,7 +21,7 @@ function ElemSelection(props) {
   }
 
   useEffect(() => {
-    setToggledCells(prevState => ({...prevState, ["'" + addressSheet + "!" + addressCell]: selected}))  
+    setToggledCells(prevState => ({...prevState, [type + "'" + addressSheet + "!" + addressCell]: selected}))  
   }, [setToggledCells, addressSheet, addressCell, selected])
   
 

@@ -18,22 +18,37 @@ export default function ResultPreview(props) {
   const randomCells = props.randomCells
   const monitoringCells = props.monitoringCells
 
-  const [asndRandCells, setAsndRandCells] = useState([{addressSheet: 'sheet1', addressCell: 'A5'}, {addressSheet: 'sheet2', addressCell: 'K11'}])
-  const [asndMonitCells, setAsndMonitCells] = useState([{addressSheet: 'thisIsMonitSheetandLong', addressCell: 'D29'}, {addressSheet: 'notRandSheet', addressCell: 'K11'}])
+  const [asndRandCells, setAsndRandCells] = useState([])
+  const [asndMonitCells, setAsndMonitCells] = useState([])
 
   const [toggledCells, setToggledCells] = useState([])
 
   const [previewAvailable, setPreviewAvailable] = useState(false)
   
-  // useEffect(() => {
-  //   setAsndRandCells(_.filter(_.values(randomCells), ['assigned', true]))
-  //   setAsndMonitCells(_.filter(_.values(monitoringCells), ['assigned', true]))
-  // }, [setAsndRandCells, setAsndMonitCells, randomCells, monitoringCells])
+  useEffect(() => {
+    setAsndRandCells(_.filter(_.values(randomCells), ['assigned', true]))
+    setAsndMonitCells(_.filter(_.values(monitoringCells), ['assigned', true]))
+  }, [setAsndRandCells, setAsndMonitCells, randomCells, monitoringCells])
 
   useEffect(() => {
     _.values(toggledCells).filter(b => b === true).length === 2 ? setPreviewAvailable(true) : setPreviewAvailable(false) 
   }, [setPreviewAvailable, toggledCells])
 
+  const handleClickPreview = (e) => {
+    e.preventDefault()
+      const [_x, _y] = _.keys(_.pickBy(toggledCells))
+
+      const url = 'http://127.0.0.1:8000/preview_data';
+      const data = { x: _x, y: _y }
+      const config = {
+        headers: {
+          'content-type': 'application/json',
+        },
+      };
+      axios.post(url, data, config).then((response) => {
+        console.log(response)
+      });
+  }
 
   return (
     <Card sx={{ minWidth: 275 }}>
@@ -65,7 +80,7 @@ export default function ResultPreview(props) {
         <Grid container spacing={0}>
           <Grid item xs={12}>
             <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1}>
-              <Button variant="outlined" startIcon={<CableIcon />} onClick={null} disabled={connStatus !== 1 || !previewAvailable}>
+              <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickPreview} disabled={connStatus !== 1 || !previewAvailable}>
                 Preview
               </Button>
             </Stack>
