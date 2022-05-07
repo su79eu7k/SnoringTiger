@@ -6,6 +6,7 @@ import { useTheme } from '@mui/styles'
 
 
 function ElemSelection(props) {
+  const connStatus = props.connStatus
   const addressSheet = props.addressSheet
   const addressCell = props.addressCell
   const type = props.type
@@ -26,6 +27,7 @@ function ElemSelection(props) {
 
   return (
     <ButtonBase
+      disabled={connStatus !== 1}
       onClick={handleClick}
       sx={{
           borderStyle: 'solid',
