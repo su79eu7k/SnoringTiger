@@ -19,12 +19,20 @@ export default function ResultPreview(props) {
   const monitoringCells = props.monitoringCells
 
   const [asndRandCells, setAsndRandCells] = useState([{addressSheet: 'sheet1', addressCell: 'A5'}, {addressSheet: 'sheet2', addressCell: 'K11'}])
-  const [asndMonitCells, setAsndMonitCells] = useState([{addressSheet: 'thisIsMonitSheet', addressCell: 'D29'}, {addressSheet: 'notRandSheet', addressCell: 'K11'}])
+  const [asndMonitCells, setAsndMonitCells] = useState([{addressSheet: 'thisIsMonitSheetandLong', addressCell: 'D29'}, {addressSheet: 'notRandSheet', addressCell: 'K11'}])
 
+  const [toggledCells, setToggledCells] = useState([])
+
+  const [previewAvailable, setPreviewAvailable] = useState(false)
+  
   // useEffect(() => {
   //   setAsndRandCells(_.filter(_.values(randomCells), ['assigned', true]))
   //   setAsndMonitCells(_.filter(_.values(monitoringCells), ['assigned', true]))
   // }, [setAsndRandCells, setAsndMonitCells, randomCells, monitoringCells])
+
+  useEffect(() => {
+    _.values(toggledCells).filter(b => b === true).length === 2 ? setPreviewAvailable(true) : setPreviewAvailable(false) 
+  }, [setPreviewAvailable, toggledCells])
 
 
   return (
@@ -39,12 +47,12 @@ export default function ResultPreview(props) {
           <Grid item xs={12} container spacing={2} justifyContent="center">
             {asndRandCells.map((e, i) => (
             <Grid item>
-              <ElemSelection key={"R-" + i} addressSheet={e.addressSheet} addressCell={e.addressCell} type={'rand'} />
+              <ElemSelection key={"R-" + i} addressSheet={e.addressSheet} addressCell={e.addressCell} type={'rand'} setToggledCells={setToggledCells} />
             </Grid>
             ))}
             {asndMonitCells.map((e, i) => (
             <Grid item>
-              <ElemSelection key={"M-" + i} addressSheet={e.addressSheet} addressCell={e.addressCell} type={'monit'} />
+              <ElemSelection key={"M-" + i} addressSheet={e.addressSheet} addressCell={e.addressCell} type={'monit'} setToggledCells={setToggledCells} />
             </Grid>
             ))}
           </Grid>
@@ -57,7 +65,7 @@ export default function ResultPreview(props) {
         <Grid container spacing={0}>
           <Grid item xs={12}>
             <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1}>
-              <Button variant="outlined" startIcon={<CableIcon />} onClick={null} disabled={connStatus !== 1}>
+              <Button variant="outlined" startIcon={<CableIcon />} onClick={null} disabled={connStatus !== 1 || !previewAvailable}>
                 Preview
               </Button>
             </Stack>

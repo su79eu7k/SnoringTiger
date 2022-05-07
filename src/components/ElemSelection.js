@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Box from '@mui/material/Box'
 import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
@@ -9,14 +9,20 @@ function ElemSelection(props) {
   const addressSheet = props.addressSheet
   const addressCell = props.addressCell
   const type = props.type
+  const setToggledCells = props.setToggledCells
 
   const [selected, setSelected] = useState(false)
 
   const theme = useTheme()
 
   const handleClick = (e) => {
-    setSelected(!selected)
+    setSelected(() => !selected)
   }
+
+  useEffect(() => {
+    setToggledCells(prevState => ({...prevState, ["'" + addressSheet + "!" + addressCell]: selected}))  
+  }, [setToggledCells, addressSheet, addressCell, selected])
+  
 
   return (
     <ButtonBase
