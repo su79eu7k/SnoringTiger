@@ -17,12 +17,13 @@ function ElemSelection(props) {
   const theme = useTheme()
 
   const handleClick = (e) => {
-    setSelected(() => !selected)
+    e.preventDefault()
+    setSelected(!selected)
   }
 
   useEffect(() => {
     setToggledCells(prevState => ({...prevState, [type + "'" + addressSheet + "!" + addressCell]: selected}))  
-  }, [setToggledCells, addressSheet, addressCell, selected])
+  }, [setToggledCells, type, addressSheet, addressCell, selected])
   
 
   return (
@@ -37,7 +38,7 @@ function ElemSelection(props) {
           color: theme.palette.mode === "light" ? "#2e7d32" : "#aad5aa",
           borderColor: theme.palette.mode === "light" ? "rgba(46, 125, 50, 0.5)" : "rgba(170, 213, 170, 0.5)",
         "&:hover": {
-          backgroundColor: theme.palette.mode === "light" ? "rgba(46, 125, 50, 0.04)" : "rgba(170, 213, 170, 0.08)",
+          backgroundColor: theme.palette.mode === "light" ? "rgba(46, 125, 50, 0.10)" : "rgba(170, 213, 170, 0.08)",
           borderColor: theme.palette.mode === "light" ? "#2e7d32" : "#aad5aa",
         },
         "&.Mui-disabled": {

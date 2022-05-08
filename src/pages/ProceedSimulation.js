@@ -38,6 +38,8 @@ export default function ProceedSimulation(props) {
   const [paused, setPaused] = useState(!_.isEmpty(simConfig) ? simConfig.paused : false)
 
   const handleChangeTrials = (e) => {
+    e.preventDefault()
+    
     setValueTrials(e.target.value)
     setValueNumTrials(!isNaN(e.target.value))
   };

@@ -1,15 +1,25 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import Chart from "chart.js/auto";
 import _ from 'lodash'
 
 
 export default React.memo(function ResultPreviewChart(props) {
   const coords = props.coords
+  const setCoords = props.setCoords
   const decimal = props.decimal
+  const toggledCells = props.toggledCells
+  const [xlab, setXlab] = useState('')
+  const [ylab, setYlab] = useState('')
 
   const canvasRef = useRef()
 
   const theme = props.theme
+
+  useEffect(() => {
+    setCoords([])
+    setXlab(_.keys(_.pickBy(toggledCells, _.identity))[0])
+    setYlab(_.keys(_.pickBy(toggledCells, _.identity))[1])
+  }, [setCoords, setXlab, setYlab, toggledCells])
 
   useEffect(() => {
     const ctx = canvasRef.current.getContext("2d")
@@ -39,6 +49,10 @@ export default React.memo(function ResultPreviewChart(props) {
               display: false,
               lineWidth: 0.3,
             },
+            title: {
+              display: true,
+              text: xlab ? xlab : "N/A",
+            },
           },
           y: {
             grid: {
@@ -47,6 +61,10 @@ export default React.memo(function ResultPreviewChart(props) {
               borderWidth: 1,
               display: true,
               lineWidth: 0.3,
+            },
+            title: {
+              display: true,
+              text: ylab ? ylab : "N/A",
             },
           }
         },
@@ -61,7 +79,7 @@ export default React.memo(function ResultPreviewChart(props) {
     return () => {
       previewChart.destroy()
     }
-  }, [coords, theme, decimal])
+  }, [coords, theme, decimal, xlab, ylab])
 
   return (
     <canvas ref={canvasRef}></canvas>
@@ -69,5 +87,6 @@ export default React.memo(function ResultPreviewChart(props) {
 }, (prevProps, nextProps) => (
   JSON.stringify(prevProps.coords) === JSON.stringify(nextProps.coords)
   && JSON.stringify(prevProps.decimal) === JSON.stringify(nextProps.decimal)
+  && JSON.stringify(prevProps.toggledCells) ===  JSON.stringify(nextProps.toggledCells)
   && prevProps.theme.palette.mode === nextProps.theme.palette.mode
 ))

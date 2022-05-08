@@ -29,18 +29,21 @@ export default function InputManual(props) {
   const [valNumLikelihoods, setValNumLikelihoods] = useState(randomCell.valNumLikelihoods ? randomCell.valNumLikelihoods : {})
 
   const handleChangeRandVar = (e) => {
+    e.preventDefault()
     setValRandVars(prevState => ({ ...prevState, [e.target.id]: e.target.value }))
     setValNumRandVars(prevState => ({ ...prevState, [e.target.id]: !(isNaN(e.target.value) || e.target.value === "") }))
     setProb(null)
   };
 
   const handleChangeLikelihood = (e) => {
+    e.preventDefault()
     setValLikelihoods(prevState => ({ ...prevState, [e.target.id]: e.target.value }))
     setValNumLikelihoods(prevState => ({ ...prevState, [e.target.id]: !(isNaN(e.target.value) || e.target.value === "") }))
     setProb(null)
   };
 
   const handleRemove = (e) => {
+    e.preventDefault()
     setInputCount(prevState => Math.max(prevState - 1, 0))
 
     if (inputCount > 0) {
@@ -52,11 +55,13 @@ export default function InputManual(props) {
   }
 
   const handleClickDecimalLeft = (e) => {
+    e.preventDefault()
     setDecimal(prevState => Math.max(prevState - 1, 0))
 
   }
 
   const handleClickDecimalRight = (e) => {
+    e.preventDefault()
     setDecimal(prevState => prevState + 1)
   }
 

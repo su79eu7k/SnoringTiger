@@ -75,18 +75,21 @@ export default function InputAuto(props) {
   }
 
   const handleChangeStart = (e) => {
+    e.preventDefault()
     setValueStart(e.target.value)
     setValueNumStart(!(isNaN(e.target.value) || e.target.value === ""))
     setProb(null)
   };
 
   const handleChangeEnd = (e) => {
+    e.preventDefault()
     setValueEnd(e.target.value)
     setValueNumEnd(!(isNaN(e.target.value) || e.target.value === ""))
     setProb(null)
   };
 
   const handleChangeStep = (e) => {
+    e.preventDefault()
     setValueStep(e.target.value)
     setValueNumStep(!(isNaN(e.target.value) || e.target.value === ""))
     setProb(null)
@@ -108,11 +111,13 @@ export default function InputAuto(props) {
   }
 
   const handleClickDecimalLeft = (e) => {
+    e.preventDefault()
     setDecimal(prevState => Math.max(prevState - 1, 0))
 
   }
 
   const handleClickDecimalRight = (e) => {
+    e.preventDefault()
     setDecimal(prevState => prevState + 1)
   }
 

@@ -42,6 +42,7 @@ export default function ResultPreview(props) {
 
   const handleClickPreview = (e) => {
     e.preventDefault()
+    
     const [_x, _y] = _.keys(_.pickBy(toggledCells))
 
     const url = 'http://127.0.0.1:8000/preview_data';
@@ -67,13 +68,13 @@ export default function ResultPreview(props) {
           </Grid>
           <Grid item xs={12} container spacing={2} justifyContent="center">
             {asndRandCells.map((e, i) => (
-              <Grid item>
-                <ElemSelection key={"R-" + i} connStatus={connStatus} addressSheet={e.addressSheet} addressCell={e.addressCell} type={'rand'} setToggledCells={setToggledCells} />
+              <Grid item key={"R-" + i}>
+                <ElemSelection connStatus={connStatus} addressSheet={e.addressSheet} addressCell={e.addressCell} type={'rand'} setToggledCells={setToggledCells} />
               </Grid>
             ))}
             {asndMonitCells.map((e, i) => (
-              <Grid item>
-                <ElemSelection key={"M-" + i} connStatus={connStatus} addressSheet={e.addressSheet} addressCell={e.addressCell} type={'monit'} setToggledCells={setToggledCells} />
+              <Grid item key={"M-" + i}>
+                <ElemSelection connStatus={connStatus} addressSheet={e.addressSheet} addressCell={e.addressCell} type={'monit'} setToggledCells={setToggledCells} />
               </Grid>
             ))}
           </Grid>
@@ -81,7 +82,7 @@ export default function ResultPreview(props) {
             <Divider variant="middle" />
           </Grid>
           <Grid item xs={12}>
-            <ResultPreviewChart coords={coords} theme={theme} decimal={null} />
+            <ResultPreviewChart coords={coords} setCoords={setCoords} theme={theme} decimal={null} toggledCells={toggledCells} />
           </Grid>
         </Grid>
       </CardContent>
