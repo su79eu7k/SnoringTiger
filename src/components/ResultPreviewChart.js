@@ -82,28 +82,25 @@ export default React.memo(function ResultPreviewChart(props) {
       options: _options,
     }
     setChart(new Chart(ctx, config))
-  
-    return () => {
-      if (chart !== undefined) {
-        chart.destroy()
-        console.log('Destroyed!')
-      }
-    }
   }, [])
   
   useEffect(() => {
     if (chart !== undefined) {
-      chart.data = _data
-      chart.update()
-      setChart(chart)
+      if (chart.ctx) {
+        chart.data = _data
+        chart.update()
+        setChart(chart)
+      }
     }
   }, [coords, theme])
 
   useEffect(() => {
     if (chart !== undefined) {
-      chart.options = _options
-      chart.update()
-      setChart(chart)
+      if (chart.ctx) {
+        chart.options = _options
+        chart.update()
+        setChart(chart)
+      }
     }
   }, [xlab, ylab, theme])
 

@@ -64,6 +64,13 @@ export default React.memo(function PropPreview(props) {
   }
 
   useEffect(() => {
+    if (chart !== undefined) {
+      // console.log(chart)
+      chart.destroy()
+      // console.log('Destroyed!')
+      // console.log(chart)
+    }
+
     const ctx = canvasRef.current.getContext("2d")
     const config = {
       type: cellTypeAuto ? 'line' : 'bar',
@@ -71,28 +78,25 @@ export default React.memo(function PropPreview(props) {
       options: _options,
     }
     setChart(new Chart(ctx, config))
-  
-    return () => {
-      if (chart !== undefined) {
-        chart.destroy()
-        console.log('Destroyed!')
-      }
-    }
-  }, [])
-  
+  }, [cellTypeAuto])
+
   useEffect(() => {
     if (chart !== undefined) {
-      chart.data = _data
-      chart.update()
-      setChart(chart)
+      if (chart.ctx) {
+        chart.data = _data
+        chart.update()
+        setChart(chart)
+      }
     }
   }, [x, decimal, prob, coords, cellTypeAuto, theme])
 
   useEffect(() => {
     if (chart !== undefined) {
-      chart.options = _options
-      chart.update()
-      setChart(chart)
+      if (chart.ctx) {
+        chart.options = _options
+        chart.update()
+        setChart(chart)
+      }
     }
   }, [theme])
 
