@@ -113,7 +113,7 @@ export default function InputManual(props) {
         </Grid>
         <Grid item xs={12} container spacing={2}>
         {_.range(inputCount + 1).map((_, i) =>
-            <Grid item xs={12} justifyContent="flex-end" container spacing={2}>
+            <Grid key={"Input-M-" + i} item xs={12} justifyContent="flex-end" container spacing={2}>
               <Grid item>
               <TextField
                 id={i.toString()}

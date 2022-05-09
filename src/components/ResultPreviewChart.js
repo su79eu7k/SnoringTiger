@@ -86,6 +86,7 @@ export default React.memo(function ResultPreviewChart(props) {
     return () => {
       if (chart !== undefined) {
         chart.destroy()
+        console.log('Destroyed!')
       }
     }
   }, [])
