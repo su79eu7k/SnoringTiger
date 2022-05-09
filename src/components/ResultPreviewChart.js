@@ -8,12 +8,65 @@ export default React.memo(function ResultPreviewChart(props) {
   const setCoords = props.setCoords
   const decimal = props.decimal
   const toggledCells = props.toggledCells
-  const [xlab, setXlab] = useState('')
-  const [ylab, setYlab] = useState('')
+  const [xlab, setXlab] = useState('init')
+  const [ylab, setYlab] = useState('init')
 
   const canvasRef = useRef()
 
   const theme = props.theme
+
+  const [chart, setChart] = useState()
+
+  const _data = {
+    datasets: [{
+      labels: 'Scatter Dataset',
+      data: coords,
+      backgroundColor: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, .2)' : 'rgba(229, 229, 229, .2)',
+    }]
+  }
+
+  const _options = {
+    transitions: {
+      'resize': {
+        animation: {
+          duration: 400
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: {
+          color: theme.palette.text.secondary,
+          borderWidth: 1,
+          borderColor: theme.palette.text.secondary,
+          display: false,
+          lineWidth: 0.3,
+        },
+        title: {
+          display: true,
+          text: xlab ? xlab : "N/A",
+        },
+      },
+      y: {
+        grid: {
+          color: theme.palette.text.secondary,
+          borderColor: theme.palette.text.secondary,
+          borderWidth: 1,
+          display: true,
+          lineWidth: 0.3,
+        },
+        title: {
+          display: true,
+          text: ylab ? ylab : "N/A",
+        },
+      }
+    },
+    plugins: {
+      legend: {
+        display: false
+      }
+    }
+  }
 
   useEffect(() => {
     setCoords([])
@@ -23,63 +76,35 @@ export default React.memo(function ResultPreviewChart(props) {
 
   useEffect(() => {
     const ctx = canvasRef.current.getContext("2d")
-    const previewChart = new Chart(ctx, {
+    const config = {
       type: 'scatter',
-      data: {
-        datasets: [{
-          labels: 'Scatter Dataset',
-          data: coords,
-          backgroundColor: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, .2)' : 'rgba(229, 229, 229, .2)',
-        }]
-      },
-      options: {
-        transitions: {
-          'resize': {
-            animation: {
-              duration: 400
-            }
-          }
-        },
-        scales: {
-          x: {
-            grid: {
-              color: theme.palette.text.secondary,
-              borderWidth: 1,
-              borderColor: theme.palette.text.secondary,
-              display: false,
-              lineWidth: 0.3,
-            },
-            title: {
-              display: true,
-              text: xlab ? xlab : "N/A",
-            },
-          },
-          y: {
-            grid: {
-              color: theme.palette.text.secondary,
-              borderColor: theme.palette.text.secondary,
-              borderWidth: 1,
-              display: true,
-              lineWidth: 0.3,
-            },
-            title: {
-              display: true,
-              text: ylab ? ylab : "N/A",
-            },
-          }
-        },
-        plugins: {
-          legend: {
-            display: false
-          }
-        }
-      }
-    })
-
-    return () => {
-      previewChart.destroy()
+      data: _data,
+      options: _options,
     }
-  }, [coords, theme, decimal, xlab, ylab])
+    setChart(new Chart(ctx, config))
+  
+    return () => {
+      if (chart !== undefined) {
+        chart.destroy()
+      }
+    }
+  }, [])
+  
+  useEffect(() => {
+    if (chart !== undefined) {
+      chart.data = _data
+      chart.update()
+      setChart(chart)
+    }
+  }, [coords, theme])
+
+  useEffect(() => {
+    if (chart !== undefined) {
+      chart.options = _options
+      chart.update()
+      setChart(chart)
+    }
+  }, [xlab, ylab, theme])
 
   return (
     <canvas ref={canvasRef}></canvas>
