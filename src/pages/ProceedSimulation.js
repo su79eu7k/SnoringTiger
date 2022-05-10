@@ -106,7 +106,7 @@ export default function ProceedSimulation(props) {
   }, progressDelay)
 
   useEffect(() => {
-    connStatus && !paused && progress >= 0 && progress < 100 ? setProgressDelay(500) : setProgressDelay(null)
+    connStatus && !paused && progress >= 0 && progress < 100 ? setProgressDelay(3000) : setProgressDelay(null)
   }, [connStatus, paused, progress])
 
   useEffect(() => {

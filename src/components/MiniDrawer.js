@@ -132,7 +132,7 @@ export default function MiniDrawer(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
-            Scenario Storming
+            CellStorm
           </Typography>
           <Typography variant="subtitle2" noWrap>
             {connStatus === 1 ? "Connected to " + connedFile : ""}
