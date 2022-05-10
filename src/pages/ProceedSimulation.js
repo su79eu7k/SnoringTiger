@@ -106,8 +106,8 @@ export default function ProceedSimulation(props) {
   }, progressDelay)
 
   useEffect(() => {
-    progress >= 0 && progress < 100 ? setProgressDelay(500) : setProgressDelay(null)
-  }, [progress])
+    connStatus && !paused && progress >= 0 && progress < 100 ? setProgressDelay(500) : setProgressDelay(null)
+  }, [connStatus, paused, progress])
 
   useEffect(() => {
     connStatus === 1 &&
@@ -177,18 +177,18 @@ export default function ProceedSimulation(props) {
               <Grid container spacing={0}>
                 <Grid item xs={12}>
                   <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1}>
-                    <Button variant="outlined" startIcon={<CalculateIcon />} onClick={handleClickStart} disabled={!(valueTrials && valueNumTrials && trialsAboveZero) || !dataReady || (progress > 0 && progress < 100)}>
+                    <Button variant="outlined" startIcon={<CalculateIcon />} onClick={handleClickStart} disabled={!connStatus || !(valueTrials && valueNumTrials && trialsAboveZero) || !dataReady || (progress > 0 && progress < 100)}>
                       Start
                     </Button>
                     {paused ?
-                      <Button variant="outlined" startIcon={<PlayArrowIcon />} onClick={handleClickResume} disabled={!progress || progress === 100}>
+                      <Button variant="outlined" startIcon={<PlayArrowIcon />} onClick={handleClickResume} disabled={!connStatus || !progress || progress === 100}>
                         Resume
                       </Button> :
-                      <Button variant="outlined" startIcon={<PauseIcon />} onClick={handleClickPause} disabled={!progress || progress === 100}>
+                      <Button variant="outlined" startIcon={<PauseIcon />} onClick={handleClickPause} disabled={!connStatus || !progress || progress === 100}>
                         Pause
                       </Button>
                     }
-                    <Button variant="outlined" startIcon={<StopIcon />} onClick={handleClickCancel} disabled={!progress || progress === 100}>
+                    <Button variant="outlined" startIcon={<StopIcon />} onClick={handleClickCancel} disabled={!connStatus || !progress || progress === 100}>
                       Cancel
                     </Button>
                   </Stack>

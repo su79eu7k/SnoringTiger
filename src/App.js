@@ -18,9 +18,12 @@ function App() {
   const [connReqStatus, setConnReqStatus] = useState()
   const [connStatus, setConnStatus] = useState(-1)
   const [connedFile, setConnedFile] = useState(null)
+
   const [randomCells, setRandomCells] = useState({})
   const [monitoringCells, setMonitoringCells] = useState({})
+
   const [simConfig, setSimConfig] = useState({})
+  
   const [mode, setMode] = useState('light');
 
   const colorMode = useMemo(
