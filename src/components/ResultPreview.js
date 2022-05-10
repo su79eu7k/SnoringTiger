@@ -16,9 +16,12 @@ import { useTheme } from '@mui/styles'
 
 
 export default function ResultPreview(props) {
+  const setPreviewCount = props.setPreviewCount
   const connStatus = props.connStatus
   const randomCells = props.randomCells
   const monitoringCells = props.monitoringCells
+
+  const [added, setAdded] = useState(false)
 
   const [asndRandCells, setAsndRandCells] = useState([])
   const [asndMonitCells, setAsndMonitCells] = useState([])
@@ -57,8 +60,16 @@ export default function ResultPreview(props) {
     });
   }
 
+  const handleClickAdd = (e) => {
+    e.preventDefault()
+
+    setAdded(true)
+    setPreviewCount(v => v + 1)
+  }
+
   return (
     <Card sx={{ minWidth: 275 }}>
+      {added ? 
       <CardContent>
         <Grid container spacing={2}>
           <Grid item xs={12}>
@@ -85,14 +96,18 @@ export default function ResultPreview(props) {
             <ResultPreviewChart coords={coords} setCoords={setCoords} theme={theme} decimal={null} toggledCells={toggledCells} />
           </Grid>
         </Grid>
-      </CardContent>
+      </CardContent> : null}
       <CardActions>
         <Grid container spacing={0}>
           <Grid item xs={12}>
             <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1}>
+              {added ? 
               <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickPreview} disabled={connStatus !== 1 || !previewAvailable}>
                 Preview
-              </Button>
+              </Button> : 
+              <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickAdd} disabled={connStatus !== 1}>
+              Add Preview
+            </Button>}
             </Stack>
           </Grid>
         </Grid>

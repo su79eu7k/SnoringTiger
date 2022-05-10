@@ -37,6 +37,8 @@ export default function ProceedSimulation(props) {
 
   const [paused, setPaused] = useState(!_.isEmpty(simConfig) ? simConfig.paused : false)
 
+  const [previewCount, setPreviewCount] = useState(1)
+
   const handleChangeTrials = (e) => {
     e.preventDefault()
     
@@ -195,9 +197,11 @@ export default function ProceedSimulation(props) {
             </CardActions>
           </Card>
         </Grid>
-        <Grid item xs={12}>
-          <ResultPreview connStatus={connStatus} randomCells={randomCells} monitoringCells={monitoringCells} />
-        </Grid>
+        {_.range(previewCount).map((v, i) => 
+          <Grid key={"PreviewCard-" + i.toString()} item xs={12}>
+            <ResultPreview setPreviewCount={setPreviewCount} connStatus={connStatus} randomCells={randomCells} monitoringCells={monitoringCells} />
+          </Grid>
+        )}
       </Grid>
     </>
   )
