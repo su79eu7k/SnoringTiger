@@ -35,6 +35,7 @@ export default function ProceedSimulation(props) {
   const [progress, setProgress] = useState(!_.isEmpty(simConfig) ? simConfig.progress : null)
   const [progressDelay, setProgressDelay] = useState(!_.isEmpty(simConfig) ? simConfig.progressDelay : null)
 
+  const [started, setStarted] = useState(!_.isEmpty(simConfig) ? simConfig.started : false)
   const [paused, setPaused] = useState(!_.isEmpty(simConfig) ? simConfig.paused : false)
 
   const [previewCount, setPreviewCount] = useState(1)
@@ -49,6 +50,7 @@ export default function ProceedSimulation(props) {
   const handleClickStart = (e) => {
     e.preventDefault()
 
+    setStarted(true)
     setProgress(0)
     if (dataReady) {
       const url = 'http://127.0.0.1:8000/proc_sim';
@@ -85,6 +87,7 @@ export default function ProceedSimulation(props) {
   const handleClickResume = (e) => {
     e.preventDefault()
 
+    setStarted(false)
     setPaused(false)
     axios.get("http://127.0.0.1:8000/resume_sim").then((response) => { })
   }
@@ -177,7 +180,7 @@ export default function ProceedSimulation(props) {
               <Grid container spacing={0}>
                 <Grid item xs={12}>
                   <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1}>
-                    <Button variant="outlined" startIcon={<CalculateIcon />} onClick={handleClickStart} disabled={!connStatus || !(valueTrials && valueNumTrials && trialsAboveZero) || !dataReady || (progress > 0 && progress < 100)}>
+                    <Button variant="outlined" startIcon={<CalculateIcon />} onClick={handleClickStart} disabled={!connStatus || started || !(valueTrials && valueNumTrials && trialsAboveZero) || !dataReady || (progress > 0 && progress < 100)}>
                       Start
                     </Button>
                     {paused ?
