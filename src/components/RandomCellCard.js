@@ -135,7 +135,7 @@ export default function RandomCellCard(props) {
                   <InputManual connStatus={connStatus} id={id} randomCells={randomCells} setRandomCells={setRandomCells} setX={setX} setProb={setProb} setDecimal={setDecimal} />
                 }</Grid>
               <Grid item xs={12}>
-                <ProbPreview x={x} prob={prob} coords={coords} cellTypeAuto={cellTypeAuto} theme={theme} decimal={decimal} />
+                <ProbPreview connStatus={connStatus} x={x} prob={prob} coords={coords} cellTypeAuto={cellTypeAuto} theme={theme} decimal={decimal} />
               </Grid>
             </Grid>
           </Grid>

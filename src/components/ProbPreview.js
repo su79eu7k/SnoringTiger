@@ -2,11 +2,16 @@ import React, { useRef, useState, useEffect } from 'react'
 import Chart from "chart.js/auto";
 import zoomPlugin from 'chartjs-plugin-zoom';
 import _ from 'lodash'
+import IconButton from '@mui/material/IconButton';
+import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
+import Stack from '@mui/material/Stack';
+import Grid from '@mui/material/Grid';
 
 Chart.register(zoomPlugin);
 
 
 export default React.memo(function PropPreview(props) {
+  const connStatus = props.connStatus
   const cellTypeAuto = props.cellTypeAuto
   const x = _.values(props.x)
   const prob = _.values(props.prob)
@@ -119,8 +124,22 @@ export default React.memo(function PropPreview(props) {
     }
   }, [_options])
 
+  const handleClickZoomReset = (e) => {
+    e.preventDefault()
+    chart.resetZoom()
+  }
+
   return (
-    <canvas ref={canvasRef}></canvas>
+    <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <Stack direction="row" justifyContent="flex-end">
+          <IconButton variant="outlined" onClick={handleClickZoomReset} disabled={connStatus !== 1}>
+            <CenterFocusStrongIcon fontSize='small' />
+          </IconButton>
+        </Stack>
+        <canvas ref={canvasRef}></canvas>
+      </Grid>
+    </Grid>
   );
 }, (prevProps, nextProps) => (
   JSON.stringify(prevProps.cellTypeAuto) === JSON.stringify(nextProps.cellTypeAuto)
