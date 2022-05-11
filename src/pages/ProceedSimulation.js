@@ -71,6 +71,7 @@ export default function ProceedSimulation(props) {
   const handleClickCancel = (e) => {
     e.preventDefault()
 
+    setStarted(false)
     setPaused(false)
     axios.get("http://127.0.0.1:8000/cancel_sim").then((response) => {
       setProgress(null)
@@ -87,7 +88,6 @@ export default function ProceedSimulation(props) {
   const handleClickResume = (e) => {
     e.preventDefault()
 
-    setStarted(false)
     setPaused(false)
     axios.get("http://127.0.0.1:8000/resume_sim").then((response) => { })
   }
@@ -126,6 +126,9 @@ export default function ProceedSimulation(props) {
     }))
   }, [valueTrials, valueNumTrials, trialsAboveZero, dataReady, progress, progressDelay, paused, setSimConfig])
 
+  useEffect(() => {
+    progress === 100 ? setStarted(false) : null
+  }, [progress])
 
   return (
     <>
@@ -180,18 +183,18 @@ export default function ProceedSimulation(props) {
               <Grid container spacing={0}>
                 <Grid item xs={12}>
                   <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1}>
-                    <Button variant="outlined" startIcon={<CalculateIcon />} onClick={handleClickStart} disabled={!connStatus || started || !(valueTrials && valueNumTrials && trialsAboveZero) || !dataReady || (progress > 0 && progress < 100)}>
+                    <Button variant="outlined" startIcon={<CalculateIcon />} onClick={handleClickStart} disabled={!connStatus || started || !(valueTrials && valueNumTrials && trialsAboveZero) || !dataReady}>
                       Start
                     </Button>
                     {paused ?
-                      <Button variant="outlined" startIcon={<PlayArrowIcon />} onClick={handleClickResume} disabled={!connStatus || !progress || progress === 100}>
+                      <Button variant="outlined" startIcon={<PlayArrowIcon />} onClick={handleClickResume} disabled={!connStatus || !progress || !started}>
                         Resume
                       </Button> :
-                      <Button variant="outlined" startIcon={<PauseIcon />} onClick={handleClickPause} disabled={!connStatus || !progress || progress === 100}>
+                      <Button variant="outlined" startIcon={<PauseIcon />} onClick={handleClickPause} disabled={!connStatus || !progress || !started}>
                         Pause
                       </Button>
                     }
-                    <Button variant="outlined" startIcon={<StopIcon />} onClick={handleClickCancel} disabled={!connStatus || !progress || progress === 100}>
+                    <Button variant="outlined" startIcon={<StopIcon />} onClick={handleClickCancel} disabled={!connStatus || !progress || !started}>
                       Cancel
                     </Button>
                   </Stack>
