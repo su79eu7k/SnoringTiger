@@ -42,7 +42,7 @@ export default function ProceedSimulation(props) {
 
   const handleChangeTrials = (e) => {
     e.preventDefault()
-    
+
     setValueTrials(e.target.value)
     setValueNumTrials(!isNaN(e.target.value))
   };
@@ -127,7 +127,9 @@ export default function ProceedSimulation(props) {
   }, [valueTrials, valueNumTrials, trialsAboveZero, dataReady, progress, progressDelay, paused, setSimConfig])
 
   useEffect(() => {
-    progress === 100 ? setStarted(false) : null
+    if (progress === 100) {
+      setStarted(false)
+    }
   }, [progress])
 
   return (
@@ -203,7 +205,7 @@ export default function ProceedSimulation(props) {
             </CardActions>
           </Card>
         </Grid>
-        {_.range(previewCount).map((v, i) => 
+        {_.range(previewCount).map((v, i) =>
           <Grid key={"PreviewCard-" + i.toString()} item xs={12}>
             <ResultPreview setPreviewCount={setPreviewCount} connStatus={connStatus} randomCells={randomCells} monitoringCells={monitoringCells} />
           </Grid>

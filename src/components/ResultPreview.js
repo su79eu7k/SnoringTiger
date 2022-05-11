@@ -21,7 +21,7 @@ export default function ResultPreview(props) {
   const randomCells = props.randomCells
   const monitoringCells = props.monitoringCells
 
-  const [added, setAdded] = useState(false)
+  const [added, setAdded] = useState(true)
 
   const [asndRandCells, setAsndRandCells] = useState([])
   const [asndMonitCells, setAsndMonitCells] = useState([])
@@ -93,7 +93,7 @@ export default function ResultPreview(props) {
             <Divider variant="middle" />
           </Grid>
           <Grid item xs={12}>
-            <ResultPreviewChart coords={coords} setCoords={setCoords} theme={theme} decimal={null} toggledCells={toggledCells} />
+            <ResultPreviewChart connStatus={connStatus} coords={coords} setCoords={setCoords} theme={theme} toggledCells={toggledCells} />
           </Grid>
         </Grid>
       </CardContent> : null}

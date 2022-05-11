@@ -24,7 +24,7 @@ function App() {
 
   const [simConfig, setSimConfig] = useState({})
   
-  const [mode, setMode] = useState('light');
+  const [mode, setMode] = useState('dark');
 
   const colorMode = useMemo(
     () => ({

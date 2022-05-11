@@ -1,6 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react'
 import Chart from "chart.js/auto";
+import zoomPlugin from 'chartjs-plugin-zoom';
 import _ from 'lodash'
+
+Chart.register(zoomPlugin);
 
 
 export default React.memo(function PropPreview(props) {
@@ -59,7 +62,23 @@ export default React.memo(function PropPreview(props) {
     plugins: {
       legend: {
         display: false
-      }
+      },
+      zoom: {
+        pan: {
+          enabled: true,
+          mode: 'xy',
+          modifierKey: 'ctrl',
+        },
+        zoom: {
+          mode: 'xy',
+          drag: {
+            enabled: true,
+            borderColor: 'rgb(54, 162, 235)',
+            borderWidth: 1,
+            backgroundColor: 'rgba(54, 162, 235, 0.3)'
+          }
+        }
+      },
     }
   }
 
@@ -88,7 +107,7 @@ export default React.memo(function PropPreview(props) {
         setChart(chart)
       }
     }
-  }, [x, decimal, prob, coords, cellTypeAuto, theme])
+  }, [_data])
 
   useEffect(() => {
     if (chart !== undefined) {
@@ -98,7 +117,7 @@ export default React.memo(function PropPreview(props) {
         setChart(chart)
       }
     }
-  }, [theme])
+  }, [_options])
 
   return (
     <canvas ref={canvasRef}></canvas>
