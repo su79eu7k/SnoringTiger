@@ -108,7 +108,7 @@ export default function MonitoringCellCard(props) {
                 </Button> : ""
               }
               {!assigned ?
-                <Button variant="outlined" startIcon={<LockOpenIcon />} onClick={handleClickAssign} disabled={connStatus !== 1 || testDupe()}>
+                <Button variant="outlined" startIcon={<LockOpenIcon />} onClick={handleClickAssign} disabled={connStatus !== 1 || !addressCell || testDupe()}>
                   Assign
                 </Button> : ""
               }
