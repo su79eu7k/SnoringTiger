@@ -7,8 +7,6 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import _ from 'lodash'
 import Grid from '@mui/material/Grid';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 
 
 export default function InputManual(props) {
@@ -18,7 +16,6 @@ export default function InputManual(props) {
   const setRandomCells = props.setRandomCells
   const setX = props.setX
   const setProb = props.setProb
-  const setDecimal = props.setDecimal
 
   const [inputCount, setInputCount] = useState(randomCell.inputCount ? randomCell.inputCount : 0)
 
@@ -52,17 +49,6 @@ export default function InputManual(props) {
       setValLikelihoods(prevState => _.omit(prevState, inputCount))
       setValNumLikelihoods(prevState => _.omit(prevState, inputCount))
     }
-  }
-
-  const handleClickDecimalLeft = (e) => {
-    e.preventDefault()
-    setDecimal(prevState => Math.max(prevState - 1, 0))
-
-  }
-
-  const handleClickDecimalRight = (e) => {
-    e.preventDefault()
-    setDecimal(prevState => prevState + 1)
   }
 
   useEffect(() => {
@@ -102,12 +88,6 @@ export default function InputManual(props) {
             </IconButton>
             <IconButton onClick={handleRemove} disabled={connStatus !== 1 || randomCell.assigned}>
               <RemoveIcon />
-            </IconButton>
-            <IconButton onClick={handleClickDecimalLeft} variant="outlined" disabled={connStatus !== 1 || randomCell.assigned}>
-              <ArrowLeftIcon />
-            </IconButton>
-            <IconButton onClick={handleClickDecimalRight} variant="outlined" disabled={connStatus !== 1 || randomCell.assigned}>
-              <ArrowRightIcon />
             </IconButton>
           </Stack>
         </Grid>

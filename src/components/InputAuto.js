@@ -5,8 +5,6 @@ import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import axios from 'axios';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import Grid from '@mui/material/Grid';
 
 
@@ -17,7 +15,6 @@ export default function InputAuto(props) {
   const setRandomCells = props.setRandomCells
   const setX = props.setX
   const setProb = props.setProb
-  const setDecimal = props.setDecimal
 
   const [valueStart, setValueStart] = useState(randomCell.valueStart ? randomCell.valueStart : "")
   const [valueEnd, setValueEnd] = useState(randomCell.valueEnd ? randomCell.valueEnd : "")
@@ -110,17 +107,6 @@ export default function InputAuto(props) {
     });
   }
 
-  const handleClickDecimalLeft = (e) => {
-    e.preventDefault()
-    setDecimal(prevState => Math.max(prevState - 1, 0))
-
-  }
-
-  const handleClickDecimalRight = (e) => {
-    e.preventDefault()
-    setDecimal(prevState => prevState + 1)
-  }
-
   return (
     <>
       <Grid container spacing={2}>
@@ -133,12 +119,6 @@ export default function InputAuto(props) {
           <Stack direction="row" justifyContent="flex-end">
             <IconButton variant="outlined" onClick={handleClickProb} disabled={connStatus !== 1 || randomCell.assigned}>
               <BarChartIcon />
-            </IconButton>
-            <IconButton variant="outlined" onClick={handleClickDecimalLeft} disabled={connStatus !== 1 || randomCell.assigned}>
-              <ArrowLeftIcon />
-            </IconButton>
-            <IconButton variant="outlined" onClick={handleClickDecimalRight} disabled={connStatus !== 1 || randomCell.assigned}>
-              <ArrowRightIcon />
             </IconButton>
           </Stack>
         </Grid>

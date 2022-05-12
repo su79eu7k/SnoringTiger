@@ -4,6 +4,8 @@ import zoomPlugin from 'chartjs-plugin-zoom';
 import _ from 'lodash'
 import IconButton from '@mui/material/IconButton';
 import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
 
@@ -17,6 +19,7 @@ export default React.memo(function PropPreview(props) {
   const prob = _.values(props.prob)
   const coords = props.coords
   const decimal = props.decimal
+  const setDecimal = props.setDecimal
 
   const canvasRef = useRef()
 
@@ -129,6 +132,17 @@ export default React.memo(function PropPreview(props) {
     chart.resetZoom()
   }
 
+  const handleClickDecimalLeft = (e) => {
+    e.preventDefault()
+    setDecimal(prevState => Math.max(prevState - 1, 0))
+
+  }
+
+  const handleClickDecimalRight = (e) => {
+    e.preventDefault()
+    setDecimal(prevState => prevState + 1)
+  }
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -136,6 +150,12 @@ export default React.memo(function PropPreview(props) {
           <IconButton variant="outlined" onClick={handleClickZoomReset} disabled={connStatus !== 1}>
             <CenterFocusStrongIcon fontSize='small' />
           </IconButton>
+          <IconButton variant="outlined" onClick={handleClickDecimalLeft} disabled={connStatus !== 1}>
+              <ArrowLeftIcon />
+            </IconButton>
+            <IconButton variant="outlined" onClick={handleClickDecimalRight} disabled={connStatus !== 1}>
+              <ArrowRightIcon />
+            </IconButton>
         </Stack>
         <canvas ref={canvasRef}></canvas>
       </Grid>
