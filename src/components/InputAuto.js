@@ -116,14 +116,7 @@ export default function InputAuto(props) {
           </Typography>
         </Grid>
         <Grid item xs={12}>
-          <Stack direction="row" justifyContent="flex-end">
-            <IconButton variant="outlined" onClick={handleClickProb} disabled={connStatus !== 1 || randomCell.assigned}>
-              <BarChartIcon />
-            </IconButton>
-          </Stack>
-        </Grid>
-        <Grid item xs={12}>
-          <Stack direction="row" spacing={2} justifyContent="flex-end">
+          <Stack direction="row" spacing={2} justifyContent="flex-end" alignItems="flex-start">
             <TextField
               error={!valueNumStart || endGtStart === false}
               helperText={!valueNumStart ? "Start value is not a number." : endGtStart === false ? "Start value is greater than End." : ""}
@@ -154,6 +147,9 @@ export default function InputAuto(props) {
               onChange={handleChangeStep}
               disabled={randomCell.assigned}
             />
+            <IconButton variant="outlined" onClick={handleClickProb} disabled={connStatus !== 1 || randomCell.assigned}>
+              <BarChartIcon />
+            </IconButton>
           </Stack>
         </Grid>
       </Grid>
