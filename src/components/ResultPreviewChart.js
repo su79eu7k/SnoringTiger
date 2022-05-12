@@ -3,7 +3,7 @@ import Chart from "chart.js/auto";
 import zoomPlugin from 'chartjs-plugin-zoom';
 import _ from 'lodash'
 import IconButton from '@mui/material/IconButton';
-import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
+import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
 
@@ -137,7 +137,7 @@ export default React.memo(function ResultPreviewChart(props) {
       <Grid item xs={12}>
         <Stack direction="row" justifyContent="flex-end">
           <IconButton variant="outlined" onClick={handleClickZoomReset} disabled={connStatus !== 1}>
-            <CenterFocusStrongIcon fontSize='small' />
+            <ZoomOutMapIcon fontSize='small' />
           </IconButton>
         </Stack>
         <canvas ref={canvasRef}></canvas>
