@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import InputAuto from './InputAuto';
-import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -18,8 +17,7 @@ import ProbPreview from './ProbPreview';
 import { useTheme } from '@mui/styles'
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
-import ButtonBase from '@mui/material/ButtonBase';
-import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
+import AddressInfo from './AddressInfo';
 
 
 export default function RandomCellCard(props) {
@@ -111,44 +109,13 @@ export default function RandomCellCard(props) {
     testDupe()
   }
 
-  const handleClickFocus = (e) => {
-    axios.get("http://127.0.0.1:8000/select_with_focus/?sheet=" + addressSheet + "&cell=" + addressCell).then((response) => {
-      console.log(response)
-    });
-  }
-
   return (
     <Card sx={{ minWidth: 275 }}>
       {addressCell ? <>
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={2}>
-              <Typography noWrap variant="subtitle2" color="text.secondary" sx={{ padding: '2px 4px' }}>
-                Sheet
-              </Typography>
-              <Typography noWrap variant="subtitle2" sx={{ padding: '2px 4px' }}>
-                {addressSheet}
-              </Typography>
-              <Typography noWrap variant="subtitle2" color="text.secondary" sx={{ padding: '2px 4px' }}>
-                Cell
-              </Typography>
-              <Typography noWrap variant="h5" sx={{ padding: '2px 4px' }}>
-                {addressCell}
-              </Typography>
-              <ButtonBase
-                disabled={connStatus !== 1}
-                onClick={handleClickFocus}
-                sx={{
-                  '&:hover': {
-                    borderWidth: '0px',
-                    borderRadius: 1,
-                    backgroundColor: theme.palette.mode === "light" ? 'rgba(0, 0, 0, 0.04)' : 'rgba(255, 255, 255, 0.08)'
-                  }
-                }}>
-                <Typography noWrap variant="subtitle2" color="text.secondary">
-                  <CenterFocusStrongIcon fontSize="small" />
-                </Typography>
-              </ButtonBase>
+              <AddressInfo connStatus={connStatus} addressSheet={addressSheet} addressCell={addressCell} />
             </Grid>
             <Grid item xs={10} container spacing={2}>
               <Grid item xs={12}>
@@ -157,7 +124,7 @@ export default function RandomCellCard(props) {
                   <InputManual connStatus={connStatus} id={id} randomCells={randomCells} setRandomCells={setRandomCells} setX={setX} setProb={setProb} setDecimal={setDecimal} />
                 }</Grid>
               <Grid item xs={12}>
-                <ProbPreview decimal={decimal} setDecimal={setDecimal} connStatus={connStatus} x={x} prob={prob} coords={coords} cellTypeAuto={cellTypeAuto} theme={theme} />
+                <ProbPreview addressSheet={addressSheet} addressCell={addressCell} decimal={decimal} setDecimal={setDecimal} connStatus={connStatus} x={x} prob={prob} coords={coords} cellTypeAuto={cellTypeAuto} theme={theme} />
               </Grid>
             </Grid>
           </Grid>

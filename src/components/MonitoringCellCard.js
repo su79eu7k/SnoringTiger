@@ -3,7 +3,6 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import CableIcon from '@mui/icons-material/Cable';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import LockIcon from '@mui/icons-material/Lock';
@@ -12,6 +11,8 @@ import axios from 'axios';
 import _ from 'lodash'
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
+import AddressInfo from './AddressInfo';
+
 
 export default function MonitoringCellCard(props) {
   const id = props.id
@@ -78,18 +79,7 @@ export default function MonitoringCellCard(props) {
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={2}>
-              <Typography variant="subtitle2" color="text.secondary">
-                Sheet
-              </Typography>
-              <Typography variant="subtitle2">
-                {addressSheet}
-              </Typography>
-              <Typography variant="subtitle2" color="text.secondary">
-                Cell
-              </Typography>
-              <Typography variant="h5">
-                {addressCell}
-              </Typography>
+              <AddressInfo connStatus={connStatus} addressSheet={addressSheet} addressCell={addressCell} />
             </Grid>
             <Grid item xs={10}></Grid>
           </Grid>

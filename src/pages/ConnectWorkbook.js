@@ -84,22 +84,22 @@ export default function ConnectWorkbook(props) {
             <CardContent>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <Typography variant="subtitle2" color="text.secondary">
+                  <Typography variant="subtitle2" color="text.secondary" sx={{ padding: '3px 4px' }}>
                     Original File
                   </Typography>
-                  <Typography variant="subtitle2">{props.file ? props.file.name : "N/A"}</Typography>
+                  <Typography variant="subtitle2" sx={{ padding: '3px 4px' }}>{props.file ? props.file.name : "N/A"}</Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="subtitle2" color="text.secondary">
+                  <Typography variant="subtitle2" color="text.secondary" sx={{ padding: '3px 4px' }}>
                     Size
                   </Typography>
-                  <Typography variant="subtitle2">{props.file ? approxBytes(props.file.size) : "N/A"}</Typography>
+                  <Typography variant="subtitle2" sx={{ padding: '3px 4px' }}>{props.file ? approxBytes(props.file.size) : "N/A"}</Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="subtitle2" color="text.secondary">
+                  <Typography variant="subtitle2" color="text.secondary" sx={{ padding: '3px 4px' }}>
                     Connected File
                   </Typography>
-                  <Typography variant="subtitle2">{props.conn === 1 ? props.connWith : "N/A"}</Typography>
+                  <Typography variant="subtitle2" sx={{ padding: '3px 4px' }}>{props.conn === 1 ? props.connWith : "N/A"}</Typography>
                 </Grid>
               </Grid>
             </CardContent>

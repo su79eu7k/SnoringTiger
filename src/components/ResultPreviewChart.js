@@ -2,10 +2,11 @@ import React, { useRef, useEffect, useState } from 'react'
 import Chart from "chart.js/auto";
 import zoomPlugin from 'chartjs-plugin-zoom';
 import _ from 'lodash'
-import IconButton from '@mui/material/IconButton';
 import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
+import ControlButton from './ControlButton';
+import SaveIcon from '@mui/icons-material/Save';
 
 Chart.register(zoomPlugin);
 
@@ -132,13 +133,27 @@ export default React.memo(function ResultPreviewChart(props) {
     chart.resetZoom()
   }
 
+  const handleClickSave = (e) => {
+    e.preventDefault()
+
+    if (chart !== undefined) {
+      const a = document.createElement('a');
+      a.href = chart.toBase64Image();
+      a.download = 'CellStorm_' + xlab + ';' + ylab + '.png';
+      a.click()
+    }
+  }
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
         <Stack direction="row" justifyContent="flex-end">
-          <IconButton variant="outlined" onClick={handleClickZoomReset} disabled={connStatus !== 1}>
-            <ZoomOutMapIcon fontSize='small' />
-          </IconButton>
+          <ControlButton connStatus={connStatus} handleClick={handleClickZoomReset} iconComponent={
+            <ZoomOutMapIcon fontSize='small' sx={{ color: "text.secondary" }} />
+          } />
+          <ControlButton connStatus={connStatus} handleClick={handleClickSave} iconComponent={
+            <SaveIcon fontSize='small' sx={{ color: "text.secondary" }} />
+          } />
         </Stack>
         <canvas ref={canvasRef}></canvas>
       </Grid>

@@ -2,18 +2,21 @@ import React, { useRef, useState, useEffect } from 'react'
 import Chart from "chart.js/auto";
 import zoomPlugin from 'chartjs-plugin-zoom';
 import _ from 'lodash'
-import IconButton from '@mui/material/IconButton';
 import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
+import ControlButton from './ControlButton';
+import SaveIcon from '@mui/icons-material/Save';
 
 Chart.register(zoomPlugin);
 
 
 export default React.memo(function PropPreview(props) {
   const connStatus = props.connStatus
+  const addressSheet = props.addressSheet
+  const addressCell = props.addressCell
   const cellTypeAuto = props.cellTypeAuto
   const x = _.values(props.x)
   const prob = _.values(props.prob)
@@ -127,6 +130,17 @@ export default React.memo(function PropPreview(props) {
     }
   }, [_options])
 
+  const handleClickSave = (e) => {
+    e.preventDefault()
+
+    if (chart !== undefined) {
+      const a = document.createElement('a');
+      a.href = chart.toBase64Image();
+      a.download = "CellStorm_rand'" + addressSheet + '!' + addressCell + '.png';
+      a.click()
+    }
+  }
+
   const handleClickZoomReset = (e) => {
     e.preventDefault()
     chart.resetZoom()
@@ -135,7 +149,6 @@ export default React.memo(function PropPreview(props) {
   const handleClickDecimalLeft = (e) => {
     e.preventDefault()
     setDecimal(prevState => Math.max(prevState - 1, 0))
-
   }
 
   const handleClickDecimalRight = (e) => {
@@ -147,15 +160,18 @@ export default React.memo(function PropPreview(props) {
     <Grid container spacing={2}>
       <Grid item xs={12}>
         <Stack direction="row" justifyContent="flex-end">
-          <IconButton variant="outlined" onClick={handleClickZoomReset} disabled={connStatus !== 1}>
-            <ZoomOutMapIcon fontSize='small' />
-          </IconButton>
-          <IconButton variant="outlined" onClick={handleClickDecimalLeft} disabled={connStatus !== 1}>
-              <ArrowLeftIcon />
-            </IconButton>
-            <IconButton variant="outlined" onClick={handleClickDecimalRight} disabled={connStatus !== 1}>
-              <ArrowRightIcon />
-            </IconButton>
+          <ControlButton connStatus={connStatus} handleClick={handleClickZoomReset} iconComponent={
+            <ZoomOutMapIcon fontSize='small' sx={{ color: "text.secondary" }} />
+          } />
+          <ControlButton connStatus={connStatus} handleClick={handleClickDecimalLeft} iconComponent={
+            <ArrowLeftIcon fontSize='small' sx={{ color: "text.secondary" }} />
+          } />
+          <ControlButton connStatus={connStatus} handleClick={handleClickDecimalRight} iconComponent={
+            <ArrowRightIcon fontSize='small' sx={{ color: "text.secondary" }} />
+          } />
+          <ControlButton connStatus={connStatus} handleClick={handleClickSave} iconComponent={
+            <SaveIcon fontSize='small' sx={{ color: "text.secondary" }} />
+          } />
         </Stack>
         <canvas ref={canvasRef}></canvas>
       </Grid>
