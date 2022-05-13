@@ -21,7 +21,7 @@ export default function ResultPreview(props) {
   const randomCells = props.randomCells
   const monitoringCells = props.monitoringCells
 
-  const [added, setAdded] = useState(true)
+  const [added, setAdded] = useState(false)
 
   const [asndRandCells, setAsndRandCells] = useState([])
   const [asndMonitCells, setAsndMonitCells] = useState([])
