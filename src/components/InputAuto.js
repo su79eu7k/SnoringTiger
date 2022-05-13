@@ -147,7 +147,9 @@ export default function InputAuto(props) {
               onChange={handleChangeStep}
               disabled={randomCell.assigned}
             />
-            <IconButton variant="outlined" onClick={handleClickProb} disabled={connStatus !== 1 || randomCell.assigned}>
+            <IconButton variant="outlined" onClick={handleClickProb} disabled={
+              connStatus !== 1 || randomCell.assigned || ((!valueNumStart || endGtStart === false) || (!valueNumEnd || endGtStart === false) || (!valueNumStep || !stepEgtTwo))
+            }>
               <BarChartIcon />
             </IconButton>
           </Stack>
