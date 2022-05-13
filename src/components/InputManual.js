@@ -34,7 +34,7 @@ export default function InputManual(props) {
 
   const handleChangeLikelihood = (e) => {
     e.preventDefault()
-    setValLikelihoods(prevState => ({ ...prevState, [e.target.id]: e.target.value }))
+    setValLikelihoods(prevState => ({ ...prevState, [e.target.id]: Math.abs(e.target.value) }))
     setValNumLikelihoods(prevState => ({ ...prevState, [e.target.id]: !(isNaN(e.target.value) || e.target.value === "") }))
     setProb(null)
   };
