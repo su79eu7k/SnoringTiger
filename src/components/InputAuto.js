@@ -6,6 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import axios from 'axios';
 import Grid from '@mui/material/Grid';
+import BasicMenu from './BasicMenu';
 
 
 export default function InputAuto(props) {
@@ -26,6 +27,17 @@ export default function InputAuto(props) {
 
   const [endGtStart, setEndGtStart] = useState(randomCell.endGtStart ? randomCell.endGtStart : null)
   const [stepEgtTwo, setStepEgtTwo] = useState(randomCell.stepEgtTwo ? randomCell.stepEgtTwo : null)
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   useEffect(() => {
     if (valueNumStart && valueNumEnd) {
@@ -92,10 +104,10 @@ export default function InputAuto(props) {
     setProb(null)
   };
 
-  const handleClickProb = (e) => {
+  const handleClickProb = (_dist, e) => {
     e.preventDefault()
     const url = 'http://127.0.0.1:8000/prob';
-    const data = { start: Number(valueStart), end: Number(valueEnd), step: Number(valueStep), dist: 'expon' }
+    const data = { start: Number(valueStart), end: Number(valueEnd), step: Number(valueStep), dist: _dist, a: .5, b: .5, loc: 0, scale: 1}
     const config = {
       headers: {
         'content-type': 'application/json',
@@ -147,11 +159,20 @@ export default function InputAuto(props) {
               onChange={handleChangeStep}
               disabled={randomCell.assigned}
             />
-            <IconButton variant="outlined" onClick={handleClickProb} disabled={
-              connStatus !== 1 || randomCell.assigned || ((!valueNumStart || endGtStart === false) || (!valueNumEnd || endGtStart === false) || (!valueNumStep || !stepEgtTwo))
-            }>
+            <IconButton
+              variant="outlined"
+              onClick={handleClick}
+              disabled={
+                connStatus !== 1 || randomCell.assigned || ((!valueNumStart || endGtStart === false) || (!valueNumEnd || endGtStart === false) || (!valueNumStep || !stepEgtTwo))
+              }>
               <BarChartIcon />
             </IconButton>
+            <BasicMenu
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              handleClickProb={handleClickProb}
+            />
           </Stack>
         </Grid>
       </Grid>
