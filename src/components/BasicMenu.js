@@ -12,7 +12,7 @@ function BasicMenu(props) {
     const anchorEl = props.anchorEl
     const open = props.open
     const onClose = props.onClose
-    const handleClickProb = props.handleClickProb
+    const setDist = props.setDist
 
   return (
     <Menu 
@@ -29,16 +29,16 @@ function BasicMenu(props) {
     }}
     >
     <MenuList dense>
-      <MenuItem onClick={(e) => handleClickProb('unif', e)}>
+      <MenuItem onClick={(e) => setDist('unif')}>
         <ListItemText>Uniform</ListItemText>
       </MenuItem>
-      <MenuItem onClick={(e) => handleClickProb('norm', e)}>
+      <MenuItem onClick={(e) => setDist('norm')}>
         <ListItemText>Normal</ListItemText>
       </MenuItem>
-      <MenuItem onClick={(e) => handleClickProb('expon', e)}>
+      <MenuItem onClick={(e) => setDist('expon')}>
         <ListItemText>Exponential</ListItemText>
       </MenuItem>
-      <MenuItem onClick={(e) => handleClickProb('beta', e)}>
+      <MenuItem onClick={(e) => setDist('beta')}>
         <ListItemText>Beta</ListItemText>
       </MenuItem>
     </MenuList>
