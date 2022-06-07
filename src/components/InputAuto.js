@@ -59,7 +59,7 @@ export default function InputAuto(props) {
             setDist={setDist}
           />
         </Grid>
-        {dist === "unif" ?
+        {["unif", "norm", "expon", "beta"].includes(dist) ?
           <Grid item xs={12}>
             <Linspace id={id} randomCell={randomCell} setRandomCells={setRandomCells} setX={setX} setProb={setProb} />
           </Grid> : null
