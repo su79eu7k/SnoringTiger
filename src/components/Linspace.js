@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 
 
-export default function InputAuto(props) {
+export default function Linspace(props) {
   const id = props.id
   const randomCell = props.randomCell
   const setRandomCells = props.setRandomCells
@@ -92,11 +92,6 @@ export default function InputAuto(props) {
   return (
     <>
       <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Typography variant="subtitle2" color="text.secondary">
-            Random Variables
-          </Typography>
-        </Grid>
         <Grid item xs={12}>
           <Stack direction="row" spacing={2} justifyContent="flex-end" alignItems="flex-start">
             <TextField
