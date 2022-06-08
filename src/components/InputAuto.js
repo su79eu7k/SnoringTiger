@@ -45,7 +45,12 @@ export default function InputAuto(props) {
   const handleClickSubmit = (e) => {
     e.preventDefault()
     const url = 'http://127.0.0.1:8000/prob';
-    const data = { start: Number(randomCell.valueStart), end: Number(randomCell.valueEnd), step: Number(randomCell.valueStep), dist: randomCell.dist, a: .5, b: .5, loc: 0, scale: 1 }
+    const data = { 
+      dist: randomCell.dist, 
+      start: Number(randomCell.valueStart), end: Number(randomCell.valueEnd), step: Number(randomCell.valueStep), 
+      loc: Number(randomCell.valueLoc), scale: Number(randomCell.valueScale), 
+      a: .5, b: .5, 
+    }
     const config = {
       headers: {
         'content-type': 'application/json',

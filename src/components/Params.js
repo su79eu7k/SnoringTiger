@@ -27,6 +27,19 @@ export default function Params(props) {
     }))
   }, [setRandomCells, id, valueLoc, valueScale, valueNumLoc, valueNumScale])
 
+  useEffect(() => {
+    if (randomCell.dist === "unif") {
+      setValueLoc(randomCell.valueNumStart ? randomCell.valueStart : "")
+      setValueScale((randomCell.valueNumStart && randomCell.valueNumEnd) ? randomCell.valueEnd - randomCell.valueStart : "")
+      setProb(null)
+    }
+  }, [randomCell.valueStart, randomCell.valueEnd, randomCell.valueNumStart, randomCell.valueNumEnd])
+  
+  useEffect(() => {
+      setValueNumLoc(!(isNaN(valueLoc) || valueLoc === ""))
+      setValueNumScale(!(isNaN(valueScale) || valueScale === ""))
+  }, [valueLoc, valueScale])
+
   const handleChangeLoc = (e) => {
     e.preventDefault()
     setValueLoc(e.target.value)
