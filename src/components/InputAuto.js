@@ -49,7 +49,7 @@ export default function InputAuto(props) {
       dist: randomCell.dist,
       start: Number(randomCell.valueStart), end: Number(randomCell.valueEnd), step: Number(randomCell.valueStep),
       loc: Number(randomCell.valueLoc), scale: Number(randomCell.valueScale),
-      a: .5, b: .5,
+      a: Number(randomCell.valueA), b: Number(randomCell.valueB),
     }
     const config = {
       headers: {

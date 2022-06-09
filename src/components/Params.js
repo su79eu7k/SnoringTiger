@@ -20,6 +20,16 @@ export default function Params(props) {
   const [valueNumLoc, setValueNumLoc] = useState(randomCell.valueNumLoc ? randomCell.valueNumLoc : null)
   const [valueNumScale, setValueNumScale] = useState(randomCell.valueNumScale ? randomCell.valueNumScale : null)
 
+  // Hyper-parameters for beta distribution
+  const [valueA, setValueA] = useState(randomCell.valueA ? randomCell.valueA : "")
+  const [valueB, setValueB] = useState(randomCell.valueB ? randomCell.valueB : "")
+
+  const [valueNumA, setValueNumA] = useState(randomCell.valueNumA ? randomCell.valueNumA : null)
+  const [valueNumB, setValueNumB] = useState(randomCell.valueNumB ? randomCell.valueNumB : null)
+
+  const [valueGtZeroA, setValueGtZeroA] = useState(randomCell.valueGtZeroA ? randomCell.valueGtZeroA : null)
+  const [valueGtZeroB, setValueGtZeroB] = useState(randomCell.valueGtZeroB ? randomCell.valueGtZeroB : null)
+
   useEffect(() => {
     setRandomCells(prevState => ({
       ...prevState, [id]: {
@@ -27,40 +37,63 @@ export default function Params(props) {
         labelLoc: labelLoc, labelScale: labelScale,
         valueLoc: valueLoc, valueScale: valueScale,
         valueNumLoc: valueNumLoc, valueNumScale: valueNumScale,
+        valueA: valueA, valueB: valueB,
+        valueNumA: valueNumA, valueNumB: valueNumB,
       }
     }))
-  }, [setRandomCells, id, valueLoc, valueScale, valueNumLoc, valueNumScale])
+  }, [setRandomCells, id, valueLoc, valueScale, valueNumLoc, valueNumScale, valueA, valueB, valueNumA, valueNumB])
 
   useEffect(() => {
-    if (randomCell.dist === "unif") {
-      setLabelLoc("Loc")
-      setLabelScale("Scale")
+    const _valid = randomCell.valueNumStart && randomCell.valueNumEnd && randomCell.valueNumStep && randomCell.endGtStart && randomCell.stepEgtTwo
 
-      setValueLoc(randomCell.valueNumStart ? randomCell.valueStart : "")
-      setValueScale((randomCell.valueNumStart && randomCell.valueNumEnd) ? randomCell.valueEnd - randomCell.valueStart : "")
-    } else if (randomCell.dist === "norm") {
-      setLabelLoc("Loc(μ)")
-      setLabelScale("Scale(σ)")
-      
-      const _n = randomCell.x.length
-      const _mean = randomCell.x.reduce((a, b) => a + b) / _n
-      const _stdv = Math.sqrt(randomCell.x.map(x => Math.pow(x - _mean, 2)).reduce((a, b) => a + b) / _n)
+    let _step
+    let _x
+    if (_valid) {
+      _step = (randomCell.valueEnd - randomCell.valueStart) / (randomCell.valueStep - 1)
+      _x = calcLinspace(Number(randomCell.valueStart), Number(randomCell.valueEnd), Number(randomCell.valueStep))
+      _x = [_x[0] - _step].concat(_x)
 
-      setValueLoc((randomCell.valueNumStart && randomCell.valueNumEnd && randomCell.valueNumStep) ? _mean : "")
-      setValueScale((randomCell.valueNumStart && randomCell.valueNumEnd && randomCell.valueNumStep) ? _stdv : "")
-    } else if (randomCell.dist === "expon") {
-      setLabelLoc("Loc")
-      setLabelScale("Scale(1 / λ)")
-      
-      setValueLoc(randomCell.valueNumStart ? randomCell.valueStart : "")
-      setValueScale((randomCell.valueNumStart && randomCell.valueNumEnd) ? "1" + (randomCell.valueEnd - randomCell.valueStart).toString().substring(1).replace(/[0-9]/g, "0") : "")
+      if (randomCell.dist === "unif") {
+        setLabelLoc("Loc")
+        setLabelScale("Scale")
+
+        setValueLoc(randomCell.valueStart - _step)
+        setValueScale(randomCell.valueEnd - randomCell.valueStart + _step)
+      } else if (randomCell.dist === "norm") {
+        setLabelLoc("Loc(μ)")
+        setLabelScale("Scale(σ)")
+
+        const _n = _x.length
+        const _mean = _x.reduce((a, b) => a + b) / _n
+        const _stdv = Math.sqrt(_x.map(x => Math.pow(x - _mean, 2)).reduce((a, b) => a + b) / _n)
+
+        setValueLoc(_mean)
+        setValueScale(_stdv)
+      } else if (randomCell.dist === "expon") {
+        setLabelLoc("Loc")
+        setLabelScale("Scale(1 / λ)")
+
+        setValueLoc(randomCell.valueStart - _step)
+        setValueScale("1" + (randomCell.valueEnd - randomCell.valueStart).toString().substring(1).replace(/[0-9]/g, "0"))
+      } else if (randomCell.dist === "beta") {
+        setLabelLoc("Loc")
+        setLabelScale("Scale")
+
+        setValueLoc(randomCell.valueStart - _step)
+        setValueScale(randomCell.valueEnd - randomCell.valueStart + _step)
+      }
     }
-  }, [randomCell.dist, randomCell.valueStart, randomCell.valueEnd, randomCell.valueStep, randomCell.valueNumStart, randomCell.valueNumEnd])
-  
+  }, [randomCell.dist, randomCell.valueNumStart, randomCell.valueNumEnd, randomCell.valueNumStep, randomCell.endGtStart, randomCell.stepEgtTwo, randomCell.valueStart, randomCell.valueEnd, randomCell.valueStep])
+
   useEffect(() => {
-      setValueNumLoc(!(isNaN(valueLoc) || valueLoc === ""))
-      setValueNumScale(!(isNaN(valueScale) || valueScale === ""))
+    setValueNumLoc(!(isNaN(valueLoc) || valueLoc === ""))
+    setValueNumScale(!(isNaN(valueScale) || valueScale === ""))
   }, [valueLoc, valueScale])
+
+  useEffect(() => {
+    setValueGtZeroA(valueA > 0)
+    setValueGtZeroB(valueB > 0)
+  }, [valueA, valueB, valueNumA, valueNumB])
 
   const handleChangeLoc = (e) => {
     e.preventDefault()
@@ -76,6 +109,28 @@ export default function Params(props) {
     setProb(null)
   };
 
+  const handleChangeA = (e) => {
+    e.preventDefault()
+    setValueA(e.target.value)
+    setValueNumA(!(isNaN(e.target.value) || e.target.value === ""))
+    setProb(null)
+  };
+
+  const handleChangeB = (e) => {
+    e.preventDefault()
+    setValueB(e.target.value)
+    setValueNumB(!(isNaN(e.target.value) || e.target.value === ""))
+    setProb(null)
+  };
+
+  function calcLinspace(start, end, step) {
+    const result = [];
+    const scale = (end - start) / (step - 1);
+    for (let i = 0; i < step; i++) {
+      result.push(start + (scale * i));
+    }
+    return result;
+  }
 
   return (
     <>
@@ -102,6 +157,30 @@ export default function Params(props) {
               onChange={handleChangeScale}
               disabled={randomCell.assigned}
             />
+            {randomCell.dist === "beta" ?
+              <>
+                <TextField
+                  error={!valueNumA || !valueGtZeroA}
+                  helperText={!valueNumA ? "α is not a number." : !valueGtZeroA ? "α > 0" : ""}
+                  size="small"
+                  id="outlined-helperText"
+                  label="α"
+                  value={valueA}
+                  onChange={handleChangeA}
+                  disabled={randomCell.assigned}
+                />
+                <TextField
+                  error={!valueNumB || !valueGtZeroB}
+                  helperText={!valueNumB ? "β is not a number." : !valueGtZeroB ? "α > 0" : ""}
+                  size="small"
+                  id="outlined-helperText"
+                  label="β"
+                  value={valueB}
+                  onChange={handleChangeB}
+                  disabled={randomCell.assigned}
+                />
+              </> : ""
+            }
           </Stack>
         </Grid>
       </Grid>
