@@ -17,6 +17,9 @@ export default function Params(props) {
   const [valueNumLoc, setValueNumLoc] = useState(randomCell.valueNumLoc ? randomCell.valueNumLoc : null)
   const [valueNumScale, setValueNumScale] = useState(randomCell.valueNumScale ? randomCell.valueNumScale : null)
 
+  const [labelLoc, setLabelLoc] = useState("Loc")
+  const [labelScale, setLabelScale] = useState("Scale")
+
   useEffect(() => {
     setRandomCells(prevState => ({
       ...prevState, [id]: {
@@ -29,9 +32,15 @@ export default function Params(props) {
 
   useEffect(() => {
     if (randomCell.dist === "unif") {
+      setLabelLoc("Loc")
+      setLabelScale("Scale")
+
       setValueLoc(randomCell.valueNumStart ? randomCell.valueStart : "")
       setValueScale((randomCell.valueNumStart && randomCell.valueNumEnd) ? randomCell.valueEnd - randomCell.valueStart : "")
     } else if (randomCell.dist === "norm") {
+      setLabelLoc("Loc(μ)")
+      setLabelScale("Scale(σ)")
+      
       const _n = randomCell.x.length
       const _mean = randomCell.x.reduce((a, b) => a + b) / _n
       const _stdv = Math.sqrt(randomCell.x.map(x => Math.pow(x - _mean, 2)).reduce((a, b) => a + b) / _n)
@@ -39,6 +48,9 @@ export default function Params(props) {
       setValueLoc((randomCell.valueNumStart && randomCell.valueNumEnd && randomCell.valueNumStep) ? _mean : "")
       setValueScale((randomCell.valueNumStart && randomCell.valueNumEnd && randomCell.valueNumStep) ? _stdv : "")
     } else if (randomCell.dist === "expon") {
+      setLabelLoc("Loc")
+      setLabelScale("Scale(1 / λ)")
+      
       setValueLoc(randomCell.valueNumStart ? randomCell.valueStart : "")
       setValueScale((randomCell.valueNumStart && randomCell.valueNumEnd) ? "1" + (randomCell.valueEnd - randomCell.valueStart).toString().substring(1).replace(/[0-9]/g, "0") : "")
     }
@@ -72,20 +84,20 @@ export default function Params(props) {
           <Stack direction="row" spacing={2} justifyContent="flex-end" alignItems="flex-start">
             <TextField
               error={!valueNumLoc}
-              helperText={!valueNumLoc ? "Loc is not a number." : ""}
+              helperText={!valueNumLoc ? labelLoc + " is not a number." : ""}
               size="small"
               id="outlined-helperText"
-              label="Loc"
+              label={labelLoc}
               value={valueLoc}
               onChange={handleChangeLoc}
               disabled={randomCell.assigned}
             />
             <TextField
               error={!valueNumScale}
-              helperText={!valueNumScale ? "Scale is not a number." : ""}
+              helperText={!valueNumScale ? labelScale + " is not a number." : ""}
               size="small"
               id="outlined-helperText"
-              label="Scale"
+              label={labelScale}
               value={valueScale}
               onChange={handleChangeScale}
               disabled={randomCell.assigned}
