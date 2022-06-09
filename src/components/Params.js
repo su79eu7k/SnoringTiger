@@ -31,9 +31,19 @@ export default function Params(props) {
     if (randomCell.dist === "unif") {
       setValueLoc(randomCell.valueNumStart ? randomCell.valueStart : "")
       setValueScale((randomCell.valueNumStart && randomCell.valueNumEnd) ? randomCell.valueEnd - randomCell.valueStart : "")
-      setProb(null)
+    } else if (randomCell.dist === "norm") {
+      const _n = randomCell.x.length
+      const _mean = randomCell.x.reduce((a, b) => a + b) / _n
+      const _stdv = Math.sqrt(randomCell.x.map(x => Math.pow(x - _mean, 2)).reduce((a, b) => a + b) / _n)
+
+      setValueLoc((randomCell.valueNumStart && randomCell.valueNumEnd && randomCell.valueNumStep) ? _mean : "")
+      setValueScale((randomCell.valueNumStart && randomCell.valueNumEnd && randomCell.valueNumStep) ? _stdv : "")
+    } else if (randomCell.dist === "expon") {
+      setValueLoc(randomCell.valueNumStart ? randomCell.valueStart : "")
+      setValueScale(1)
     }
-  }, [randomCell.valueStart, randomCell.valueEnd, randomCell.valueNumStart, randomCell.valueNumEnd])
+    setProb(null)
+  }, [randomCell.dist, randomCell.valueStart, randomCell.valueEnd, randomCell.valueStep, randomCell.valueNumStart, randomCell.valueNumEnd])
   
   useEffect(() => {
       setValueNumLoc(!(isNaN(valueLoc) || valueLoc === ""))

@@ -45,11 +45,11 @@ export default function InputAuto(props) {
   const handleClickSubmit = (e) => {
     e.preventDefault()
     const url = 'http://127.0.0.1:8000/prob';
-    const data = { 
-      dist: randomCell.dist, 
-      start: Number(randomCell.valueStart), end: Number(randomCell.valueEnd), step: Number(randomCell.valueStep), 
-      loc: Number(randomCell.valueLoc), scale: Number(randomCell.valueScale), 
-      a: .5, b: .5, 
+    const data = {
+      dist: randomCell.dist,
+      start: Number(randomCell.valueStart), end: Number(randomCell.valueEnd), step: Number(randomCell.valueStep),
+      loc: Number(randomCell.valueLoc), scale: Number(randomCell.valueScale),
+      a: .5, b: .5,
     }
     const config = {
       headers: {
@@ -85,7 +85,7 @@ export default function InputAuto(props) {
               disabled={
                 connStatus !== 1 || randomCell.assigned
               }>
-              <BarChartIcon />
+              <AutoStoriesIcon />
             </IconButton>
             <BasicMenu
               anchorEl={anchorEl}
@@ -99,19 +99,20 @@ export default function InputAuto(props) {
               disabled={
                 connStatus !== 1 || randomCell.assigned
               }>
-              <BarChartIcon />
+              <AutoFixHighIcon />
             </IconButton>
           </Stack>
         </Grid>
-        {["unif", "norm", "expon", "beta"].includes(dist) ?
-          <Grid item xs={12}>
-            <Linspace id={id} randomCell={randomCell} setRandomCells={setRandomCells} setX={setX} setProb={setProb} />
-          </Grid> : null
-        }
-        {dist === "unif" ?
-          <Grid item xs={12}>
-            <Params id={id} randomCell={randomCell} setRandomCells={setRandomCells} setProb={setProb} />
-          </Grid> : null
+        {
+          ["unif", "norm", "expon", "beta"].includes(dist) ?
+            <>
+              <Grid item xs={12}>
+                <Linspace id={id} randomCell={randomCell} setRandomCells={setRandomCells} setX={setX} setProb={setProb} />
+              </Grid>
+              <Grid item xs={12}>
+                <Params id={id} randomCell={randomCell} setRandomCells={setRandomCells} setProb={setProb} />
+              </Grid>
+            </> : null
         }
       </Grid>
     </>
