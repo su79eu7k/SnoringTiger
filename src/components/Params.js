@@ -40,7 +40,7 @@ export default function Params(props) {
       setValueScale((randomCell.valueNumStart && randomCell.valueNumEnd && randomCell.valueNumStep) ? _stdv : "")
     } else if (randomCell.dist === "expon") {
       setValueLoc(randomCell.valueNumStart ? randomCell.valueStart : "")
-      setValueScale(1)
+      setValueScale((randomCell.valueNumStart && randomCell.valueNumEnd) ? "1" + (randomCell.valueEnd - randomCell.valueStart).toString().substring(1).replace(/[0-9]/g, "0") : "")
     }
     setProb(null)
   }, [randomCell.dist, randomCell.valueStart, randomCell.valueEnd, randomCell.valueStep, randomCell.valueNumStart, randomCell.valueNumEnd])
