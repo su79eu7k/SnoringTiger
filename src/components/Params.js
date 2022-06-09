@@ -11,19 +11,20 @@ export default function Params(props) {
   const setRandomCells = props.setRandomCells
   const setProb = props.setProb
 
+  const [labelLoc, setLabelLoc] = useState(randomCell.labelLoc ? randomCell.labelLoc : "Loc")
+  const [labelScale, setLabelScale] = useState(randomCell.labelScale ? randomCell.labelScale : "Scale")
+
   const [valueLoc, setValueLoc] = useState(randomCell.valueLoc ? randomCell.valueLoc : "")
   const [valueScale, setValueScale] = useState(randomCell.valueScale ? randomCell.valueScale : "")
 
   const [valueNumLoc, setValueNumLoc] = useState(randomCell.valueNumLoc ? randomCell.valueNumLoc : null)
   const [valueNumScale, setValueNumScale] = useState(randomCell.valueNumScale ? randomCell.valueNumScale : null)
 
-  const [labelLoc, setLabelLoc] = useState("Loc")
-  const [labelScale, setLabelScale] = useState("Scale")
-
   useEffect(() => {
     setRandomCells(prevState => ({
       ...prevState, [id]: {
         ...prevState[id],
+        labelLoc: labelLoc, labelScale: labelScale,
         valueLoc: valueLoc, valueScale: valueScale,
         valueNumLoc: valueNumLoc, valueNumScale: valueNumScale,
       }
@@ -54,7 +55,6 @@ export default function Params(props) {
       setValueLoc(randomCell.valueNumStart ? randomCell.valueStart : "")
       setValueScale((randomCell.valueNumStart && randomCell.valueNumEnd) ? "1" + (randomCell.valueEnd - randomCell.valueStart).toString().substring(1).replace(/[0-9]/g, "0") : "")
     }
-    setProb(null)
   }, [randomCell.dist, randomCell.valueStart, randomCell.valueEnd, randomCell.valueStep, randomCell.valueNumStart, randomCell.valueNumEnd])
   
   useEffect(() => {
