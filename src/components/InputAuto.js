@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import BarChartIcon from '@mui/icons-material/BarChart';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import axios from 'axios';
@@ -32,7 +31,8 @@ export default function InputAuto(props) {
         dist: dist
       }
     }))
-  }, [setRandomCells, id, dist])
+    setProb(null)
+  }, [setRandomCells, id, dist, setProb])
 
   const handleClickDists = (event) => {
     setAnchorEl(event.currentTarget);
@@ -47,7 +47,7 @@ export default function InputAuto(props) {
     const url = 'http://127.0.0.1:8000/prob';
     const data = {
       dist: randomCell.dist,
-      start: Number(randomCell.valueStart), end: Number(randomCell.valueEnd), step: Number(randomCell.valueStep),
+      start: Number(randomCell.valueStart), end: Number(randomCell.valueEnd), step: Number(randomCell.valueStep) + 1,
       loc: Number(randomCell.valueLoc), scale: Number(randomCell.valueScale),
       a: Number(randomCell.valueA), b: Number(randomCell.valueB),
     }
@@ -107,7 +107,7 @@ export default function InputAuto(props) {
           ["unif", "norm", "expon", "beta"].includes(dist) ?
             <>
               <Grid item xs={12}>
-                <Linspace id={id} randomCell={randomCell} setRandomCells={setRandomCells} setX={setX} setProb={setProb} />
+                <Linspace id={id} randomCell={randomCell} setRandomCells={setRandomCells} setProb={setProb} />
               </Grid>
               <Grid item xs={12}>
                 <Params id={id} randomCell={randomCell} setRandomCells={setRandomCells} setProb={setProb} />

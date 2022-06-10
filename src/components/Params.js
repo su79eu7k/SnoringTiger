@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
@@ -41,28 +40,23 @@ export default function Params(props) {
         valueNumA: valueNumA, valueNumB: valueNumB,
       }
     }))
-  }, [setRandomCells, id, valueLoc, valueScale, valueNumLoc, valueNumScale, valueA, valueB, valueNumA, valueNumB])
+  }, [setRandomCells, id, labelLoc, labelScale, valueLoc, valueScale, valueNumLoc, valueNumScale, valueA, valueB, valueNumA, valueNumB])
 
   useEffect(() => {
     const _valid = randomCell.valueNumStart && randomCell.valueNumEnd && randomCell.valueNumStep && randomCell.endGtStart && randomCell.stepEgtTwo
 
-    let _step
-    let _x
     if (_valid) {
-      _step = (randomCell.valueEnd - randomCell.valueStart) / (randomCell.valueStep - 1)
-      _x = calcLinspace(Number(randomCell.valueStart), Number(randomCell.valueEnd), Number(randomCell.valueStep))
-      _x = [_x[0] - _step].concat(_x)
-
       if (randomCell.dist === "unif") {
         setLabelLoc("Loc")
         setLabelScale("Scale")
 
-        setValueLoc(randomCell.valueStart - _step)
-        setValueScale(randomCell.valueEnd - (randomCell.valueStart - _step))
+        setValueLoc(randomCell.valueStart)
+        setValueScale(randomCell.valueEnd - randomCell.valueStart)
       } else if (randomCell.dist === "norm") {
         setLabelLoc("Loc(μ)")
         setLabelScale("Scale(σ)")
-
+        
+        const _x = calcLinspace(Number(randomCell.valueStart), Number(randomCell.valueEnd), Number(randomCell.valueStep) + 1)
         const _n = _x.length
         const _mean = _x.reduce((a, b) => a + b) / _n
         const _stdv = Math.sqrt(_x.map(x => Math.pow(x - _mean, 2)).reduce((a, b) => a + b) / _n)
@@ -73,15 +67,14 @@ export default function Params(props) {
         setLabelLoc("Loc")
         setLabelScale("Scale(1 / λ)")
 
-        setValueLoc(randomCell.valueStart - _step)
-        // (end - (start - x_step)) / 38.229 * 2
-        setValueScale((randomCell.valueEnd - (randomCell.valueStart - _step)) / 38.299 * 2)
+        setValueLoc(randomCell.valueStart)
+        setValueScale((randomCell.valueEnd - randomCell.valueStart) / 38.299 * 2)
       } else if (randomCell.dist === "beta") {
         setLabelLoc("Loc")
         setLabelScale("Scale")
 
-        setValueLoc(randomCell.valueStart - _step)
-        setValueScale(randomCell.valueEnd - (randomCell.valueStart - _step))
+        setValueLoc(randomCell.valueStart)
+        setValueScale(randomCell.valueEnd - randomCell.valueStart)
       }
     }
   }, [randomCell.dist, randomCell.valueNumStart, randomCell.valueNumEnd, randomCell.valueNumStep, randomCell.endGtStart, randomCell.stepEgtTwo, randomCell.valueStart, randomCell.valueEnd, randomCell.valueStep])

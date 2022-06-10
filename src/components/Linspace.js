@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
@@ -9,7 +8,6 @@ export default function Linspace(props) {
   const id = props.id
   const randomCell = props.randomCell
   const setRandomCells = props.setRandomCells
-  const setX = props.setX
   const setProb = props.setProb
 
   const [valueStart, setValueStart] = useState(randomCell.valueStart ? randomCell.valueStart : "")
@@ -40,14 +38,6 @@ export default function Linspace(props) {
   }, [valueStep, valueNumStep, setStepEgtTwo])
 
   useEffect(() => {
-    if (valueNumStart && valueNumEnd && valueNumStep && endGtStart && stepEgtTwo) {
-      setX(calcLinspace(Number(valueStart), Number(valueEnd), Number(valueStep)))
-    } else {
-      setX("")
-    }
-  }, [setX, valueStart, valueEnd, valueStep, valueNumStart, valueNumEnd, valueNumStep, endGtStart, stepEgtTwo])
-
-  useEffect(() => {
     setRandomCells(prevState => ({
       ...prevState, [id]: {
         ...prevState[id],
@@ -57,15 +47,6 @@ export default function Linspace(props) {
       }
     }))
   }, [setRandomCells, id, valueStart, valueEnd, valueStep, valueNumStart, valueNumEnd, valueNumStep, endGtStart, stepEgtTwo])
-
-  function calcLinspace(start, end, step) {
-    const result = [];
-    const scale = (end - start) / (step - 1);
-    for (let i = 0; i < step; i++) {
-      result.push(start + (scale * i));
-    }
-    return result;
-  }
 
   const handleChangeStart = (e) => {
     e.preventDefault()
