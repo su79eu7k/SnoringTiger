@@ -58,7 +58,7 @@ export default function Params(props) {
         setLabelScale("Scale")
 
         setValueLoc(randomCell.valueStart - _step)
-        setValueScale(randomCell.valueEnd - randomCell.valueStart + _step)
+        setValueScale(randomCell.valueEnd - (randomCell.valueStart - _step))
       } else if (randomCell.dist === "norm") {
         setLabelLoc("Loc(μ)")
         setLabelScale("Scale(σ)")
@@ -74,13 +74,14 @@ export default function Params(props) {
         setLabelScale("Scale(1 / λ)")
 
         setValueLoc(randomCell.valueStart - _step)
-        setValueScale("1" + (randomCell.valueEnd - randomCell.valueStart).toString().substring(1).replace(/[0-9]/g, "0"))
+        // (end - (start - x_step)) / 38.229 * 2
+        setValueScale((randomCell.valueEnd - (randomCell.valueStart - _step)) / 38.299 * 2)
       } else if (randomCell.dist === "beta") {
         setLabelLoc("Loc")
         setLabelScale("Scale")
 
         setValueLoc(randomCell.valueStart - _step)
-        setValueScale(randomCell.valueEnd - randomCell.valueStart + _step)
+        setValueScale(randomCell.valueEnd - (randomCell.valueStart - _step))
       }
     }
   }, [randomCell.dist, randomCell.valueNumStart, randomCell.valueNumEnd, randomCell.valueNumStep, randomCell.endGtStart, randomCell.stepEgtTwo, randomCell.valueStart, randomCell.valueEnd, randomCell.valueStep])
