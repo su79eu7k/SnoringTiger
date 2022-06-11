@@ -66,16 +66,12 @@ export default function InputAuto(props) {
     <>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Typography variant="subtitle2" color="text.secondary">
-            Random Variables
+          <Typography noWrap variant="subtitle2" color="text.secondary" sx={{ padding: '3px 4px' }}>
+            Random Sampling (Distribution)
           </Typography>
-        </Grid>
-        <Grid item xs={12}>
-
-          <Typography variant="subtitle2" color="text.secondary">
-            {dist}
+          <Typography noWrap variant="subtitle2" sx={{ padding: '3px 4px' }}>
+            {dist === "unif" ? "Uniform" : dist === "norm" ? "Normal" : dist === "expon" ? "Exponential" : dist === "beta" ? "Beta" : ""}
           </Typography>
-
         </Grid>
         <Grid item xs={12}>
           <Stack direction="row" spacing={2} justifyContent="flex-end" alignItems="flex-start">
