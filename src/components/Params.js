@@ -59,7 +59,7 @@ export default function Params(props) {
         const _x = calcLinspace(Number(randomCell.valueStart), Number(randomCell.valueEnd), Number(randomCell.valueStep) + 1)
         const _n = _x.length
         const _mean = _x.reduce((a, b) => a + b) / _n
-        const _stdv = Math.sqrt(_x.map(x => Math.pow(x - _mean, 2)).reduce((a, b) => a + b) / _n)
+        const _stdv = Math.sqrt(_x.map(x => Math.pow(x - _mean, 2)).reduce((a, b) => a + b) / _n) / 8.293
 
         setValueLoc(_mean)
         setValueScale(_stdv)
