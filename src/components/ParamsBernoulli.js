@@ -13,10 +13,12 @@ export default function ParamsBernoulli(props) {
   const [valueStart, setValueStart] = useState(randomCell.valueStart ? randomCell.valueStart : "")
   const [valueEnd, setValueEnd] = useState(randomCell.valueEnd ? randomCell.valueEnd : "")
   const [valueP, setValueP] = useState(randomCell.valueP ? randomCell.valueP : "")
-  
+  const [valueLoc, setValueLoc] = useState(randomCell.valueLoc ? randomCell.valueLoc : "0")
+
   const [valueNumStart, setValueNumStart] = useState(randomCell.valueNumStart ? randomCell.valueNumStart : null)
   const [valueNumEnd, setValueNumEnd] = useState(randomCell.valueNumEnd ? randomCell.valueNumEnd : null)
   const [valueNumP, setValueNumP] = useState(randomCell.valueNumP ? randomCell.valueNumP : null)
+  const [valueNumLoc, setValueNumLoc] = useState(randomCell.valueNumLoc ? randomCell.valueNumLoc : null)
 
   const [valueBtwZeroOneP, setValueBtwZeroOneP] = useState(randomCell.valueBtwZeroOneP ? randomCell.valueBtwZeroOneP : null)
 
@@ -24,16 +26,17 @@ export default function ParamsBernoulli(props) {
     setRandomCells(prevState => ({
       ...prevState, [id]: {
         ...prevState[id],
-        valueStart: valueStart, valueEnd: valueEnd, valueP: valueP,
-        valueNumStart: valueNumStart, valueNumEnd: valueNumEnd, valueNumP: valueNumP,
+        valueStart: valueStart, valueEnd: valueEnd, valueP: valueP, valueLoc: valueLoc,
+        valueNumStart: valueNumStart, valueNumEnd: valueNumEnd, valueNumP: valueNumP, valueNumLoc: valueNumLoc,
       }
     }))
-  }, [setRandomCells, id, valueStart, valueEnd, valueP, valueNumStart, valueNumEnd, valueNumP])
+  }, [setRandomCells, id, valueStart, valueEnd, valueP, valueLoc, valueNumStart, valueNumEnd, valueNumP, valueNumLoc])
 
   useEffect(() => {
+    setValueNumLoc(!(isNaN(valueLoc) || valueLoc === ""))
     setValueNumP(!(isNaN(valueP) || valueP === ""))
     setValueBtwZeroOneP(valueP >= 0 && valueP <= 1)
-  }, [valueP])
+  }, [valueP, valueLoc])
 
   const handleChangeStart = (e) => {
     e.preventDefault()
@@ -53,6 +56,13 @@ export default function ParamsBernoulli(props) {
     e.preventDefault()
     setValueP(e.target.value)
     setValueNumP(!(isNaN(e.target.value) || e.target.value === ""))
+    setProb(null)
+  };
+
+  const handleChangeLoc = (e) => {
+    e.preventDefault()
+    setValueLoc(e.target.value)
+    setValueNumLoc(!(isNaN(e.target.value) || e.target.value === ""))
     setProb(null)
   };
 
@@ -90,6 +100,16 @@ export default function ParamsBernoulli(props) {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Stack direction="row" spacing={2} justifyContent="flex-end" alignItems="flex-start">
+              <TextField
+                error={!valueNumLoc}
+                helperText={!valueNumLoc ? "Loc is not a number." : ""}
+                size="small"
+                id="outlined-helperText"
+                label="Loc"
+                value={valueLoc}
+                onChange={handleChangeLoc}
+                disabled={randomCell.assigned}
+              />
               <TextField
                 error={!valueNumP || !valueBtwZeroOneP}
                 helperText={!valueNumP ? "P is not a number." : !valueBtwZeroOneP ? "P must be between 0 and 1." : ""}
