@@ -14,11 +14,13 @@ export default function ParamsBinom(props) {
   const [valueEnd, setValueEnd] = useState(randomCell.valueEnd ? randomCell.valueEnd : "")
   const [valueStep, setValueStep] = useState(randomCell.valueStep ? randomCell.valueStep : "")
   const [valueP, setValueP] = useState(randomCell.valueP ? randomCell.valueP : "")
+  const [valueLoc, setValueLoc] = useState(randomCell.valueLoc ? randomCell.valueLoc : "0")
 
   const [valueNumStart, setValueNumStart] = useState(randomCell.valueNumStart ? randomCell.valueNumStart : null)
   const [valueNumEnd, setValueNumEnd] = useState(randomCell.valueNumEnd ? randomCell.valueNumEnd : null)
   const [valueNumStep, setValueNumStep] = useState(randomCell.valueNumStep ? randomCell.valueNumStep : null)
   const [valueNumP, setValueNumP] = useState(randomCell.valueNumP ? randomCell.valueNumP : null)
+  const [valueNumLoc, setValueNumLoc] = useState(randomCell.valueNumLoc ? randomCell.valueNumLoc : null)
 
   const [stepEgtTwo, setStepEgtTwo] = useState(randomCell.stepEgtTwo ? randomCell.stepEgtTwo : null)
   const [valueBtwZeroOneP, setValueBtwZeroOneP] = useState(randomCell.valueBtwZeroOneP ? randomCell.valueBtwZeroOneP : null)
@@ -35,17 +37,18 @@ export default function ParamsBinom(props) {
     setRandomCells(prevState => ({
       ...prevState, [id]: {
         ...prevState[id],
-        valueStart: valueStart, valueEnd: valueEnd, valueStep: valueStep, valueP: valueP,
-        valueNumStart: valueNumStart, valueNumEnd: valueNumEnd, valueNumStep: valueNumStep, valueNumP: valueNumP,
+        valueStart: valueStart, valueEnd: valueEnd, valueStep: valueStep, valueP: valueP, valueLoc: valueLoc,
+        valueNumStart: valueNumStart, valueNumEnd: valueNumEnd, valueNumStep: valueNumStep, valueNumP: valueNumP, valueNumLoc: valueNumLoc,
         stepEgtTwo: stepEgtTwo,
       }
     }))
-  }, [setRandomCells, id, valueStart, valueEnd, valueStep, valueP, valueNumStart, valueNumEnd, valueNumStep, valueNumP, stepEgtTwo])
+  }, [setRandomCells, id, valueStart, valueEnd, valueStep, valueP, valueLoc, valueNumStart, valueNumEnd, valueNumStep, valueNumP, valueNumLoc, stepEgtTwo])
 
   useEffect(() => {
+    setValueNumLoc(!(isNaN(valueLoc) || valueLoc === ""))
     setValueNumP(!(isNaN(valueP) || valueP === ""))
     setValueBtwZeroOneP(valueP >= 0 && valueP <= 1)
-  }, [valueP])
+  }, [valueP, valueLoc])
 
   const handleChangeStart = (e) => {
     e.preventDefault()
@@ -72,6 +75,13 @@ export default function ParamsBinom(props) {
     e.preventDefault()
     setValueP(e.target.value)
     setValueNumP(!(isNaN(e.target.value) || e.target.value === ""))
+    setProb(null)
+  };
+
+  const handleChangeLoc = (e) => {
+    e.preventDefault()
+    setValueLoc(e.target.value)
+    setValueNumLoc(!(isNaN(e.target.value) || e.target.value === ""))
     setProb(null)
   };
 
@@ -119,6 +129,16 @@ export default function ParamsBinom(props) {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Stack direction="row" spacing={2} justifyContent="flex-end" alignItems="flex-start">
+              <TextField
+                error={!valueNumLoc}
+                helperText={!valueNumLoc ? "Loc is not a number." : ""}
+                size="small"
+                id="outlined-helperText"
+                label="Loc"
+                value={valueLoc}
+                onChange={handleChangeLoc}
+                disabled={randomCell.assigned}
+              />
               <TextField
                 error={!valueNumP || !valueBtwZeroOneP}
                 helperText={!valueNumP ? "P is not a number." : !valueBtwZeroOneP ? "P must be between 0 and 1." : ""}
