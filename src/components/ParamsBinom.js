@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 
 
-export default function ParamsBernoulli(props) {
+export default function ParamsBinom(props) {
   const id = props.id
   const randomCell = props.randomCell
   const setRandomCells = props.setRandomCells
@@ -12,23 +12,35 @@ export default function ParamsBernoulli(props) {
 
   const [valueStart, setValueStart] = useState(randomCell.valueStart ? randomCell.valueStart : "")
   const [valueEnd, setValueEnd] = useState(randomCell.valueEnd ? randomCell.valueEnd : "")
+  const [valueStep, setValueStep] = useState(randomCell.valueStep ? randomCell.valueStep : "")
   const [valueP, setValueP] = useState(randomCell.valueP ? randomCell.valueP : "")
-  
+
   const [valueNumStart, setValueNumStart] = useState(randomCell.valueNumStart ? randomCell.valueNumStart : null)
   const [valueNumEnd, setValueNumEnd] = useState(randomCell.valueNumEnd ? randomCell.valueNumEnd : null)
+  const [valueNumStep, setValueNumStep] = useState(randomCell.valueNumStep ? randomCell.valueNumStep : null)
   const [valueNumP, setValueNumP] = useState(randomCell.valueNumP ? randomCell.valueNumP : null)
 
+  const [stepEgtTwo, setStepEgtTwo] = useState(randomCell.stepEgtTwo ? randomCell.stepEgtTwo : null)
   const [valueBtwZeroOneP, setValueBtwZeroOneP] = useState(randomCell.valueBtwZeroOneP ? randomCell.valueBtwZeroOneP : null)
+
+  useEffect(() => {
+    if (valueNumStep) {
+      (Number.isInteger(Number(valueStep))) && (Number(valueStep) >= 2) ? setStepEgtTwo(true) : setStepEgtTwo(false)
+    } else {
+      setStepEgtTwo(null)
+    }
+  }, [valueStep, valueNumStep, setStepEgtTwo])
 
   useEffect(() => {
     setRandomCells(prevState => ({
       ...prevState, [id]: {
         ...prevState[id],
-        valueStart: valueStart, valueEnd: valueEnd, valueP: valueP,
-        valueNumStart: valueNumStart, valueNumEnd: valueNumEnd, valueNumP: valueNumP,
+        valueStart: valueStart, valueEnd: valueEnd, valueStep: valueStep, valueP: valueP,
+        valueNumStart: valueNumStart, valueNumEnd: valueNumEnd, valueNumStep: valueNumStep, valueNumP: valueNumP,
+        stepEgtTwo: stepEgtTwo,
       }
     }))
-  }, [setRandomCells, id, valueStart, valueEnd, valueP, valueNumStart, valueNumEnd, valueNumP])
+  }, [setRandomCells, id, valueStart, valueEnd, valueStep, valueP, valueNumStart, valueNumEnd, valueNumStep, valueNumP, stepEgtTwo])
 
   useEffect(() => {
     setValueNumP(!(isNaN(valueP) || valueP === ""))
@@ -49,7 +61,14 @@ export default function ParamsBernoulli(props) {
     setProb(null)
   };
 
-  const handleChangeScale = (e) => {
+  const handleChangeStep = (e) => {
+    e.preventDefault()
+    setValueStep(e.target.value)
+    setValueNumStep(!(isNaN(e.target.value) || e.target.value === ""))
+    setProb(null)
+  };
+
+  const handleChangeP = (e) => {
     e.preventDefault()
     setValueP(e.target.value)
     setValueNumP(!(isNaN(e.target.value) || e.target.value === ""))
@@ -67,7 +86,7 @@ export default function ParamsBernoulli(props) {
                 helperText={!valueNumStart ? "Start value is not a number." : ""}
                 size="small"
                 id="outlined-helperText"
-                label="Success"
+                label="Start"
                 value={valueStart}
                 onChange={handleChangeStart}
                 disabled={randomCell.assigned}
@@ -77,9 +96,19 @@ export default function ParamsBernoulli(props) {
                 helperText={!valueNumEnd ? "End value is not a number." : ""}
                 size="small"
                 id="outlined-helperText"
-                label="Fail"
+                label="End"
                 value={valueEnd}
                 onChange={handleChangeEnd}
+                disabled={randomCell.assigned}
+              />
+              <TextField
+                error={!valueNumStep || !stepEgtTwo}
+                helperText={!valueNumStep ? "Step value is not an integer." : !stepEgtTwo ? "Step value is not 2 or more integer." : ""}
+                size="small"
+                id="outlined-helperText"
+                label="Step"
+                value={valueStep}
+                onChange={handleChangeStep}
                 disabled={randomCell.assigned}
               />
             </Stack>
@@ -97,7 +126,7 @@ export default function ParamsBernoulli(props) {
                 id="outlined-helperText"
                 label="P"
                 value={valueP}
-                onChange={handleChangeScale}
+                onChange={handleChangeP}
                 disabled={randomCell.assigned}
               />
             </Stack>

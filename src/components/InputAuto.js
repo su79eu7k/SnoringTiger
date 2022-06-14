@@ -10,6 +10,7 @@ import Linspace from './Linspace'
 import Params from './Params';
 import Stack from '@mui/material/Stack';
 import ParamsBernoulli from './ParamsBernoulli';
+import ParamsBinom from './ParamsBinom';
 
 
 export default function InputAuto(props) {
@@ -114,6 +115,9 @@ export default function InputAuto(props) {
         }
         {
           dist === "bern" ? <ParamsBernoulli id={id} randomCell={randomCell} setRandomCells={setRandomCells} setProb={setProb} /> : null
+        }
+                {
+          dist === "binom" ? <ParamsBinom id={id} randomCell={randomCell} setRandomCells={setRandomCells} setProb={setProb} /> : null
         }
       </Grid>
     </>
