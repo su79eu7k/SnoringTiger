@@ -121,7 +121,7 @@ export default function ParamsBinom(props) {
             <Stack direction="row" spacing={2} justifyContent="flex-end" alignItems="flex-start">
               <TextField
                 error={!valueNumP || !valueBtwZeroOneP}
-                helperText={!valueNumP ? "Probability is not a number." : !valueBtwZeroOneP ? "P must be between 0 and 1." : ""}
+                helperText={!valueNumP ? "P is not a number." : !valueBtwZeroOneP ? "P must be between 0 and 1." : ""}
                 size="small"
                 id="outlined-helperText"
                 label="P"
