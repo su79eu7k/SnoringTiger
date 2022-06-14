@@ -9,6 +9,7 @@ import BasicMenu from './BasicMenu';
 import Linspace from './Linspace'
 import Params from './Params';
 import Stack from '@mui/material/Stack';
+import ParamsBernoulli from './ParamsBernoulli';
 
 
 export default function InputAuto(props) {
@@ -50,6 +51,7 @@ export default function InputAuto(props) {
       start: Number(randomCell.valueStart), end: Number(randomCell.valueEnd), step: Number(randomCell.valueStep) + 1,
       loc: Number(randomCell.valueLoc), scale: Number(randomCell.valueScale),
       a: Number(randomCell.valueA), b: Number(randomCell.valueB),
+      p: Number(randomCell.valueP),
     }
     const config = {
       headers: {
@@ -109,6 +111,9 @@ export default function InputAuto(props) {
                 <Params id={id} randomCell={randomCell} setRandomCells={setRandomCells} setProb={setProb} />
               </Grid>
             </> : null
+        }
+        {
+          dist === "bern" ? <ParamsBernoulli id={id} randomCell={randomCell} setRandomCells={setRandomCells} setProb={setProb} /> : null
         }
       </Grid>
     </>
