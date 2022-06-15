@@ -35,6 +35,9 @@ function BasicMenu(props) {
         <MenuItem onClick={(e) => setDist('binom')}>
           <ListItemText>Binomial</ListItemText>
         </MenuItem>
+        <MenuItem onClick={(e) => setDist('poiss')}>
+          <ListItemText>Poisson</ListItemText>
+        </MenuItem>
         <Divider />
         <MenuItem onClick={(e) => setDist('unif')}>
           <ListItemText>Uniform</ListItemText>

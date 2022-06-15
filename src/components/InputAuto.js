@@ -11,6 +11,7 @@ import Params from './Params';
 import Stack from '@mui/material/Stack';
 import ParamsBernoulli from './ParamsBernoulli';
 import ParamsBinom from './ParamsBinom';
+import ParamsPoisson from './ParamsPoisson';
 
 
 export default function InputAuto(props) {
@@ -53,6 +54,7 @@ export default function InputAuto(props) {
       loc: Number(randomCell.valueLoc), scale: Number(randomCell.valueScale),
       a: Number(randomCell.valueA), b: Number(randomCell.valueB),
       p: Number(randomCell.valueP),
+      mu: Number(randomCell.valueMu),
     }
     const config = {
       headers: {
@@ -65,7 +67,7 @@ export default function InputAuto(props) {
     });
   }
 
-  const distNames = {'unif': 'Uniform', 'norm': 'Normal', 'expon': 'Exponential', 'beta': 'Beta', 'bern':'Bernoulli', 'binom': 'Binomial'}
+  const distNames = { 'unif': 'Uniform', 'norm': 'Normal', 'expon': 'Exponential', 'beta': 'Beta', 'bern': 'Bernoulli', 'binom': 'Binomial', 'poiss': 'Poisson' }
 
   return (
     <>
@@ -118,8 +120,11 @@ export default function InputAuto(props) {
         {
           dist === "bern" ? <ParamsBernoulli id={id} randomCell={randomCell} setRandomCells={setRandomCells} setProb={setProb} /> : null
         }
-                {
+        {
           dist === "binom" ? <ParamsBinom id={id} randomCell={randomCell} setRandomCells={setRandomCells} setProb={setProb} /> : null
+        }
+        {
+          dist === "poiss" ? <ParamsPoisson id={id} randomCell={randomCell} setRandomCells={setRandomCells} setProb={setProb} /> : null
         }
       </Grid>
     </>
