@@ -13,7 +13,7 @@ export default function ParamsBernoulli(props) {
   const [valueStart, setValueStart] = useState(randomCell.valueStart ? randomCell.valueStart : "")
   const [valueEnd, setValueEnd] = useState(randomCell.valueEnd ? randomCell.valueEnd : "")
   const [valueP, setValueP] = useState(randomCell.valueP ? randomCell.valueP : "")
-  const [valueLoc, setValueLoc] = useState(randomCell.valueLoc ? randomCell.valueLoc : "0")
+  const [valueLoc, setValueLoc] = useState(randomCell.valueLoc ? randomCell.valueLoc : "")
 
   const [valueNumStart, setValueNumStart] = useState(randomCell.valueNumStart ? randomCell.valueNumStart : null)
   const [valueNumEnd, setValueNumEnd] = useState(randomCell.valueNumEnd ? randomCell.valueNumEnd : null)
@@ -31,6 +31,15 @@ export default function ParamsBernoulli(props) {
       }
     }))
   }, [setRandomCells, id, valueStart, valueEnd, valueP, valueLoc, valueNumStart, valueNumEnd, valueNumP, valueNumLoc])
+
+  useEffect(() => {
+    const _valid = randomCell.valueNumStart && randomCell.valueNumEnd
+
+    if (_valid) {
+        setValueLoc("0")
+        setValueP("0.5")
+    }
+  }, [randomCell.valueNumStart, randomCell.valueNumEnd])
 
   useEffect(() => {
     setValueNumLoc(!(isNaN(valueLoc) || valueLoc === ""))
@@ -77,7 +86,7 @@ export default function ParamsBernoulli(props) {
                 helperText={!valueNumStart ? "Start value is not a number." : ""}
                 size="small"
                 id="outlined-helperText"
-                label="Success"
+                label="Start"
                 value={valueStart}
                 onChange={handleChangeStart}
                 disabled={randomCell.assigned}
@@ -87,7 +96,7 @@ export default function ParamsBernoulli(props) {
                 helperText={!valueNumEnd ? "End value is not a number." : ""}
                 size="small"
                 id="outlined-helperText"
-                label="Fail"
+                label="End"
                 value={valueEnd}
                 onChange={handleChangeEnd}
                 disabled={randomCell.assigned}
@@ -105,7 +114,7 @@ export default function ParamsBernoulli(props) {
                 helperText={!valueNumLoc ? "Loc is not a number." : ""}
                 size="small"
                 id="outlined-helperText"
-                label="Loc"
+                label="Loc(0)"
                 value={valueLoc}
                 onChange={handleChangeLoc}
                 disabled={randomCell.assigned}

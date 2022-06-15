@@ -10,8 +10,8 @@ export default function Params(props) {
   const setRandomCells = props.setRandomCells
   const setProb = props.setProb
 
-  const [labelLoc, setLabelLoc] = useState(randomCell.labelLoc ? randomCell.labelLoc : "Loc")
-  const [labelScale, setLabelScale] = useState(randomCell.labelScale ? randomCell.labelScale : "Scale")
+  const [labelLoc, setLabelLoc] = useState(randomCell.labelLoc ? randomCell.labelLoc : "")
+  const [labelScale, setLabelScale] = useState(randomCell.labelScale ? randomCell.labelScale : "")
 
   const [valueLoc, setValueLoc] = useState(randomCell.valueLoc ? randomCell.valueLoc : "")
   const [valueScale, setValueScale] = useState(randomCell.valueScale ? randomCell.valueScale : "")
@@ -45,17 +45,19 @@ export default function Params(props) {
   useEffect(() => {
     const _valid = randomCell.valueNumStart && randomCell.valueNumEnd && randomCell.valueNumStep && randomCell.endGtStart && randomCell.stepEgtTwo
 
-    if (_valid) {
-      if (randomCell.dist === "unif") {
-        setLabelLoc("Loc")
-        setLabelScale("Scale")
+    if (randomCell.dist === "unif") {
+      setLabelLoc("Loc(Start)")
+      setLabelScale("Scale(End - Start)")
 
+      if (_valid) {
         setValueLoc(randomCell.valueStart)
         setValueScale(randomCell.valueEnd - randomCell.valueStart)
-      } else if (randomCell.dist === "norm") {
-        setLabelLoc("Loc(μ)")
-        setLabelScale("Scale(σ)")
-        
+      }
+    } else if (randomCell.dist === "norm") {
+      setLabelLoc("Loc(μ)")
+      setLabelScale("Scale(σ)")
+
+      if (_valid) {
         const _x = calcLinspace(Number(randomCell.valueStart), Number(randomCell.valueEnd), Number(randomCell.valueStep) + 1)
         const _n = _x.length
         const _mean = _x.reduce((a, b) => a + b) / _n
@@ -63,16 +65,20 @@ export default function Params(props) {
 
         setValueLoc(_mean)
         setValueScale(_stdv)
-      } else if (randomCell.dist === "expon") {
-        setLabelLoc("Loc")
-        setLabelScale("Scale(1 / λ)")
+      }
+    } else if (randomCell.dist === "expon") {
+      setLabelLoc("Loc(Start)")
+      setLabelScale("Scale(1 / λ)")
 
+      if (_valid) {
         setValueLoc(randomCell.valueStart)
         setValueScale((randomCell.valueEnd - randomCell.valueStart) / 38.299 * 2)
-      } else if (randomCell.dist === "beta") {
-        setLabelLoc("Loc")
-        setLabelScale("Scale")
+      }
+    } else if (randomCell.dist === "beta") {
+      setLabelLoc("Loc(Start)")
+      setLabelScale("Scale(End - Start)")
 
+      if (_valid) {
         setValueLoc(randomCell.valueStart)
         setValueScale(randomCell.valueEnd - randomCell.valueStart)
       }

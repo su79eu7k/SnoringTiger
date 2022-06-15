@@ -73,7 +73,7 @@ export default function InputAuto(props) {
             Random Sampling (Distribution)
           </Typography>
           <Typography noWrap variant="subtitle2" sx={{ padding: '3px 4px' }}>
-            {dist === "unif" ? "Uniform" : dist === "norm" ? "Normal" : dist === "expon" ? "Exponential" : dist === "beta" ? "Beta" : ""}
+            {dist === "unif" ? "Uniform" : dist === "norm" ? "Normal" : dist === "expon" ? "Exponential" : dist === "beta" ? "Beta" : dist === "bern" ? "Bernoulli" : dist === "binom" ? "Binomial" : ""}
           </Typography>
         </Grid>
         <Grid item xs={12}>

@@ -14,7 +14,7 @@ export default function ParamsBinom(props) {
   const [valueEnd, setValueEnd] = useState(randomCell.valueEnd ? randomCell.valueEnd : "")
   const [valueStep, setValueStep] = useState(randomCell.valueStep ? randomCell.valueStep : "")
   const [valueP, setValueP] = useState(randomCell.valueP ? randomCell.valueP : "")
-  const [valueLoc, setValueLoc] = useState(randomCell.valueLoc ? randomCell.valueLoc : "0")
+  const [valueLoc, setValueLoc] = useState(randomCell.valueLoc ? randomCell.valueLoc : "")
 
   const [valueNumStart, setValueNumStart] = useState(randomCell.valueNumStart ? randomCell.valueNumStart : null)
   const [valueNumEnd, setValueNumEnd] = useState(randomCell.valueNumEnd ? randomCell.valueNumEnd : null)
@@ -32,6 +32,15 @@ export default function ParamsBinom(props) {
       setStepEgtTwo(null)
     }
   }, [valueStep, valueNumStep, setStepEgtTwo])
+
+  useEffect(() => {
+    const _valid = randomCell.valueNumStart && randomCell.valueNumEnd && randomCell.valueNumStep && randomCell.stepEgtTwo
+
+    if (_valid) {
+      setValueLoc("0")
+      setValueP("0.5")
+    }
+  }, [randomCell.valueNumStart, randomCell.valueNumEnd, randomCell.valueNumStep, randomCell.stepEgtTwo])
 
   useEffect(() => {
     setRandomCells(prevState => ({
@@ -111,16 +120,6 @@ export default function ParamsBinom(props) {
                 onChange={handleChangeEnd}
                 disabled={randomCell.assigned}
               />
-              <TextField
-                error={!valueNumStep || !stepEgtTwo}
-                helperText={!valueNumStep ? "Step value is not an integer." : !stepEgtTwo ? "Step value is not 2 or more integer." : ""}
-                size="small"
-                id="outlined-helperText"
-                label="Step"
-                value={valueStep}
-                onChange={handleChangeStep}
-                disabled={randomCell.assigned}
-              />
             </Stack>
           </Grid>
         </Grid>
@@ -134,9 +133,19 @@ export default function ParamsBinom(props) {
                 helperText={!valueNumLoc ? "Loc is not a number." : ""}
                 size="small"
                 id="outlined-helperText"
-                label="Loc"
+                label="Loc(0)"
                 value={valueLoc}
                 onChange={handleChangeLoc}
+                disabled={randomCell.assigned}
+              />
+              <TextField
+                error={!valueNumStep || !stepEgtTwo}
+                helperText={!valueNumStep ? "N is not an integer." : !stepEgtTwo ? "N is not 2 or more integer." : ""}
+                size="small"
+                id="outlined-helperText"
+                label="N"
+                value={valueStep}
+                onChange={handleChangeStep}
                 disabled={randomCell.assigned}
               />
               <TextField
