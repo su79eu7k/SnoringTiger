@@ -78,7 +78,7 @@ export default function InputManual(props) {
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Typography variant="subtitle2" color="text.secondary">
-            Random Variables
+            Random Sampling
           </Typography>
         </Grid>
         <Grid item xs={12}>

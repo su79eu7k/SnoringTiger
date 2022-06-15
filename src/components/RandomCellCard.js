@@ -103,7 +103,7 @@ export default function RandomCellCard(props) {
       };
       axios.post(url, data, config).then((response) => {
         setAssigned(false)
-        setProb()
+        setProb(null)
       });
     }
     testDupe()

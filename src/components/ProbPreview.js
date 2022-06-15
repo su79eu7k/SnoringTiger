@@ -103,7 +103,7 @@ export default React.memo(function PropPreview(props) {
 
     const ctx = canvasRef.current.getContext("2d")
     const config = {
-      type: cellTypeAuto ? 'line' : 'bar',
+      type: cellTypeAuto ? 'bar' : 'bar',
       data: _data,
       options: _options,
     }
