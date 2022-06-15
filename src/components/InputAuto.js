@@ -65,6 +65,8 @@ export default function InputAuto(props) {
     });
   }
 
+  const distNames = {'unif': 'Uniform', 'norm': 'Normal', 'expon': 'Exponential', 'beta': 'Beta', 'bern':'Bernoulli', 'binom': 'Binomial'}
+
   return (
     <>
       <Grid container spacing={2}>
@@ -73,7 +75,7 @@ export default function InputAuto(props) {
             Random Sampling (Distribution)
           </Typography>
           <Typography noWrap variant="subtitle2" sx={{ padding: '3px 4px' }}>
-            {dist === "unif" ? "Uniform" : dist === "norm" ? "Normal" : dist === "expon" ? "Exponential" : dist === "beta" ? "Beta" : dist === "bern" ? "Bernoulli" : dist === "binom" ? "Binomial" : ""}
+            {distNames[dist]}
           </Typography>
         </Grid>
         <Grid item xs={12}>
