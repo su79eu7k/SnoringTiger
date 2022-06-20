@@ -18,6 +18,7 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import ResultPreview from '../components/ResultPreview';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 
 export default function ProceedSimulation(props) {
@@ -38,6 +39,7 @@ export default function ProceedSimulation(props) {
 
   const [started, setStarted] = useState(!_.isEmpty(simConfig) ? simConfig.started : false)
   const [paused, setPaused] = useState(!_.isEmpty(simConfig) ? simConfig.paused : false)
+  const [saving, setSaving] = useState(false)
 
   const [previewCount, setPreviewCount] = useState(1)
 
@@ -96,7 +98,10 @@ export default function ProceedSimulation(props) {
   const handleClickSave = (e) => {
     e.preventDefault()
 
-    axios.get("http://127.0.0.1:8000/save_sim").then((response) => { })
+    setSaving(true)
+    axios.get("http://127.0.0.1:8000/save_sim").then((response) => {
+      setSaving(false)
+    })
   }
 
   useEffect(() => {
@@ -192,9 +197,19 @@ export default function ProceedSimulation(props) {
               <Grid container spacing={0}>
                 <Grid item xs={12}>
                   <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1}>
-                    <Button variant="outlined" startIcon={<CalculateIcon />} onClick={handleClickStart} disabled={!connStatus || started || !(valueTrials && valueNumTrials && trialsAboveZero) || !dataReady}>
+                    {/* <Button variant="outlined" startIcon={<CalculateIcon />} onClick={handleClickStart} disabled={!connStatus || started || !(valueTrials && valueNumTrials && trialsAboveZero) || !dataReady}>
                       Start
-                    </Button>
+                    </Button> */}
+                    <LoadingButton
+                      variant="outlined"
+                      onClick={handleClickStart}
+                      startIcon={<CalculateIcon />}
+                      disabled={!connStatus || started || !(valueTrials && valueNumTrials && trialsAboveZero) || !dataReady}
+                      loading={started}
+                      loadingPosition={'start'}
+                    >
+                      Start
+                    </LoadingButton>
                     {paused ?
                       <Button variant="outlined" startIcon={<PlayArrowIcon />} onClick={handleClickResume} disabled={!connStatus || !progress || !started}>
                         Resume
@@ -206,9 +221,19 @@ export default function ProceedSimulation(props) {
                     <Button variant="outlined" startIcon={<StopIcon />} onClick={handleClickCancel} disabled={!connStatus || !progress || !started}>
                       Cancel
                     </Button>
-                    <Button variant="outlined" startIcon={<CameraAltIcon />} onClick={handleClickSave} disabled={!connStatus || !progress}>
+                    {/* <Button variant="outlined" startIcon={<CameraAltIcon />} onClick={handleClickSave} disabled={!connStatus || !progress}>
                       Save
-                    </Button>
+                    </Button> */}
+                    <LoadingButton
+                      variant="outlined"
+                      onClick={handleClickSave}
+                      startIcon={<CameraAltIcon />}
+                      disabled={!connStatus || !progress}
+                      loading={saving}
+                      loadingPosition={'start'}
+                    >
+                      Save
+                    </LoadingButton>
                   </Stack>
                 </Grid>
               </Grid>
