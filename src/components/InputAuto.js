@@ -34,8 +34,7 @@ export default function InputAuto(props) {
         dist: dist
       }
     }))
-    setProb(null)
-  }, [setRandomCells, id, dist, setProb])
+  }, [setRandomCells, id, dist])
 
   const handleClickDists = (event) => {
     setAnchorEl(event.currentTarget);
