@@ -147,10 +147,10 @@ export default function ParamsPoisson(props) {
               />
               <TextField
                 error={!valueNumMu}
-                helperText={!valueNumMu ? "μ is not a number." : ""}
+                helperText={!valueNumMu ? "λ is not a number." : ""}
                 size="small"
                 id="outlined-helperText"
-                label="μ"
+                label="λ"
                 value={valueMu}
                 onChange={handleChangeMu}
                 disabled={randomCell.assigned}
