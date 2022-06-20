@@ -17,6 +17,7 @@ import _ from 'lodash';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import ResultPreview from '../components/ResultPreview';
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
 
 
 export default function ProceedSimulation(props) {
@@ -90,6 +91,12 @@ export default function ProceedSimulation(props) {
 
     setPaused(false)
     axios.get("http://127.0.0.1:8000/resume_sim").then((response) => { })
+  }
+
+  const handleClickSave = (e) => {
+    e.preventDefault()
+
+    axios.get("http://127.0.0.1:8000/save_sim").then((response) => { })
   }
 
   useEffect(() => {
@@ -198,6 +205,9 @@ export default function ProceedSimulation(props) {
                     }
                     <Button variant="outlined" startIcon={<StopIcon />} onClick={handleClickCancel} disabled={!connStatus || !progress || !started}>
                       Cancel
+                    </Button>
+                    <Button variant="outlined" startIcon={<CameraAltIcon />} onClick={handleClickSave} disabled={!connStatus || !progress}>
+                      Save
                     </Button>
                   </Stack>
                 </Grid>
