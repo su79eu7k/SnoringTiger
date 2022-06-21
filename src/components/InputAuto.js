@@ -94,6 +94,7 @@ export default function InputAuto(props) {
               open={open}
               onClose={handleClose}
               setDist={setDist}
+              setProb={setProb}
             />
             <IconButton
               variant="outlined"
