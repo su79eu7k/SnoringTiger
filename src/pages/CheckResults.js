@@ -31,11 +31,12 @@ export default function CheckResults() {
 
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/get_hist").then((response) => {
-      setHistData(response)
+      
 
       const _groups = _.groupBy(response.data, 'filename')
       const _groupKeys = _.keys(_groups)
 
+      setHistData(_groups)
       setHistGroupData(_.map(_groupKeys, (k) => _groups[k][_groups[k].length - 1]))
     })
   }, [])
@@ -58,9 +59,9 @@ export default function CheckResults() {
                 Pinned
               </Typography>
             </Stack>
-            <List>
+            <List dense>
               {histGroupData.map((el, i) => (
-                <HistGroup key={i.toString()} el={el} />
+                <HistGroup key={i.toString()} el={el} histData={histData[el.filename]}/>
               ))}
             </List>
           </CardContent>

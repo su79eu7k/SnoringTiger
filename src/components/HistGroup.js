@@ -20,7 +20,9 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import ListItemButton from '@mui/material/ListItemButton';
 import Collapse from '@mui/material/Collapse';
 import StarBorder from '@mui/icons-material/StarBorder';
+import SaveIcon from '@mui/icons-material/Save';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 import axios from 'axios';
 import _ from 'lodash'
 import { DateTime } from "luxon";
@@ -28,11 +30,13 @@ import { DateTime } from "luxon";
 
 export default function HistGroup(props) {
   const el = props.el
+  const histData = props.histData
 
   const [open, setOpen] = useState(false);
 
   const handleClickExpand = () => {
     setOpen(!open);
+    console.log(histData)
   };
 
   return (
@@ -40,21 +44,36 @@ export default function HistGroup(props) {
       <Divider />
       <ListItemButton onClick={handleClickExpand}>
         <ListItemIcon>
-          <FolderIcon />
+          <FolderIcon size='small' />
         </ListItemIcon>
         <ListItemText primary={el.filename} />
         <ListItemText secondary={DateTime.fromSeconds(el.saved).toRelative()} />
+        <ListItemText secondary={(el.max_loop + 1) + " total"} />
+
+        {/* <IconButton size='small'>
+          <BookmarkIcon />
+        </IconButton>
+        <IconButton size='small'>
+          <SaveIcon />
+        </IconButton>
+        <IconButton size='small'>
+          <DeleteIcon />
+        </IconButton> */}
+
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
       <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding dense>
-          <ListItemButton sx={{ pl: 4 }}>
-            <ListItemIcon>
-              <CameraAltIcon />
-            </ListItemIcon>
-            <ListItemText primary="Starred" />
-          </ListItemButton>
-        </List>
+        {histData.map((e, i) => (
+          <List key={i.toString()} component="div" disablePadding dense>
+            <ListItemButton sx={{ pl: 4 }}>
+              <ListItemIcon size='small'>
+                <CameraAltIcon size='small' />
+              </ListItemIcon>
+              <ListItemText secondary={DateTime.fromSeconds(e.saved).toLocaleString(DateTime.DATETIME_FULL)} />
+              <ListItemText secondary={"~ " + (e.max_loop + 1) + " samples"} />
+            </ListItemButton>
+          </List>
+        ))}
       </Collapse>
     </>
   )
