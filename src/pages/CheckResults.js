@@ -51,14 +51,6 @@ export default function CheckResults() {
       <Grid item xs={12}>
         <Card sx={{ minWidth: 275 }}>
           <CardContent>
-            <Stack direction="row">
-              <Typography noWrap variant="subtitle2" color="text.secondary" sx={{ padding: '3px 4px' }}>
-                Recent
-              </Typography>
-              <Typography noWrap variant="subtitle2" color="text.secondary" sx={{ padding: '3px 4px' }}>
-                Pinned
-              </Typography>
-            </Stack>
             <List dense>
               {histGroupData.map((el, i) => (
                 <HistGroup key={i.toString()} el={el} histData={histData[el.filename]}/>

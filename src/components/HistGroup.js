@@ -26,55 +26,45 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import axios from 'axios';
 import _ from 'lodash'
 import { DateTime } from "luxon";
+import ControlButton from './ControlButton';
 
 
 export default function HistGroup(props) {
   const el = props.el
   const histData = props.histData
 
-  const [open, setOpen] = useState(false);
-
-  const handleClickExpand = () => {
-    setOpen(!open);
-    console.log(histData)
-  };
+  const handleClickBookmark = () => {
+    console.log("handleClickBookmark")
+  }
 
   return (
     <>
-      <Divider />
-      <ListItemButton onClick={handleClickExpand}>
+      <ListItem divider>
         <ListItemIcon>
-          <FolderIcon size='small' />
+          <FolderIcon fontSize="small" sx={{ color: "text.secondary" }} />
         </ListItemIcon>
         <ListItemText primary={el.filename} />
         <ListItemText secondary={DateTime.fromSeconds(el.saved).toRelative()} />
-        <ListItemText secondary={(el.max_loop + 1) + " total"} />
-
-        {/* <IconButton size='small'>
-          <BookmarkIcon />
-        </IconButton>
-        <IconButton size='small'>
-          <SaveIcon />
-        </IconButton>
-        <IconButton size='small'>
-          <DeleteIcon />
-        </IconButton> */}
-
-        {open ? <ExpandLess /> : <ExpandMore />}
-      </ListItemButton>
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        {histData.map((e, i) => (
-          <List key={i.toString()} component="div" disablePadding dense>
-            <ListItemButton sx={{ pl: 4 }}>
-              <ListItemIcon size='small'>
-                <CameraAltIcon size='small' />
-              </ListItemIcon>
-              <ListItemText secondary={DateTime.fromSeconds(e.saved).toLocaleString(DateTime.DATETIME_FULL)} />
-              <ListItemText secondary={"~ " + (e.max_loop + 1) + " samples"} />
-            </ListItemButton>
-          </List>
-        ))}
-      </Collapse>
+        <Stack direction="row" alignItems="flex-end" justifyContent="flex-end">
+          <ControlButton connStatus={1} handleClick={handleClickBookmark} caption={"Export"} iconComponent={
+            <SaveIcon fontSize="small" sx={{ color: "text.secondary" }} />
+          } />
+          <ControlButton connStatus={1} handleClick={handleClickBookmark} caption={"Delete"} iconComponent={
+            <DeleteIcon fontSize="small" sx={{ color: "text.secondary" }} />
+          } />
+        </Stack>
+      </ListItem>
+      {histData.map((e, i) => (
+        <List key={i.toString()} component="div" disablePadding dense>
+          <ListItem sx={{ pl: 4 }}>
+            <ListItemIcon>
+              <CameraAltIcon fontSize="small" sx={{ color: "text.secondary" }} />
+            </ListItemIcon>
+            <ListItemText secondary={DateTime.fromSeconds(e.saved).toLocaleString(DateTime.DATETIME_FULL)} />
+            <ListItemText secondary={"~ " + (e.max_loop + 1) + " samples"} />
+          </ListItem>
+        </List>
+      ))}
     </>
   )
 }
