@@ -21,13 +21,24 @@ import ListItemButton from '@mui/material/ListItemButton';
 import Collapse from '@mui/material/Collapse';
 import StarBorder from '@mui/icons-material/StarBorder';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import axios from 'axios';
+import _ from 'lodash'
+import HistGroup from '../components/HistGroup';
 
 export default function CheckResults() {
-  const [open, setOpen] = useState(true);
+  const [histData, setHistData] = useState();
+  const [histGroupData, setHistGroupData] = useState([]);
 
-  const handleClickExpand = () => {
-    setOpen(!open);
-  };
+  useEffect(() => {
+    axios.get("http://127.0.0.1:8000/get_hist").then((response) => {
+      setHistData(response)
+
+      const _groups = _.groupBy(response.data, 'filename')
+      const _groupKeys = _.keys(_groups)
+
+      setHistGroupData(_.map(_groupKeys, (k) => _groups[k][_groups[k].length - 1]))
+    })
+  }, [])
 
   return (
     <Grid container spacing={2}>
@@ -48,24 +59,9 @@ export default function CheckResults() {
               </Typography>
             </Stack>
             <List>
-              <Divider />
-              <ListItemButton onClick={handleClickExpand}>
-                <ListItemIcon>
-                  <FolderIcon />
-                </ListItemIcon>
-                <ListItemText primary="Inbox" />
-                {open ? <ExpandLess /> : <ExpandMore />}
-              </ListItemButton>
-              <Collapse in={open} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding dense>
-                  <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemIcon>
-                      <CameraAltIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Starred" />
-                  </ListItemButton>
-                </List>
-              </Collapse>
+              {histGroupData.map((el, i) => (
+                <HistGroup key={i.toString()} el={el} />
+              ))}
             </List>
           </CardContent>
         </Card>
