@@ -12,8 +12,8 @@ import ControlButton from './ControlButton';
 
 
 export default function HistGroup(props) {
-  const el = props.el
-  const histData = props.histData
+  const maxLoopRecord = props.maxLoopRecord
+  const records = props.records
 
   const handleClickBookmark = () => {
     console.log("handleClickBookmark")
@@ -25,8 +25,8 @@ export default function HistGroup(props) {
         <ListItemIcon>
           <FolderIcon fontSize="small" sx={{ color: "text.secondary" }} />
         </ListItemIcon>
-        <ListItemText primary={el.filename} />
-        <ListItemText secondary={DateTime.fromSeconds(el.saved).toRelative()} />
+        <ListItemText primary={maxLoopRecord.filename} />
+        <ListItemText secondary={DateTime.fromSeconds(maxLoopRecord.saved).toRelative()} />
         <Stack direction="row" alignItems="flex-end" justifyContent="flex-end">
           <ControlButton connStatus={1} handleClick={handleClickBookmark} caption={"Export"} iconComponent={
             <SaveIcon fontSize="small" sx={{ color: "text.secondary" }} />
@@ -36,14 +36,14 @@ export default function HistGroup(props) {
           } />
         </Stack>
       </ListItem>
-      {histData.map((e, i) => (
+      {records.map((record, i) => (
         <List key={i.toString()} component="div" disablePadding dense>
           <ListItem sx={{ pl: 4 }}>
             <ListItemIcon>
               <CameraAltIcon fontSize="small" sx={{ color: "text.secondary" }} />
             </ListItemIcon>
-            <ListItemText secondary={DateTime.fromSeconds(e.saved).toLocaleString(DateTime.DATETIME_FULL)} />
-            <ListItemText secondary={"~ " + (e.max_loop + 1) + " samples"} />
+            <ListItemText secondary={DateTime.fromSeconds(record.saved).toLocaleString(DateTime.DATETIME_FULL)} />
+            <ListItemText secondary={"~ " + (record.max_loop + 1) + " samples"} />
           </ListItem>
         </List>
       ))}
