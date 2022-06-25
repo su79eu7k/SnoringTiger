@@ -7,10 +7,13 @@ import List from '@mui/material/List';
 import axios from 'axios';
 import _ from 'lodash'
 import HistGroup from '../components/HistGroup';
+import { DateTime } from "luxon";
 
 export default function CheckResults() {
   const [snapshotRecs, setSnapshotRecs] = useState();
   const [snapshotRecsMaxLoop, setSnapshotRecsMaxLoop] = useState([]);
+
+  const [lastUpdated, setLastUpdated] = useState(DateTime.now().toUnixInteger())
 
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/get_hist").then((response) => {
@@ -20,7 +23,7 @@ export default function CheckResults() {
       setSnapshotRecs(_groups)
       setSnapshotRecsMaxLoop(_.map(_groupKeys, (k) => _groups[k][_groups[k].length - 1]))
     })
-  }, [])
+  }, [lastUpdated])
 
   return (
     <Grid container spacing={2}>
@@ -34,7 +37,7 @@ export default function CheckResults() {
           <CardContent>
             <List dense>
               {snapshotRecsMaxLoop.map((rec, i) => (
-                <HistGroup key={i.toString()} maxLoopRecord={rec} records={snapshotRecs[rec.filename]}/>
+                <HistGroup key={i.toString()} maxLoopRecord={rec} records={snapshotRecs[rec.filename]} setLastUpdated={setLastUpdated} />
               ))}
             </List>
           </CardContent>
