@@ -84,7 +84,7 @@ export default function HistGroup(props) {
             }}>
               <CardContent>
                 <Typography variant="h6">
-                <WarningAmberIcon sx={{ verticalAlign: "middle", pb: "3px", mr: "4px" }} />
+                  <WarningAmberIcon sx={{ verticalAlign: "middle", pb: "3px", mr: "4px" }} />
                   Warning
                 </Typography>
                 <Typography sx={{ mt: 2 }}>

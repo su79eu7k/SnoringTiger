@@ -17,7 +17,9 @@ export default function CheckResults() {
 
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/get_hist").then((response) => {
-      const _groups = _.groupBy(response.data, 'filename')
+      console.log("To be updated")
+    
+      const _groups = _.groupBy(response.data, 'configured')
       const _groupKeys = _.keys(_groups)
 
       setSnapshotRecs(_groups)
@@ -37,7 +39,7 @@ export default function CheckResults() {
           <CardContent>
             <List dense>
               {snapshotRecsMaxLoop.map((rec, i) => (
-                <HistGroup key={i.toString()} maxLoopRecord={rec} records={snapshotRecs[rec.filename]} setLastUpdated={setLastUpdated} />
+                <HistGroup key={i.toString()} maxLoopRecord={rec} records={snapshotRecs[rec.configured]} setLastUpdated={setLastUpdated} />
               ))}
             </List>
           </CardContent>
