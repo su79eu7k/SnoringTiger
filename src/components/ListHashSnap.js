@@ -19,9 +19,11 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import axios from 'axios';
 
-export default function HistGroup(props) {
-  const maxLoopRecord = props.maxLoopRecord
-  const records = props.records
+export default function ListHashSnap(props) {
+  const groups = props.groups
+  const filename = props.filename
+  const hash_params = props.hash_params
+
   const setLastUpdated = props.setLastUpdated
 
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
@@ -39,7 +41,7 @@ export default function HistGroup(props) {
     console.log("handleClickDeleteConfirm")
 
     const url = "http://127.0.0.1:8000/del_snapshot"
-    const data = { filename: maxLoopRecord.filename }
+    const data = { filename: filename, hash_params: hash_params }
     const config = {
       headers: {
         'content-type': 'application/json',
@@ -52,14 +54,15 @@ export default function HistGroup(props) {
     setOpenDeleteModal(false)
   }
 
+
   return (
     <>
-      <ListItem divider>
+      <ListItem sx={{ pl: 4 }}>
         <ListItemIcon>
           <FolderIcon fontSize="small" sx={{ color: "text.secondary" }} />
         </ListItemIcon>
-        <ListItemText primary={maxLoopRecord.filename} />
-        <ListItemText secondary={DateTime.fromSeconds(maxLoopRecord.saved).toRelative()} />
+        <ListItemText primary={hash_params} />
+
         <Stack direction="row" alignItems="flex-end" justifyContent="flex-end">
           <ControlButton connStatus={1} handleClick={handleClickExport} caption={"Export"} iconComponent={
             <SaveIcon fontSize="small" sx={{ color: "text.secondary" }} />
@@ -105,15 +108,16 @@ export default function HistGroup(props) {
             </Card>
           </Modal>
         </Stack>
+
       </ListItem>
-      {records.map((record, i) => (
+      {groups.map((record, i) => (
         <List key={i.toString()} component="div" disablePadding dense>
-          <ListItem sx={{ pl: 4 }}>
+          <ListItem sx={{ pl: 8 }}>
             <ListItemIcon>
               <CameraAltIcon fontSize="small" sx={{ color: "text.secondary" }} />
             </ListItemIcon>
             <ListItemText secondary={DateTime.fromSeconds(record.saved).toLocaleString(DateTime.DATETIME_FULL)} />
-            <ListItemText secondary={"~ " + (record.max_loop + 1) + " samples"} />
+            <ListItemText secondary={(record.samples) + " samples"} />
           </ListItem>
         </List>
       ))}

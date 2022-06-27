@@ -6,24 +6,16 @@ import CardContent from '@mui/material/CardContent';
 import List from '@mui/material/List';
 import axios from 'axios';
 import _ from 'lodash'
-import HistGroup from '../components/HistGroup';
 import { DateTime } from "luxon";
+import ListFile from '../components/ListFile';
 
 export default function CheckResults() {
   const [snapshotRecs, setSnapshotRecs] = useState();
-  const [snapshotRecsMaxLoop, setSnapshotRecsMaxLoop] = useState([]);
-
   const [lastUpdated, setLastUpdated] = useState(DateTime.now().toUnixInteger())
 
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/get_hist").then((response) => {
-      console.log("To be updated")
-    
-      const _groups = _.groupBy(response.data, 'configured')
-      const _groupKeys = _.keys(_groups)
-
-      setSnapshotRecs(_groups)
-      setSnapshotRecsMaxLoop(_.map(_groupKeys, (k) => _groups[k][_groups[k].length - 1]))
+      setSnapshotRecs(response.data)
     })
   }, [lastUpdated])
 
@@ -38,8 +30,8 @@ export default function CheckResults() {
         <Card sx={{ minWidth: 275 }}>
           <CardContent>
             <List dense>
-              {snapshotRecsMaxLoop.map((rec, i) => (
-                <HistGroup key={i.toString()} maxLoopRecord={rec} records={snapshotRecs[rec.configured]} setLastUpdated={setLastUpdated} />
+              {_.uniq(_.map(snapshotRecs, (e) => (e.filename))).map((filename, i) => (
+                <ListFile key={"f-" + i.toString()} groups={_.filter(snapshotRecs, { "filename": filename })} filename={filename} setLastUpdated={setLastUpdated} />
               ))}
             </List>
           </CardContent>
