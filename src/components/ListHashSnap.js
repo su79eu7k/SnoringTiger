@@ -21,6 +21,7 @@ import axios from 'axios';
 
 export default function ListHashSnap(props) {
   const groups = props.groups
+  const groupsParam = props.groupsParam[0]
   const filename = props.filename
   const hash_params = props.hash_params
 
@@ -62,6 +63,7 @@ export default function ListHashSnap(props) {
           <FolderIcon fontSize="small" sx={{ color: "text.secondary" }} />
         </ListItemIcon>
         <ListItemText primary={hash_params} />
+        <ListItemText secondary={"R:" + groupsParam.random + " / M: " + groupsParam.monitoring} />
 
         <Stack direction="row" alignItems="flex-end" justifyContent="flex-end">
           <ControlButton connStatus={1} handleClick={handleClickExport} caption={"Export"} iconComponent={
