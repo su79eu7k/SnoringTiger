@@ -26,6 +26,8 @@ export default function ListHashSnap(props) {
   const filename = props.filename
   const hash_params = props.hash_params
 
+  const loading = props.loading
+
   const setLastUpdated = props.setLastUpdated
 
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
@@ -64,7 +66,7 @@ export default function ListHashSnap(props) {
           <SettingsIcon fontSize="small" sx={{ color: "text.secondary" }} />
         </ListItemIcon>
         <ListItemText primary={hash_params} />
-        <ListItemText secondary={"R:" + groupsParam.random + " / M: " + groupsParam.monitoring} />
+        {!loading.histParams ? <ListItemText secondary={"R:" + groupsParam.random + " / M: " + groupsParam.monitoring} /> : null}
 
         <Stack direction="row" alignItems="flex-end" justifyContent="flex-end">
           <ControlButton connStatus={1} handleClick={handleClickExport} caption={"Export"} iconComponent={
