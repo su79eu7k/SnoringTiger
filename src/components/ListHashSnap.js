@@ -18,6 +18,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import axios from 'axios';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 export default function ListHashSnap(props) {
   const groups = props.groups
@@ -60,7 +61,7 @@ export default function ListHashSnap(props) {
     <>
       <ListItem sx={{ pl: 4 }}>
         <ListItemIcon>
-          <FolderIcon fontSize="small" sx={{ color: "text.secondary" }} />
+          <SettingsIcon fontSize="small" sx={{ color: "text.secondary" }} />
         </ListItemIcon>
         <ListItemText primary={hash_params} />
         <ListItemText secondary={"R:" + groupsParam.random + " / M: " + groupsParam.monitoring} />
@@ -118,7 +119,7 @@ export default function ListHashSnap(props) {
             <ListItemIcon>
               <CameraAltIcon fontSize="small" sx={{ color: "text.secondary" }} />
             </ListItemIcon>
-            <ListItemText secondary={DateTime.fromSeconds(record.saved).toLocaleString(DateTime.DATETIME_FULL)} />
+            <ListItemText secondary={DateTime.fromSeconds(record.saved).toLocaleString(DateTime.DATETIME_MED_WITH_SECONDS)} />
             <ListItemText secondary={(record.samples) + " samples"} />
           </ListItem>
         </List>
