@@ -74,7 +74,7 @@ export default function MonitoringCellCard(props) {
   }
 
   return (
-    <Card sx={{ minWidth: 275 }}>
+    <Card sx={{ minWidth: 445 }}>
       {addressCell ? <>
         <CardContent>
           <Grid container spacing={2}>

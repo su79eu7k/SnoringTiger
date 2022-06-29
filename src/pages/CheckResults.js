@@ -40,7 +40,7 @@ export default function CheckResults() {
         </Typography>
       </Grid>
       <Grid item xs={12}>
-        <Card sx={{ minWidth: 275 }}>
+        <Card sx={{ minWidth: 445 }}>
           <CardContent>
             {
               !loading.hist ? 

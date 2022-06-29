@@ -65,8 +65,8 @@ export default function ListHashSnap(props) {
         <ListItemIcon>
           <SettingsIcon fontSize="small" sx={{ color: "text.secondary" }} />
         </ListItemIcon>
-        <ListItemText primary={hash_params} />
-        {!loading.histParams ? <ListItemText secondary={"R:" + groupsParam.random + " / M: " + groupsParam.monitoring} /> : null}
+        <ListItemText primary={hash_params} primaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }} sx={{ width: '0px', minWidth: '90px' }} />
+        {!loading.histParams ? <ListItemText secondary={"R:" + groupsParam.random + " / M: " + groupsParam.monitoring} secondaryTypographyProps={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textAlign: 'center' }}  sx={{ width: '0px', minWidth: '90px' }} /> : null}
 
         <Stack direction="row" alignItems="flex-end" justifyContent="flex-end">
           <ControlButton connStatus={1} handleClick={handleClickExport} caption={"Export"} iconComponent={
