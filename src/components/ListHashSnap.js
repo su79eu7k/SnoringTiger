@@ -33,11 +33,19 @@ export default function ListHashSnap(props) {
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
 
   const handleClickExport = () => {
-    console.log("handleClickExport")
+    axios.get("http://127.0.0.1:8000/get_csv?hash_params=" + hash_params).then((response) => {
+      const _elem = document.createElement('a')
+      const _file = new Blob([response.data], {
+        type: response.headers["content-type"],
+      });
+      _elem.href = URL.createObjectURL(_file);
+      _elem.download = hash_params + ".csv";
+      _elem.click();
+    })
   }
 
+
   const handleClickDelete = () => {
-    console.log("handleClickDelete")
     setOpenDeleteModal(true)
   }
 
@@ -52,7 +60,6 @@ export default function ListHashSnap(props) {
       },
     };
     axios.post(url, data, config).then((response) => {
-      console.log(response)
       setLastUpdated(DateTime.now().toUnixInteger())
     })
     setOpenDeleteModal(false)
