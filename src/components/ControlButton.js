@@ -1,10 +1,12 @@
 import { useTheme } from '@mui/styles'
 import ButtonBase from '@mui/material/ButtonBase';
+import { Typography } from '@mui/material';
 
 
 function ControlButton(props) {
     const connStatus = props.connStatus
     const handleClick = props.handleClick
+    const caption = props.caption
     const iconComponent = props.iconComponent
     const theme = useTheme()
 
@@ -21,6 +23,9 @@ function ControlButton(props) {
       }
     }}>
     {iconComponent}
+    <Typography noWrap variant="caption" color="text.secondary" sx={{ paddingLeft: "3px" }}>
+    {caption}
+    </Typography>
   </ButtonBase>
   )
 }

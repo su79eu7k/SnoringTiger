@@ -68,7 +68,7 @@ export default function ResultPreview(props) {
   }
 
   return (
-    <Card sx={{ minWidth: 275 }}>
+    <Card sx={{ minWidth: 445 }}>
       {added ? 
       <CardContent>
         <Grid container spacing={2}>

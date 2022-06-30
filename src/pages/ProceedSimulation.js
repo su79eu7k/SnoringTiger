@@ -153,7 +153,7 @@ export default function ProceedSimulation(props) {
           </Typography>
         </Grid>
         <Grid item xs={12}>
-          <Card sx={{ minWidth: 275 }}>
+          <Card sx={{ minWidth: 445 }}>
             <CardContent>
               <Grid container spacing={2}>
                 <Grid item xs={12}>

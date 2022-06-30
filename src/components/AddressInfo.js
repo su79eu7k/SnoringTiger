@@ -30,7 +30,7 @@ function AddressInfo(props) {
       <Typography noWrap variant="h5" sx={{ padding: '3px 4px' }}>
         {addressCell}
       </Typography>
-      <ControlButton connStatus={connStatus} handleClick={handleClickFocus} iconComponent={
+      <ControlButton connStatus={connStatus} handleClick={handleClickFocus} caption={"Focus"} iconComponent={
         <CenterFocusStrongIcon fontSize="small" sx={{ color: "text.secondary" }} />
       } />
     </>
