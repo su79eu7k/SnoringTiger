@@ -45,7 +45,7 @@ export default function ResultPreview(props) {
 
   const handleClickPreview = (e) => {
     e.preventDefault()
-    
+
     const [_x, _y] = _.keys(_.pickBy(toggledCells))
 
     const url = 'http://127.0.0.1:8000/preview_data';
@@ -69,45 +69,45 @@ export default function ResultPreview(props) {
 
   return (
     <Card sx={{ minWidth: 445 }}>
-      {added ? 
-      <CardContent>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Typography variant="subtitle2" color="text.secondary">
-              Result Preview
-            </Typography>
-          </Grid>
-          <Grid item xs={12} container spacing={2} justifyContent="center">
-            {asndRandCells.map((e, i) => (
-              <Grid item key={"Rand-" + i}>
-                <ElemSelection connStatus={connStatus} addressSheet={e.addressSheet} addressCell={e.addressCell} type={'rand'} setToggledCells={setToggledCells} />
+      {added ?
+        <CardContent>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Typography variant="subtitle2" color="text.secondary">
+                Result Preview
+              </Typography>
+            </Grid>
+            <Grid item xs={12} container spacing={2} justifyContent="center">
+              {asndRandCells.map((e, i) => (
+                <Grid item key={"Rand-" + i}>
+                  <ElemSelection connStatus={connStatus} addressSheet={e.addressSheet} addressCell={e.addressCell} type={'rand'} setToggledCells={setToggledCells} />
+                </Grid>
+              ))}
+              <Grid item xs={12}>
+                <Divider variant="middle" />
               </Grid>
-            ))}
-            {asndMonitCells.map((e, i) => (
-              <Grid item key={"Monit-" + i}>
-                <ElemSelection connStatus={connStatus} addressSheet={e.addressSheet} addressCell={e.addressCell} type={'monit'} setToggledCells={setToggledCells} />
-              </Grid>
-            ))}
+              {asndMonitCells.map((e, i) => (
+                <Grid item key={"Monit-" + i}>
+                  <ElemSelection connStatus={connStatus} addressSheet={e.addressSheet} addressCell={e.addressCell} type={'monit'} setToggledCells={setToggledCells} />
+                </Grid>
+              ))}
+            </Grid>
+            <Grid item xs={12}>
+              <ResultPreviewChart connStatus={connStatus} coords={coords} setCoords={setCoords} theme={theme} toggledCells={toggledCells} />
+            </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <Divider variant="middle" />
-          </Grid>
-          <Grid item xs={12}>
-            <ResultPreviewChart connStatus={connStatus} coords={coords} setCoords={setCoords} theme={theme} toggledCells={toggledCells} />
-          </Grid>
-        </Grid>
-      </CardContent> : null}
+        </CardContent> : null}
       <CardActions>
         <Grid container spacing={0}>
           <Grid item xs={12}>
             <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1}>
-              {added ? 
-              <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickPreview} disabled={connStatus !== 1 || !previewAvailable}>
-                Preview
-              </Button> : 
-              <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickAdd} disabled={connStatus !== 1}>
-              Add Preview
-            </Button>}
+              {added ?
+                <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickPreview} disabled={connStatus !== 1 || !previewAvailable}>
+                  Preview
+                </Button> :
+                <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickAdd} disabled={connStatus !== 1}>
+                  Add Preview
+                </Button>}
             </Stack>
           </Grid>
         </Grid>
