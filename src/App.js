@@ -15,6 +15,7 @@ import axios from 'axios';
 function App() {
   const [file, setFile] = useState(null)
   const [loadingWorkbook, setLoadingWorkbook] = useState(false)
+  const [connCheckDelay, setConnCheckDelay] = useState(null)
   const [connReqStatus, setConnReqStatus] = useState()
   const [connStatus, setConnStatus] = useState(-1)
   const [connedFile, setConnedFile] = useState(null)
@@ -77,12 +78,16 @@ function App() {
     }
   }, [file])
 
+  useEffect(() => {
+    simConfig.started ? setConnCheckDelay(null) : setConnCheckDelay(3000)
+  }, [simConfig.started])
+
   useInterval(() => {
     axios.get("http://127.0.0.1:8000/check_connection").then((response) => {
       setConnStatus(response.data.code)
       setConnedFile(response.data.message)
     })
-  }, 3000)
+  }, connCheckDelay)
 
   return (
     <ColorModeContext.Provider value={colorMode}>

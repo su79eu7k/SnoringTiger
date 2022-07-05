@@ -134,9 +134,9 @@ export default function ProceedSimulation(props) {
   useEffect(() => {
     setSimConfig(prevState => ({
       ...prevState, valueTrials: valueTrials, valueNumTrials: valueNumTrials, trialsAboveZero: trialsAboveZero,
-      dataReady: dataReady, progress: progress, progressDelay: progressDelay, paused: paused
+      dataReady: dataReady, progress: progress, progressDelay: progressDelay, started: started, paused: paused
     }))
-  }, [valueTrials, valueNumTrials, trialsAboveZero, dataReady, progress, progressDelay, paused, setSimConfig])
+  }, [valueTrials, valueNumTrials, trialsAboveZero, dataReady, progress, progressDelay, started, paused, setSimConfig])
 
   useEffect(() => {
     if (progress === 100) {
