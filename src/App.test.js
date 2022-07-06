@@ -2,8 +2,8 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import App from './App';
 
 
-describe('app before upload file', () => {
-  test('darkmode click', () => {
+describe('app before file upload', () => {
+  test('app bar darkmode click', () => {
     render(<App />)
 
     expect(screen.getByTestId("Brightness7Icon")).toBeInTheDocument()
