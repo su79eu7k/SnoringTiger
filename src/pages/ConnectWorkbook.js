@@ -118,6 +118,7 @@ export default function ConnectWorkbook(props) {
                       </Button>
                     </label>
                     <LoadingButton
+                      data-testid="connectButton"
                       variant="outlined"
                       onClick={handleSubmit}
                       startIcon={<CableIcon />}
