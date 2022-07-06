@@ -79,8 +79,9 @@ describe('app after upload file', () => {
     const file = new File([blob], 'test.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
     user.upload(input, file)
     expect(await screen.findByText('test.xlsx')).toBeInTheDocument()
+    expect(await screen.findByTestId('connectButton')).toBeEnabled()
     user.click(await screen.findByTestId('connectButton'))
-    expect(await screen.findByText('Connected', {}, {timeout: 20000})).toBeInTheDocument() 
+    expect(await screen.findByText(/Connected/i, {}, {timeout: 20000})).toBeInTheDocument() 
     
     // user.click(screen.getByTestId('addRandomCells'))
     // expect(screen.getByText('Connect').closest('button')).toBeEnabled()
