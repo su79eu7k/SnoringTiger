@@ -23,13 +23,13 @@ export default function CheckResults() {
     axios.get("http://127.0.0.1:8000/get_hist").then((response) => {
       setSnapshotHist(response.data)
       setLoading(prevState => ({...prevState, 'hist': false}))
-    })
+    }).catch(() => {})
 
     setLoading(prevState => ({...prevState, 'histParams': true}))
     axios.get("http://127.0.0.1:8000/get_hist_params").then((response) => {
       setSnapshotHistParams(response.data)
       setLoading(prevState => ({...prevState, 'histParams': false}))
-    })
+    }).catch(() => {})
   }, [lastUpdated])
 
   return (

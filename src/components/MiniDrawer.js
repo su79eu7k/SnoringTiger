@@ -139,7 +139,7 @@ export default function MiniDrawer(props) {
             {connStatus === 0 ? "Disconnected" : ""}
             {connStatus === -1 ? "Not connected" : ""}
           </Typography>
-          <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
+          <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit" data-testid="darkmodeButton">
             {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
           </IconButton>
         </Toolbar>
@@ -172,11 +172,11 @@ export default function MiniDrawer(props) {
                 }}
               >
                 {index === 0 ? <HomeIcon /> : ''}
-                {index === 1 ? <CableIcon /> : ''}
-                {index === 2 ? <AddchartIcon /> : ''}
-                {index === 3 ? <AddToQueueIcon /> : ''}
-                {index === 4 ? <CalculateIcon /> : ''}
-                {index === 5 ? <InboxIcon /> : ''}
+                {index === 1 ? <CableIcon data-testid="connectWorkbook" /> : ''}
+                {index === 2 ? <AddchartIcon data-testid="addRandomCells" /> : ''}
+                {index === 3 ? <AddToQueueIcon data-testid="addMonitoringCells" /> : ''}
+                {index === 4 ? <CalculateIcon data-testid="proceedSimulation" /> : ''}
+                {index === 5 ? <InboxIcon data-testid="checkHistory" /> : ''}
               </ListItemIcon>
               <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>

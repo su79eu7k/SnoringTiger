@@ -67,7 +67,7 @@ function App() {
     const init = () => {
       axios.get("http://127.0.0.1:8000/reset").then((response) => {
         console.log(response)
-      })
+      }).catch(() => {})
 
       setRandomCells({})
       setMonitoringCells({})
@@ -86,7 +86,7 @@ function App() {
     axios.get("http://127.0.0.1:8000/check_connection").then((response) => {
       setConnStatus(response.data.code)
       setConnedFile(response.data.message)
-    })
+    }).catch(() => {})
   }, connCheckDelay)
 
   return (
