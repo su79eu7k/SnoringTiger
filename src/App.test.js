@@ -1,9 +1,13 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
+import { server } from "./mocks/server";
 import App from './App';
 
-describe('app before upload file', () => {
-  test('darkmode click', async () => {
+describe('App rendering: API server OFFLINE', () => {
+  beforeAll(() => server.listen());
+  afterAll(() => server.close());
+
+  test('darkmode', async () => {
     const user = userEvent.setup()
     render(<App />)
 
@@ -14,7 +18,7 @@ describe('app before upload file', () => {
     expect(await screen.findByTestId("Brightness4Icon")).toBeInTheDocument()
   })
 
-  test('connect workbook click', async () => {
+  test('connect workbook', async () => {
     const user = userEvent.setup()
     render(<App />)
 
@@ -24,7 +28,7 @@ describe('app before upload file', () => {
     expect(await screen.findByTestId("BtnConnWorkbook")).toBeEnabled()
   })
 
-  test('add random cells click', async () => {
+  test('add random cells', async () => {
     const user = userEvent.setup()
     render(<App />)
 
@@ -35,7 +39,7 @@ describe('app before upload file', () => {
     expect(await screen.findByTestId("BtnRandAssign")).toBeDisabled()
   })
 
-  test('add monitoring cells click', async () => {
+  test('add monitoring cells', async () => {
     const user = userEvent.setup()
     render(<App />)
 
@@ -45,7 +49,7 @@ describe('app before upload file', () => {
     expect(await screen.findByTestId("BtnMonitAssign")).toBeDisabled()
   })
 
-  test('proceed simulation click', async () => {
+  test('proceed simulation', async () => {
     const user = userEvent.setup()
     render(<App />)
 
@@ -59,7 +63,7 @@ describe('app before upload file', () => {
     expect(await screen.findByTestId("BtnAddPreview")).toBeDisabled()
   })
 
-  test('check history click', async () => {
+  test('check history', async () => {
     const user = userEvent.setup()
     render(<App />)
 
