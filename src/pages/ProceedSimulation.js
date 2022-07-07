@@ -201,6 +201,7 @@ export default function ProceedSimulation(props) {
                       Start
                     </Button> */}
                     <LoadingButton
+                      data-testid="BtnSimStart"
                       variant="outlined"
                       onClick={handleClickStart}
                       startIcon={<CalculateIcon />}
@@ -214,17 +215,18 @@ export default function ProceedSimulation(props) {
                       <Button variant="outlined" startIcon={<PlayArrowIcon />} onClick={handleClickResume} disabled={!connStatus || !progress || !started}>
                         Resume
                       </Button> :
-                      <Button variant="outlined" startIcon={<PauseIcon />} onClick={handleClickPause} disabled={!connStatus || !progress || !started}>
+                      <Button data-testid="BtnSimPause" variant="outlined" startIcon={<PauseIcon />} onClick={handleClickPause} disabled={!connStatus || !progress || !started}>
                         Pause
                       </Button>
                     }
-                    <Button variant="outlined" startIcon={<StopIcon />} onClick={handleClickCancel} disabled={!connStatus || !progress || !started}>
+                    <Button data-testid="BtnSimCancel" variant="outlined" startIcon={<StopIcon />} onClick={handleClickCancel} disabled={!connStatus || !progress || !started}>
                       Cancel
                     </Button>
                     {/* <Button variant="outlined" startIcon={<CameraAltIcon />} onClick={handleClickSave} disabled={!connStatus || !progress}>
                       Save
                     </Button> */}
                     <LoadingButton
+                      data-testid="BtnSimSave"
                       variant="outlined"
                       onClick={handleClickSave}
                       startIcon={<CameraAltIcon />}

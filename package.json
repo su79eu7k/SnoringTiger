@@ -51,5 +51,8 @@
     "@testing-library/user-event": "^14.2.1",
     "electron": "^19.0.7",
     "msw": "^0.43.1"
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }

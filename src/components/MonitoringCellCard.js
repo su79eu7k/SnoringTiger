@@ -89,7 +89,7 @@ export default function MonitoringCellCard(props) {
           <Grid item xs={2}></Grid>
           <Grid item xs={10}>
             <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1}>
-              <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickConn} disabled={connStatus !== 1 || assigned}>
+              <Button data-testid="BtnConnMonitCell" variant="outlined" startIcon={<CableIcon />} onClick={handleClickConn} disabled={connStatus !== 1 || assigned}>
                 Connect
               </Button>
               {assigned ?
@@ -98,7 +98,7 @@ export default function MonitoringCellCard(props) {
                 </Button> : ""
               }
               {!assigned ?
-                <Button variant="outlined" startIcon={<LockOpenIcon />} onClick={handleClickAssign} disabled={connStatus !== 1 || !addressCell || testDupe()}>
+                <Button data-testid="BtnMonitAssign" variant="outlined" startIcon={<LockOpenIcon />} onClick={handleClickAssign} disabled={connStatus !== 1 || !addressCell || testDupe()}>
                   Assign
                 </Button> : ""
               }

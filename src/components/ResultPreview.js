@@ -105,7 +105,7 @@ export default function ResultPreview(props) {
                 <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickPreview} disabled={connStatus !== 1 || !previewAvailable}>
                   Preview
                 </Button> :
-                <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickAdd} disabled={connStatus !== 1}>
+                <Button data-testid="BtnAddPreview" variant="outlined" startIcon={<CableIcon />} onClick={handleClickAdd} disabled={connStatus !== 1}>
                   Add Preview
                 </Button>}
             </Stack>

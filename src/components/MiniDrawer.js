@@ -139,7 +139,7 @@ export default function MiniDrawer(props) {
             {connStatus === 0 ? "Disconnected" : ""}
             {connStatus === -1 ? "Not connected" : ""}
           </Typography>
-          <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit" data-testid="darkmodeButton">
+          <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit" data-testid="BtnDarkmode">
             {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
           </IconButton>
         </Toolbar>

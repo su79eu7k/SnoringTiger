@@ -113,12 +113,12 @@ export default function ConnectWorkbook(props) {
                         id="contained-button-file"
                         type="file"
                         onChange={handleChange} />
-                      <Button variant="outlined" startIcon={<FolderOpenIcon />} component="span">
+                      <Button data-testid="BtnSelectWorkbook" variant="outlined" startIcon={<FolderOpenIcon />} component="span">
                         Select
                       </Button>
                     </label>
                     <LoadingButton
-                      data-testid="connectButton"
+                      data-testid="BtnConnWorkbook"
                       variant="outlined"
                       onClick={handleSubmit}
                       startIcon={<CableIcon />}

@@ -134,11 +134,11 @@ export default function RandomCellCard(props) {
           <Grid item xs={2}></Grid>
           <Grid item xs={10}>
             <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1}>
-              <Button variant="outlined" startIcon={<CableIcon />} onClick={handleClickConn} disabled={connStatus !== 1 || assigned}>
+              <Button data-testid="BtnConnRandCell" variant="outlined" startIcon={<CableIcon />} onClick={handleClickConn} disabled={connStatus !== 1 || assigned}>
                 Connect
               </Button>
               {cellTypeAuto ?
-                <Button variant="outlined" startIcon={<AccountTreeIcon />} onClick={handleClickCellTypeAuto} disabled={connStatus !== 1 || assigned}>
+                <Button data-testid="BtnManual" variant="outlined" startIcon={<AccountTreeIcon />} onClick={handleClickCellTypeAuto} disabled={connStatus !== 1 || assigned}>
                   Manual
                 </Button> : ""
               }
@@ -153,7 +153,7 @@ export default function RandomCellCard(props) {
                 </Button> : ""
               }
               {!assigned ?
-                <Button variant="outlined" startIcon={<LockOpenIcon />} onClick={handleClickAssign} disabled={connStatus !== 1 || !prob || testDupe()}>
+                <Button data-testid="BtnRandAssign" variant="outlined" startIcon={<LockOpenIcon />} onClick={handleClickAssign} disabled={connStatus !== 1 || !prob || testDupe()}>
                   Assign
                 </Button> : ""
               }
