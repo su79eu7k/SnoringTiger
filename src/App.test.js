@@ -1,7 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
+import { server } from "./mocks/server";
 import App from './App';
 
+
+// beforeAll(() => server.listen());
+// afterEach(() => server.resetHandlers());
+// afterAll(() => server.close());
 
 describe('app before upload file', () => {
   test('darkmode click', async () => {
