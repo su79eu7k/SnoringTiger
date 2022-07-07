@@ -1,74 +1,140 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from "@testing-library/user-event";
-import { server } from "./mocks/server";
+import "@testing-library/react/dont-cleanup-after-each";
+import { render, screen, cleanup } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { server } from './mocks/server';
 import App from './App';
 
-describe('App rendering: API server OFFLINE', () => {
-  beforeAll(() => server.listen());
-  afterAll(() => server.close());
-
-  test('darkmode', async () => {
-    const user = userEvent.setup()
+describe('Integration test', () => {
+  beforeAll(() => {
+    server.listen()
     render(<App />)
+  });
+  afterAll(() => {
+    cleanup()
+    server.close()
+  });
 
-    expect(screen.getByTestId("Brightness7Icon")).toBeInTheDocument()
+  test('Darkmode', async () => {
+    const user = userEvent.setup()
 
-    user.click(screen.getByTestId("BtnDarkmode"))
+    expect(screen.getByTestId('Brightness7Icon')).toBeInTheDocument()
 
-    expect(await screen.findByTestId("Brightness4Icon")).toBeInTheDocument()
+    user.click(screen.getByTestId('BtnDarkmode'))
+
+    expect(await screen.findByTestId('Brightness4Icon')).toBeInTheDocument()
   })
 
-  test('connect workbook', async () => {
+  test('Connect Workbook', async () => {
     const user = userEvent.setup()
-    render(<App />)
 
-    user.click(screen.getByTestId("connectWorkbook"))
+    user.click(screen.getByTestId('connectWorkbook'))
 
-    expect(await screen.findByTestId("BtnSelectWorkbook")).toBeInTheDocument()
-    expect(await screen.findByTestId("BtnConnWorkbook")).toBeEnabled()
+    expect(await screen.findByTestId('BtnSelectWorkbook')).toBeInTheDocument()
+    expect(await screen.findByTestId('BtnConnWorkbook')).toBeEnabled()
   })
 
-  test('add random cells', async () => {
+  test('Add Random Cells', async () => {
     const user = userEvent.setup()
-    render(<App />)
 
-    user.click(screen.getByTestId("addRandomCells"))
+    user.click(screen.getByTestId('addRandomCells'))
 
-    expect(await screen.findByTestId("BtnConnRandCell")).toBeDisabled()
-    expect(await screen.findByTestId("BtnManual")).toBeDisabled()
-    expect(await screen.findByTestId("BtnRandAssign")).toBeDisabled()
+    expect(await screen.findByTestId('BtnConnRandCell')).toBeDisabled()
+    expect(await screen.findByTestId('BtnManual')).toBeDisabled()
+    expect(await screen.findByTestId('BtnRandAssign')).toBeDisabled()
   })
 
-  test('add monitoring cells', async () => {
+  test('Add Monitoring Cells', async () => {
     const user = userEvent.setup()
-    render(<App />)
 
-    user.click(screen.getByTestId("addMonitoringCells"))
+    user.click(screen.getByTestId('addMonitoringCells'))
 
-    expect(await screen.findByTestId("BtnConnMonitCell")).toBeDisabled()
-    expect(await screen.findByTestId("BtnMonitAssign")).toBeDisabled()
+    expect(await screen.findByTestId('BtnConnMonitCell')).toBeDisabled()
+    expect(await screen.findByTestId('BtnMonitAssign')).toBeDisabled()
   })
 
-  test('proceed simulation', async () => {
+  test('Proceed Simulation', async () => {
     const user = userEvent.setup()
-    render(<App />)
 
-    user.click(screen.getByTestId("proceedSimulation"))
+    user.click(screen.getByTestId('proceedSimulation'))
 
-    expect(await screen.findByTestId("BtnSimStart")).toBeDisabled()
-    expect(await screen.findByTestId("BtnSimPause")).toBeDisabled()
-    expect(await screen.findByTestId("BtnSimCancel")).toBeDisabled()
-    expect(await screen.findByTestId("BtnSimSave")).toBeDisabled()
+    expect(await screen.findByTestId('BtnSimStart')).toBeDisabled()
+    expect(await screen.findByTestId('BtnSimPause')).toBeDisabled()
+    expect(await screen.findByTestId('BtnSimCancel')).toBeDisabled()
+    expect(await screen.findByTestId('BtnSimSave')).toBeDisabled()
 
-    expect(await screen.findByTestId("BtnAddPreview")).toBeDisabled()
+    expect(await screen.findByTestId('BtnAddPreview')).toBeDisabled()
   })
 
-  test('check history', async () => {
+  test('Check History', async () => {
     const user = userEvent.setup()
-    render(<App />)
 
-    user.click(screen.getByTestId("checkHistory"))
+    user.click(screen.getByTestId('checkHistory'))
     
-    expect(await screen.findByText("History")).toBeInTheDocument()
+    expect(await screen.findByText('History')).toBeInTheDocument()
+  })
+
+  test('Upload file: Connect Workbook', async () => {
+    const user = userEvent.setup()
+
+    user.click(screen.getByTestId('connectWorkbook'))
+
+    expect(await screen.findByTestId('BtnSelectWorkbook')).toBeInTheDocument()
+    expect(await screen.findByTestId('BtnConnWorkbook')).toBeEnabled()
+
+    user.click(await screen.findByTestId('BtnSelectWorkbook'))
+
+    const input = await screen.findByLabelText('Select')
+    const file = new File(['test'], 'test.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+    user.upload(input, file)
+
+    expect(await screen.findByText('test.xlsx')).toBeInTheDocument()
+
+    user.click(await screen.findByTestId('BtnConnWorkbook'))
+
+    expect(await screen.findByText('Connected to test.xlsx')).toBeInTheDocument()
+  })
+
+  test('Upload file: Add Random Cells', async () => {
+    const user = userEvent.setup()
+
+    user.click(screen.getByTestId('addRandomCells'))
+
+    expect(await screen.findByTestId('BtnConnRandCell')).toBeEnabled()
+    expect(await screen.findByTestId('BtnManual')).toBeEnabled()
+    expect(await screen.findByTestId('BtnRandAssign')).toBeDisabled()
+
+    user.click(screen.getByTestId('BtnConnRandCell'))
+
+    expect(await screen.findByText('Sheet')).toBeInTheDocument()
+  })
+
+  test('Upload file: Add Monitoring Cells', async () => {
+    const user = userEvent.setup()
+
+    user.click(screen.getByTestId('addMonitoringCells'))
+
+    expect(await screen.findByTestId('BtnConnMonitCell')).toBeEnabled()
+    expect(await screen.findByTestId('BtnMonitAssign')).toBeDisabled()
+  })
+
+  test('Upload file: Proceed Simulation', async () => {
+    const user = userEvent.setup()
+
+    user.click(screen.getByTestId('proceedSimulation'))
+
+    expect(await screen.findByTestId('BtnSimStart')).toBeDisabled()
+    expect(await screen.findByTestId('BtnSimPause')).toBeDisabled()
+    expect(await screen.findByTestId('BtnSimCancel')).toBeDisabled()
+    expect(await screen.findByTestId('BtnSimSave')).toBeDisabled()
+
+    expect(await screen.findByTestId('BtnAddPreview')).toBeDisabled()
+  })
+
+  test('Upload file: Check History', async () => {
+    const user = userEvent.setup()
+
+    user.click(screen.getByTestId('checkHistory'))
+    
+    expect(await screen.findByText('History')).toBeInTheDocument()
   })
 })

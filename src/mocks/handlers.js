@@ -1,6 +1,8 @@
 // src/mocks/handlers.js
 import { rest } from 'msw'
 
+sessionStorage.setItem('file-uploaded', 'false')
+
 export const handlers = [
   rest.post('http://127.0.0.1:8000/upload_file', (req, res, ctx) => {
     sessionStorage.setItem('file-uploaded', 'true')
@@ -14,9 +16,7 @@ export const handlers = [
   }),
 
   rest.get('http://127.0.0.1:8000/check_connection', (req, res, ctx) => {
-    const fileUploaded = sessionStorage.getItem('file-uploaded')
-
-    if (fileUploaded) {
+    if (sessionStorage.getItem('file-uploaded') === 'true') {
       return res(
         ctx.status(200),
         ctx.json(
@@ -34,7 +34,7 @@ export const handlers = [
   }),
 
   rest.get('http://127.0.0.1:8000/reset', (req, res, ctx) => {
-    sessionStorage.setItem('file-uploaded', 'false')
+    sessionStorage.setItem('file-uploaded', false)
 
     return res(
       ctx.status(200),
@@ -49,10 +49,10 @@ export const handlers = [
       ctx.status(200),
       ctx.json(
         {
-          sheet: "Sheet1",
-          range: "A1",
+          sheet: 'Sheet1',
+          range: 'A1',
           code: 1,
-          message: "Success: Connection, Getting selection."
+          message: 'Success: Connection, Getting selection.'
         }
       )
     )
