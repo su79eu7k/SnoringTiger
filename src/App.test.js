@@ -105,7 +105,14 @@ describe('Integration test', () => {
 
     user.click(screen.getByTestId('BtnConnRandCell'))
 
-    expect(await screen.findByText('Sheet')).toBeInTheDocument()
+    expect(await screen.findByText('Uniform')).toBeInTheDocument()
+
+    await user.type((await screen.findByTestId('inpStart')).querySelector('input'), '0')
+    await user.type((await screen.findByTestId('inpEnd')).querySelector('input'), '50')
+    await user.type((await screen.findByTestId('inpStep')).querySelector('input'), '20')
+    
+    expect((await screen.findByTestId('inpLoc')).querySelector('input')).toHaveValue('0')
+    expect((await screen.findByTestId('inpScale')).querySelector('input')).toHaveValue('50')
   })
 
   test('Upload file: Add Monitoring Cells', async () => {
@@ -137,4 +144,5 @@ describe('Integration test', () => {
     
     expect(await screen.findByText('History')).toBeInTheDocument()
   })
+
 })

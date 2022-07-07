@@ -76,6 +76,7 @@ export default function Linspace(props) {
         <Grid item xs={12}>
           <Stack direction="row" spacing={2} justifyContent="flex-end" alignItems="flex-start">
             <TextField
+              data-testid="inpStart"
               error={!valueNumStart || endGtStart === false}
               helperText={!valueNumStart ? "Start value is not a number." : endGtStart === false ? "Start value is greater than End." : ""}
               size="small"
@@ -86,6 +87,7 @@ export default function Linspace(props) {
               disabled={randomCell.assigned}
             />
             <TextField
+              data-testid="inpEnd"
               error={!valueNumEnd || endGtStart === false}
               helperText={!valueNumEnd ? "End value is not a number." : endGtStart === false ? "Start value is greater than End." : ""}
               size="small"
@@ -96,6 +98,7 @@ export default function Linspace(props) {
               disabled={randomCell.assigned}
             />
             <TextField
+              data-testid="inpStep"
               error={!valueNumStep || !stepEgtTwo}
               helperText={!valueNumStep ? "Step value is not an integer." : !stepEgtTwo ? "Step value is not 2 or more integer." : ""}
               size="small"

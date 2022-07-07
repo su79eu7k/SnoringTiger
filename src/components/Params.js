@@ -138,6 +138,7 @@ export default function Params(props) {
         <Grid item xs={12}>
           <Stack direction="row" spacing={2} justifyContent="flex-end" alignItems="flex-start">
             <TextField
+              data-testid="inpLoc"
               error={!valueNumLoc}
               helperText={!valueNumLoc ? labelLoc + " is not a number." : ""}
               size="small"
@@ -148,6 +149,7 @@ export default function Params(props) {
               disabled={randomCell.assigned}
             />
             <TextField
+              data-testid="inpScale"
               error={!valueNumScale}
               helperText={!valueNumScale ? labelScale + " is not a number." : ""}
               size="small"
