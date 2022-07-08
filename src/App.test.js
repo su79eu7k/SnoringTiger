@@ -1,5 +1,5 @@
 import "@testing-library/react/dont-cleanup-after-each";
-import { render, screen, cleanup } from '@testing-library/react';
+import { render, screen, cleanup, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { server } from './mocks/server';
 import App from './App';
@@ -94,7 +94,7 @@ describe('Integration test', () => {
     expect(await screen.findByText('Connected to test.xlsx')).toBeInTheDocument()
   })
 
-  test('Upload file: Add Random Cells', async () => {
+  test('Upload file: Add Random Cells - Input Auto', async () => {
     const user = userEvent.setup()
 
     user.click(screen.getByTestId('addRandomCells'))
@@ -113,6 +113,26 @@ describe('Integration test', () => {
     
     expect((await screen.findByTestId('inpLoc')).querySelector('input')).toHaveValue('0')
     expect((await screen.findByTestId('inpScale')).querySelector('input')).toHaveValue('50')
+
+    user.click(screen.getByTestId('BtnProb'))
+
+    await waitFor(() => expect(screen.getAllByTestId('BtnRandAssign')[0]).toBeEnabled(), { timeout: 1000 })
+
+    user.click(screen.getAllByTestId('BtnRandAssign')[0])
+
+    await waitFor(() => expect(screen.getByTestId('BtnRandAssigned')).toBeEnabled(), { timeout: 1000 })
+  })
+
+  test('Upload file: Add Random Cells - Input Manual', async () => {
+    const user = userEvent.setup()
+
+    expect(screen.getAllByTestId('BtnManual')[1]).toBeEnabled()
+    user.click(screen.getAllByTestId('BtnManual')[1])
+    expect(await screen.findByTestId('BtnAuto')).toBeEnabled()
+
+    expect(screen.getAllByTestId('BtnConnRandCell')[1]).toBeEnabled()
+    user.click(screen.getAllByTestId('BtnConnRandCell')[1])
+    expect(await screen.findByText(/duplicate/)).toBeInTheDocument()
   })
 
   test('Upload file: Add Monitoring Cells', async () => {

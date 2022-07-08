@@ -143,12 +143,12 @@ export default function RandomCellCard(props) {
                 </Button> : ""
               }
               {!cellTypeAuto ?
-                <Button variant="outlined" startIcon={<AutoGraphIcon />} onClick={handleClickCellTypeAuto} disabled={connStatus !== 1 || assigned}>
+                <Button data-testid="BtnAuto" variant="outlined" startIcon={<AutoGraphIcon />} onClick={handleClickCellTypeAuto} disabled={connStatus !== 1 || assigned}>
                   Auto
                 </Button> : ""
               }
               {assigned ?
-                <Button variant="outlined" startIcon={<LockIcon />} onClick={handleClickAssign} disabled={connStatus !== 1 || !prob}>
+                <Button data-testid="BtnRandAssigned" variant="outlined" startIcon={<LockIcon />} onClick={handleClickAssign} disabled={connStatus !== 1 || !prob}>
                   Assigned
                 </Button> : ""
               }

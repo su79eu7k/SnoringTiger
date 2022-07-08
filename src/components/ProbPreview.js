@@ -24,7 +24,7 @@ export default React.memo(function PropPreview(props) {
   const decimal = props.decimal
   const setDecimal = props.setDecimal
 
-  const canvasRef = useRef()
+  const canvasRef = useRef('asdf')
 
   const theme = props.theme
 

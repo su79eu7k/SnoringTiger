@@ -97,6 +97,7 @@ export default function InputAuto(props) {
               setProb={setProb}
             />
             <IconButton
+              data-testid="BtnProb"
               variant="outlined"
               onClick={handleClickSubmit}
               disabled={
