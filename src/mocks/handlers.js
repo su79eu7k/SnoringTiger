@@ -10,7 +10,7 @@ export const handlers = [
     return res(
       ctx.status(200),
       ctx.json(
-        {code: 1, message: 'Success: Workbook initiation, Connection, Getting selection.'}
+        { code: 1, message: 'Success: Workbook initiation, Connection, Getting selection.' }
       )
     )
   }),
@@ -20,15 +20,15 @@ export const handlers = [
       return res(
         ctx.status(200),
         ctx.json(
-          {code: 1, message: 'test.xlsx'}
+          { code: 1, message: 'test.xlsx' }
         )
-      )  
+      )
     }
 
     return res(
       ctx.status(200),
       ctx.json(
-        {code: -1, message: 'Never connected'}
+        { code: -1, message: 'Never connected' }
       )
     )
   }),
@@ -39,7 +39,7 @@ export const handlers = [
     return res(
       ctx.status(200),
       ctx.json(
-        {code: 1, message: 'Success: Session re-initiated.'}
+        { code: 1, message: 'Success: Session re-initiated.' }
       )
     )
   }),
@@ -91,6 +91,36 @@ export const handlers = [
         {
           code: 1, message: 'Success: Unassigned.',
         }
+      )
+    )
+  }),
+
+  rest.get('http://127.0.0.1:8000/get_hist', (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json(
+        [
+          { filename: "test.xlsx", hash_params: "2ddeb92f381026d34a339ef0850c79cb", saved: 1657372169.7361226, samples: 141 },
+          { filename: "test.xlsx", hash_params: "2ddeb92f381026d34a339ef0850c79cb", saved: 1657372176.2880538, samples: 235 },
+          { filename: "test.xlsx", hash_params: "2ddeb92f381026d34a339ef0850c79cb", saved: 1657372182.6928751, samples: 282 },
+          { filename: "test.xlsx", hash_params: "2ddeb92f381026d34a339ef0850c79cb", saved: 1657372193.9006805, samples: 342 },
+          { filename: "test.xlsx", hash_params: "ab887326c8d66d0c6ac65276de9326c0", saved: 1657372290.1668642, samples: 168 },
+          { filename: "test.xlsx", hash_params: "ab887326c8d66d0c6ac65276de9326c0", saved: 1657372296.6204164, samples: 168 },
+          { filename: "test.xlsx", hash_params: "ab887326c8d66d0c6ac65276de9326c0", saved: 1657372307.6332715, samples: 336 },
+          { filename: "test.xlsx", hash_params: "ab887326c8d66d0c6ac65276de9326c0", saved: 1657372328.4243345, samples: 328 }
+        ]
+      )
+    )
+  }),
+
+  rest.get('http://127.0.0.1:8000/get_hist_params', (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json(
+        [
+          { filename: "test.xlsx", hash_params: "2ddeb92f381026d34a339ef0850c79cb", random: 1, monitoring: 1 },
+          { filename: "test.xlsx", hash_params: "ab887326c8d66d0c6ac65276de9326c0", random: 2, monitoring: 1 }
+        ]
       )
     )
   }),
