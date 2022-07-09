@@ -82,8 +82,16 @@ export const handlers = [
         }
       )
     )
+  }),
 
-
-
-  })
+  rest.post('http://127.0.0.1:8000/remove_random_cell', (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json(
+        {
+          code: 1, message: 'Success: Unassigned.',
+        }
+      )
+    )
+  }),
 ]

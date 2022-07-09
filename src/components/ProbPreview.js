@@ -24,7 +24,7 @@ export default React.memo(function PropPreview(props) {
   const decimal = props.decimal
   const setDecimal = props.setDecimal
 
-  const canvasRef = useRef('asdf')
+  const canvasRef = useRef()
 
   const theme = props.theme
 
@@ -94,11 +94,17 @@ export default React.memo(function PropPreview(props) {
   }
 
   useEffect(() => {
-    if (chart !== undefined) {
-      // console.log(chart)
+    // if (chart !== undefined) {
+    //   console.log(chart)
+    //   chart.destroy()
+    //   // console.log('Destroyed!')
+    //   // console.log(chart)
+    // }
+
+    try {
       chart.destroy()
-      // console.log('Destroyed!')
-      // console.log(chart)
+    } catch (err) {
+      console.log(err)
     }
 
     const ctx = canvasRef.current.getContext("2d")

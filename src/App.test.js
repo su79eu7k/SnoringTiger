@@ -1,5 +1,5 @@
 import "@testing-library/react/dont-cleanup-after-each";
-import { render, screen, cleanup, waitFor } from '@testing-library/react';
+import { render, screen, cleanup, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { server } from './mocks/server';
 import App from './App';
@@ -132,7 +132,20 @@ describe('Integration test', () => {
 
     expect(screen.getAllByTestId('BtnConnRandCell')[1]).toBeEnabled()
     user.click(screen.getAllByTestId('BtnConnRandCell')[1])
+    
     expect(await screen.findByText(/duplicate/)).toBeInTheDocument()
+
+    user.click(screen.getByTestId('AddIcon'))
+
+    
+    await user.type((await screen.findAllByTestId('inpRandVar'))[0].querySelector('input'), '0')
+    await user.type((await screen.findAllByTestId('inpProb'))[0].querySelector('input'), '70')
+
+    await user.type((await screen.findAllByTestId('inpRandVar'))[1].querySelector('input'), '1')
+    await user.type((await screen.findAllByTestId('inpProb'))[1].querySelector('input'), '30')
+
+    user.click(screen.getByTestId('BtnRandAssigned'))
+    await waitForElementToBeRemoved(() => screen.getByText(/duplicate/))
   })
 
   test('Upload file: Add Monitoring Cells', async () => {
@@ -154,7 +167,7 @@ describe('Integration test', () => {
     expect(await screen.findByTestId('BtnSimCancel')).toBeDisabled()
     expect(await screen.findByTestId('BtnSimSave')).toBeDisabled()
 
-    expect(await screen.findByTestId('BtnAddPreview')).toBeDisabled()
+    expect(await screen.findByTestId('BtnAddPreview')).toBeEnabled()
   })
 
   test('Upload file: Check History', async () => {

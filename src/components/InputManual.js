@@ -96,6 +96,7 @@ export default function InputManual(props) {
             <Grid key={"Input-M-" + i} item xs={12} justifyContent="flex-end" container spacing={2}>
               <Grid item>
               <TextField
+                data-testid="inpRandVar"
                 id={i.toString()}
                 value={valRandVars[i] || ""}
                 onChange={handleChangeRandVar}
@@ -107,6 +108,7 @@ export default function InputManual(props) {
               /></Grid>
               <Grid item>
               <TextField
+              data-testid="inpProb"
                 id={i.toString()}
                 value={valLikelihoods[i] || ""}
                 onChange={handleChangeLikelihood}
