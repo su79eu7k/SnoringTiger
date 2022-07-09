@@ -155,6 +155,12 @@ describe('Integration test', () => {
 
     expect(await screen.findByTestId('BtnConnMonitCell')).toBeEnabled()
     expect(await screen.findByTestId('BtnMonitAssign')).toBeDisabled()
+
+    await waitFor(() => user.click(screen.getByTestId('BtnConnMonitCell')), { timeout: 1000 })
+    user.click(screen.getByTestId('BtnMonitAssign'))
+
+    await waitFor(() => expect(screen.getAllByTestId('BtnConnMonitCell')[0]).toBeDisabled(), { timeout: 1000 })
+    expect(screen.getByTestId('BtnMonitAssigned')).toBeEnabled()
   })
 
   test('Upload file: Proceed Simulation', async () => {

@@ -93,7 +93,7 @@ export default function MonitoringCellCard(props) {
                 Connect
               </Button>
               {assigned ?
-                <Button variant="outlined" startIcon={<LockIcon />} onClick={handleClickAssign} disabled={connStatus !== 1}>
+                <Button data-testid="BtnMonitAssigned" variant="outlined" startIcon={<LockIcon />} onClick={handleClickAssign} disabled={connStatus !== 1}>
                   Assigned
                 </Button> : ""
               }
