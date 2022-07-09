@@ -94,17 +94,8 @@ export default React.memo(function PropPreview(props) {
   }
 
   useEffect(() => {
-    // if (chart !== undefined) {
-    //   console.log(chart)
-    //   chart.destroy()
-    //   // console.log('Destroyed!')
-    //   // console.log(chart)
-    // }
-
-    try {
+    if (chart !== undefined) {
       chart.destroy()
-    } catch (err) {
-      console.log(err)
     }
 
     const ctx = canvasRef.current.getContext("2d")
