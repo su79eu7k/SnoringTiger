@@ -18,6 +18,8 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import axios from 'axios';
 import SettingsIcon from '@mui/icons-material/Settings';
+import Report from './Report'
+import AssessmentIcon from '@mui/icons-material/Assessment';
 
 export default function ListHashSnap(props) {
   const groups = props.groups
@@ -30,6 +32,7 @@ export default function ListHashSnap(props) {
   const setLastUpdated = props.setLastUpdated
 
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
+  const [openReportModal, setOpenReportModal] = useState(false)
 
   const handleClickExport = () => {
     axios.get("http://127.0.0.1:8000/get_csv?hash_params=" + hash_params).then((response) => {
@@ -72,9 +75,18 @@ export default function ListHashSnap(props) {
           <SettingsIcon fontSize="small" sx={{ color: "text.secondary" }} />
         </ListItemIcon>
         <ListItemText primary={hash_params} primaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }} sx={{ width: '0px', minWidth: '90px' }} />
-        {!loading.histParams ? <ListItemText secondary={"R:" + groupsParam.random + " / M: " + groupsParam.monitoring} secondaryTypographyProps={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textAlign: 'center' }}  sx={{ width: '0px', minWidth: '90px' }} /> : null}
+        {
+          !loading.histParams ?
+            <ListItemText secondary={"R:" + groupsParam.random + " / M: " + groupsParam.monitoring} secondaryTypographyProps={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
+            : null}
+
+
 
         <Stack direction="row" alignItems="flex-end" justifyContent="flex-end">
+          <ControlButton connStatus={1} handleClick={() => setOpenReportModal(true)} caption={"Report"} iconComponent={
+            <AssessmentIcon fontSize="small" sx={{ color: "text.secondary" }} />
+          } />
+          <Report openReportModal={openReportModal} setOpenReportModal={setOpenReportModal} />
           <ControlButton connStatus={1} handleClick={handleClickExport} caption={"Export"} iconComponent={
             <SaveIcon fontSize="small" sx={{ color: "text.secondary" }} />
           } />
