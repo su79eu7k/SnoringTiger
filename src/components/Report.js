@@ -8,6 +8,7 @@ import axios from 'axios';
 import ProbChartMini from './ProbChartMini';
 import _ from 'lodash'
 import { useTheme } from '@mui/styles'
+import { Box } from '@mui/material';
 
 
 function Report(props) {
@@ -79,15 +80,18 @@ function Report(props) {
             Parameters({hash_params})
           </Typography>
           <Typography variant="subtitle2" sx={{ padding: '3px 4px' }}>Random Cells</Typography>
+          
           {randCells ? randCells.map((cellAddress, i) => (
+            <Box key={i.toString()} sx={{ width: '80px', backgroundColor: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, .1)' : 'rgba(229, 229, 229, .1)', }}>
             <ProbChartMini
-              key={i.toString()}
               x={_.map(_.filter(paramsDetail, { param_type: 'r', cell_address: cellAddress }), 'param_value')}
               prob={_.map(_.filter(paramsDetail, { param_type: 'p', cell_address: cellAddress }), 'param_value')}
               theme={theme}
             />
+            </Box>
           ))
           : null}
+          
           <Typography variant="subtitle2" sx={{ padding: '3px 4px' }}>Monitoring Cells</Typography>
           <Typography variant="subtitle2" color="text.secondary" sx={{ padding: '3px 4px' }}>
             Samples
