@@ -4,7 +4,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import DeleteIcon from '@mui/icons-material/Delete';
-import FolderIcon from '@mui/icons-material/Folder';
 import SaveIcon from '@mui/icons-material/Save';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import { DateTime } from "luxon";
@@ -103,7 +102,7 @@ export default function ListHashSnap(props) {
                   Warning
                 </Typography>
                 <Typography sx={{ mt: 2 }}>
-                  All snapshots in this file will be deleted, this is irreversible.
+                  All snapshots in this group will be deleted, this is irreversible.
                 </Typography>
                 <Typography sx={{ mt: 2 }}>
                   Are you sure to proceed?
