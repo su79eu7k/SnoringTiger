@@ -5,6 +5,9 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { DateTime } from "luxon";
 import axios from 'axios';
+import ProbChartMini from './ProbChartMini';
+import _ from 'lodash'
+
 
 function Report(props) {
   const openReportModal = props.openReportModal
@@ -35,7 +38,12 @@ function Report(props) {
   }, [lastUpdated])
   
   useEffect(() => {
-    console.log(paramsDetail)
+    // console.log(paramsDetail)
+    // console.log(_.map(_.filter(paramsDetail, {param_type: 'r', cell_address: 'Sheet1!A1'}), 'param_value'))
+    // console.log(_.uniq(_.map(paramsDetail, (e) => e.param_type + ': ' + e.cell_address)))
+    // console.log(_.uniq(_.map(_.filter(paramsDetail, { param_type: 'r' }), 'cell_address')))
+    const randCells = _.uniq(_.map(_.filter(paramsDetail, { param_type: 'r' }), 'cell_address'))
+    const monitCells = _.uniq(_.map(_.filter(paramsDetail, { param_type: 'm' }), 'cell_address'))
   }, [paramsDetail])
   
 
@@ -64,7 +72,10 @@ function Report(props) {
           <Typography variant="subtitle2" color="text.secondary" sx={{ padding: '3px 4px' }}>
             Parameters({hash_params})
           </Typography>
-          <Typography variant="subtitle2" sx={{ padding: '3px 4px' }}>{filename}</Typography>
+          {randCells.}
+          <Typography variant="subtitle2" sx={{ padding: '3px 4px' }}>Random Cells</Typography>
+          <ProbChartMini />
+          <Typography variant="subtitle2" sx={{ padding: '3px 4px' }}>Monitoring Cells</Typography>
           <Typography variant="subtitle2" color="text.secondary" sx={{ padding: '3px 4px' }}>
             Samples
           </Typography>
