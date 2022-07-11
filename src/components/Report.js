@@ -7,6 +7,7 @@ import { DateTime } from "luxon";
 import axios from 'axios';
 import ProbChartMini from './ProbChartMini';
 import _ from 'lodash'
+import { useTheme } from '@mui/styles'
 
 
 function Report(props) {
@@ -23,12 +24,17 @@ function Report(props) {
   })
   const [lastUpdated, setLastUpdated] = useState(DateTime.now().toUnixInteger())
 
+  const [randCells, setRandCells] = useState()
+  const [monitCells, setMonitCells] = useState()
+
+  const theme = useTheme()
+
   useEffect(() => {
-    setLoading(prevState => ({...prevState, 'params_detail': true}))
+    setLoading(prevState => ({ ...prevState, 'params_detail': true }))
     axios.get("http://127.0.0.1:8000/get_params_detail?hash_params=" + hash_params).then((response) => {
       setParamsDetail(response.data)
-      setLoading(prevState => ({...prevState, 'params_detail': false}))
-    }).catch(() => {})
+      setLoading(prevState => ({ ...prevState, 'params_detail': false }))
+    }).catch(() => { })
 
     // setLoading(prevState => ({...prevState, 'scoped_data': true}))
     // axios.get("http://127.0.0.1:8000/get_scoped_data").then((response) => {
@@ -36,16 +42,16 @@ function Report(props) {
     //   setLoading(prevState => ({...prevState, 'scoped_data': false}))
     // }).catch(() => {})
   }, [lastUpdated])
-  
+
   useEffect(() => {
     // console.log(paramsDetail)
     // console.log(_.map(_.filter(paramsDetail, {param_type: 'r', cell_address: 'Sheet1!A1'}), 'param_value'))
     // console.log(_.uniq(_.map(paramsDetail, (e) => e.param_type + ': ' + e.cell_address)))
     // console.log(_.uniq(_.map(_.filter(paramsDetail, { param_type: 'r' }), 'cell_address')))
-    const randCells = _.uniq(_.map(_.filter(paramsDetail, { param_type: 'r' }), 'cell_address'))
-    const monitCells = _.uniq(_.map(_.filter(paramsDetail, { param_type: 'm' }), 'cell_address'))
+    setRandCells(_.uniq(_.map(_.filter(paramsDetail, { param_type: 'r' }), 'cell_address')))
+    setMonitCells(_.uniq(_.map(_.filter(paramsDetail, { param_type: 'm' }), 'cell_address')))
   }, [paramsDetail])
-  
+
 
   return (
     <Modal
@@ -72,9 +78,16 @@ function Report(props) {
           <Typography variant="subtitle2" color="text.secondary" sx={{ padding: '3px 4px' }}>
             Parameters({hash_params})
           </Typography>
-          {randCells.}
           <Typography variant="subtitle2" sx={{ padding: '3px 4px' }}>Random Cells</Typography>
-          <ProbChartMini />
+          {randCells ? randCells.map((cellAddress, i) => (
+            <ProbChartMini
+              key={i.toString()}
+              x={_.map(_.filter(paramsDetail, { param_type: 'r', cell_address: cellAddress }), 'param_value')}
+              prob={_.map(_.filter(paramsDetail, { param_type: 'p', cell_address: cellAddress }), 'param_value')}
+              theme={theme}
+            />
+          ))
+          : null}
           <Typography variant="subtitle2" sx={{ padding: '3px 4px' }}>Monitoring Cells</Typography>
           <Typography variant="subtitle2" color="text.secondary" sx={{ padding: '3px 4px' }}>
             Samples
