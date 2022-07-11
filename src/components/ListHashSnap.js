@@ -77,16 +77,18 @@ export default function ListHashSnap(props) {
         <ListItemText primary={hash_params} primaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }} sx={{ width: '0px', minWidth: '90px' }} />
         {
           !loading.histParams ?
-            <ListItemText secondary={"R:" + groupsParam.random + " / M: " + groupsParam.monitoring} secondaryTypographyProps={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
-            : null}
-
-
+            <ListItemText
+              secondary={"R:" + groupsParam.random + " / M: " + groupsParam.monitoring} 
+              secondaryTypographyProps={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textAlign: 'center' }} 
+              sx={{ width: '0px', minWidth: '90px' }} />
+            : null
+        }
 
         <Stack direction="row" alignItems="flex-end" justifyContent="flex-end">
           <ControlButton connStatus={1} handleClick={() => setOpenReportModal(true)} caption={"Report"} iconComponent={
             <AssessmentIcon fontSize="small" sx={{ color: "text.secondary" }} />
           } />
-          <Report openReportModal={openReportModal} setOpenReportModal={setOpenReportModal} />
+          <Report openReportModal={openReportModal} setOpenReportModal={setOpenReportModal} filename={filename} hash_params={hash_params} />
           <ControlButton connStatus={1} handleClick={handleClickExport} caption={"Export"} iconComponent={
             <SaveIcon fontSize="small" sx={{ color: "text.secondary" }} />
           } />
