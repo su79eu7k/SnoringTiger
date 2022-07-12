@@ -8,7 +8,11 @@ import axios from 'axios';
 import ProbChartMini from './ProbChartMini';
 import _ from 'lodash'
 import { useTheme } from '@mui/styles'
-import { Box } from '@mui/material';
+import { Box, Divider } from '@mui/material';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 
 
 function Report(props) {
@@ -53,7 +57,6 @@ function Report(props) {
     setMonitCells(_.uniq(_.map(_.filter(paramsDetail, { param_type: 'm' }), 'cell_address')))
   }, [paramsDetail])
 
-
   return (
     <Modal
       open={openReportModal}
@@ -77,22 +80,62 @@ function Report(props) {
           </Typography>
           <Typography variant="subtitle2" sx={{ padding: '3px 4px' }}>{filename}</Typography>
           <Typography variant="subtitle2" color="text.secondary" sx={{ padding: '3px 4px' }}>
-            Parameters({hash_params})
+            Parameters
           </Typography>
+          <Typography variant="subtitle2" sx={{ padding: '3px 4px' }}>Hash</Typography>
+          <Typography variant="subtitle2" color="text.secondary" sx={{ padding: '3px 4px' }}>{hash_params}</Typography>
+          <List>
           <Typography variant="subtitle2" sx={{ padding: '3px 4px' }}>Random Cells</Typography>
-          
-          {randCells ? randCells.map((cellAddress, i) => (
-            <Box key={i.toString()} sx={{ width: '80px', backgroundColor: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, .1)' : 'rgba(229, 229, 229, .1)', }}>
-            <ProbChartMini
-              x={_.map(_.filter(paramsDetail, { param_type: 'r', cell_address: cellAddress }), 'param_value')}
-              prob={_.map(_.filter(paramsDetail, { param_type: 'p', cell_address: cellAddress }), 'param_value')}
-              theme={theme}
-            />
-            </Box>
-          ))
-          : null}
-          
-          <Typography variant="subtitle2" sx={{ padding: '3px 4px' }}>Monitoring Cells</Typography>
+            <ListItem>
+              <ListItemText secondary='Sheet Address' secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
+              <ListItemText secondary='Cell Address' secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
+              <ListItemText secondary='Range' secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
+              <ListItemText secondary='Prob. Distribution' secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px', mx: '30px' }} />
+            </ListItem>
+
+            <Divider sx={{ my: '5px' }} />
+
+            {randCells ? randCells.map((cellAddress, i) => {
+              let _x = _.map(_.filter(paramsDetail, { param_type: 'r', cell_address: cellAddress }), 'param_value')
+              let _prob = _.map(_.filter(paramsDetail, { param_type: 'p', cell_address: cellAddress }), 'param_value')
+              return (
+                <ListItem>
+                  <ListItemText secondary={cellAddress.split('!')[0]} secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
+                  <ListItemText secondary={cellAddress.split('!')[1]} secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
+                  <ListItemText secondary={_x[0] + ' - ' + _x[_x.length - 1]} secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
+                  <Box key={i.toString()} sx={{ width: '114px', backgroundColor: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, .05)' : 'rgba(229, 229, 229, .05)', mx: '30px' }}>
+                    <ProbChartMini
+                      x={_x}
+                      prob={_prob}
+                      theme={theme}
+                    />
+                  </Box>
+                </ListItem>
+              )
+            })
+              : null}
+
+            <Typography variant="subtitle2" sx={{ padding: '3px 4px' }}>Monitoring Cells</Typography>
+
+            <ListItem>
+              <ListItemText secondary='Sheet Address' secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
+              <ListItemText secondary='Cell Address' secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
+            </ListItem>
+
+            <Divider sx={{ my: '5px' }} />
+
+            {monitCells ? monitCells.map((cellAddress, i) => {
+              let _m = _.map(_.filter(paramsDetail, { param_type: 'm', cell_address: cellAddress }), 'param_value')
+              return (
+                <ListItem>
+                  <ListItemText secondary={cellAddress.split('!')[0]} secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
+                  <ListItemText secondary={cellAddress.split('!')[1]} secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
+                </ListItem>
+              )
+            })
+              : null}
+          </List>
+
           <Typography variant="subtitle2" color="text.secondary" sx={{ padding: '3px 4px' }}>
             Samples
           </Typography>

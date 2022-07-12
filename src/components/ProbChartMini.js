@@ -27,18 +27,19 @@ export default React.memo(function ProbChartMini(props) {
 
   const _options = {
     // maintainAspectRatio: false,
-    transitions: {
-      'resize': {
-        animation: {
-          duration: 400
-        }
-      }
-    },
+    // transitions: {
+    //   'resize': {
+    //     animation: {
+    //       duration: 400
+    //     }
+    //   }
+    // },
     scales: {
       x: {
-        ticks: {
-          display: false
-        },
+        display: false,
+        // ticks: {
+        //   display: false
+        // },
         grid: {
           color: theme.palette.text.secondary,
           borderWidth: 0,
@@ -48,9 +49,10 @@ export default React.memo(function ProbChartMini(props) {
         },
       },
       y: {
-        ticks: {
-          display: false
-        },
+        display: false,
+        // ticks: {
+        //   display: false
+        // },
         grid: {
           color: theme.palette.text.secondary,
           borderColor: theme.palette.text.secondary,
