@@ -21,7 +21,7 @@ export default React.memo(function CorrMat(props) {
       data: corrData,
       backgroundColor(context) {
         const value = context.dataset.data[context.dataIndex].v;
-        const alpha = value * .1
+        const alpha = value * .2
         return theme.palette.mode === 'light' ? 'rgba(0, 0, 0, ' + alpha + ')' : 'rgba(229, 229, 229, ' + alpha + ')';
       },
       // borderColor(context) {

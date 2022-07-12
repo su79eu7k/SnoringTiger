@@ -25,10 +25,12 @@ function Report(props) {
   const [paramsDetail, setParamsDetail] = useState()
   const [scopedData, setScopedData] = useState()
   const [corrData, setCorrData] = useState()
+  const [summaryData, setSummaryData] = useState()
   const [loading, setLoading] = useState({
     params_detail: false,
     scoped_data: false,
     corr_data: false,
+    summary_data: false
   })
   const [lastUpdated, setLastUpdated] = useState(DateTime.now().toUnixInteger())
 
@@ -44,6 +46,21 @@ function Report(props) {
       setLoading(prevState => ({ ...prevState, 'params_detail': false }))
     }).catch(() => { })
 
+    setLoading(prevState => ({...prevState, 'summary_data': true}))
+    const url = 'http://127.0.0.1:8000/get_summary';
+    const data = { hash_params: hash_params }
+    const config = {
+      headers: {
+        'content-type': 'application/json',
+      },
+    };
+    axios.post(url, data, config).then((response) => {
+      setSummaryData(response.data)
+      console.log(response.data)
+      setLoading(prevState => ({...prevState, 'summary_data': false}))
+    });
+
+
     // setLoading(prevState => ({...prevState, 'scoped_data': true}))
     // axios.get("http://127.0.0.1:8000/get_scoped_data").then((response) => {
     //   setScopedData(response.data)
@@ -58,17 +75,15 @@ function Report(props) {
   }, [lastUpdated])
 
   useEffect(() => {
-    // console.log(paramsDetail)
-    // console.log(_.map(_.filter(paramsDetail, {param_type: 'r', cell_address: 'Sheet1!A1'}), 'param_value'))
-    // console.log(_.uniq(_.map(paramsDetail, (e) => e.param_type + ': ' + e.cell_address)))
-    // console.log(_.uniq(_.map(_.filter(paramsDetail, { param_type: 'r' }), 'cell_address')))
     setRandCells(_.uniq(_.map(_.filter(paramsDetail, { param_type: 'r' }), 'cell_address')))
     setMonitCells(_.uniq(_.map(_.filter(paramsDetail, { param_type: 'm' }), 'cell_address')))
   }, [paramsDetail])
 
+  let formatter = Intl.NumberFormat('en', { notation: 'compact' });
+
   return (
     <Modal
-      sx={{overflow:'scroll',}}
+      sx={{ overflow: 'scroll', }}
       open={openReportModal}
       onClose={() => { setOpenReportModal(false) }}
       aria-labelledby="modal-modal-title"
@@ -76,9 +91,9 @@ function Report(props) {
     >
       <Card sx={{
         position: "absolute",
-        top: "50%",
+        top: "10%",
         left: "50%",
-        transform: "translate(-50%, -50%)",
+        transform: "translate(-50%, 0%)",
         minWidth: "600px",
         maxWidth: "1200px",
         padding: "10px",
@@ -99,7 +114,7 @@ function Report(props) {
             <ListItem>
               <ListItemText secondary='Sheet Address' secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
               <ListItemText secondary='Cell Address' secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
-              <ListItemText secondary='Range' secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
+              <ListItemText secondary='Pick Range' secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
               <ListItemText secondary='Prob. Distribution' secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px', mx: '30px' }} />
             </ListItem>
 
@@ -112,7 +127,7 @@ function Report(props) {
                 <ListItem key={i.toString()}>
                   <ListItemText secondary={cellAddress.split('!')[0]} secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
                   <ListItemText secondary={cellAddress.split('!')[1]} secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
-                  <ListItemText secondary={_x[0] + ' - ' + _x[_x.length - 1]} secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
+                  <ListItemText secondary={formatter.format(_x[0]) + ' - ' + formatter.format(_x[_x.length - 1])} secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
                   <Box sx={{ width: '114px', backgroundColor: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, .1)' : 'rgba(229, 229, 229, .05)', mx: '30px' }}>
                     <ProbChartMini
                       x={_x}
@@ -146,15 +161,20 @@ function Report(props) {
               : null}
           </List>
 
-          <Typography variant="subtitle1" sx={{ padding: '3px 4px' }}>
+          {/* <Typography variant="subtitle1" sx={{ padding: '3px 4px' }}>
             Scope
           </Typography>
-          <Typography variant="subtitle2" color="text.secondary" sx={{ padding: '3px 4px' }}>{filename}</Typography>
+          <Typography variant="subtitle2" color="text.secondary" sx={{ padding: '3px 4px' }}>{filename}</Typography> */}
 
           <Typography variant="subtitle1" sx={{ padding: '3px 4px' }}>
             Correlation Matrix
           </Typography>
           <CorrMat corrData={corrData} theme={theme} />
+
+          <Typography variant="subtitle1" sx={{ padding: '3px 4px' }}>
+            Summary
+          </Typography>
+          <Typography variant="subtitle2" color="text.secondary" sx={{ padding: '3px 4px' }}>{JSON.stringify(summaryData)}</Typography>
         </CardContent>
       </Card>
     </Modal>
