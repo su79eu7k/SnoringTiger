@@ -13,6 +13,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import CorrMat from './CorrMat';
 
 
 function Report(props) {
@@ -23,9 +24,11 @@ function Report(props) {
 
   const [paramsDetail, setParamsDetail] = useState()
   const [scopedData, setScopedData] = useState()
+  const [corrData, setCorrData] = useState()
   const [loading, setLoading] = useState({
     params_detail: false,
     scoped_data: false,
+    corr_data: false,
   })
   const [lastUpdated, setLastUpdated] = useState(DateTime.now().toUnixInteger())
 
@@ -46,6 +49,12 @@ function Report(props) {
     //   setScopedData(response.data)
     //   setLoading(prevState => ({...prevState, 'scoped_data': false}))
     // }).catch(() => {})
+
+    setLoading(prevState => ({ ...prevState, 'corr_data': true }))
+    axios.get("http://127.0.0.1:8000/get_corr?hash_params=" + hash_params).then((response) => {
+      setCorrData(response.data)
+      setLoading(prevState => ({ ...prevState, 'corr_data': false }))
+    }).catch(() => { })
   }, [lastUpdated])
 
   useEffect(() => {
@@ -59,6 +68,7 @@ function Report(props) {
 
   return (
     <Modal
+      sx={{overflow:'scroll',}}
       open={openReportModal}
       onClose={() => { setOpenReportModal(false) }}
       aria-labelledby="modal-modal-title"
@@ -75,17 +85,17 @@ function Report(props) {
         textAlign: "justify",
       }}>
         <CardContent>
-          <Typography variant="subtitle2" color="text.secondary" sx={{ padding: '3px 4px' }}>
+          <Typography variant="subtitle1" sx={{ padding: '3px 4px' }}>
             File
           </Typography>
-          <Typography variant="subtitle2" sx={{ padding: '3px 4px' }}>{filename}</Typography>
-          <Typography variant="subtitle2" color="text.secondary" sx={{ padding: '3px 4px' }}>
+          <Typography variant="subtitle2" color="text.secondary" sx={{ padding: '3px 4px' }}>{filename}</Typography>
+          <Typography variant="subtitle1" sx={{ padding: '3px 4px' }}>
             Parameters
           </Typography>
-          <Typography variant="subtitle2" sx={{ padding: '3px 4px' }}>Hash</Typography>
+          <Typography variant="caption" sx={{ padding: '3px 4px' }}>Hash</Typography>
           <Typography variant="subtitle2" color="text.secondary" sx={{ padding: '3px 4px' }}>{hash_params}</Typography>
           <List>
-          <Typography variant="subtitle2" sx={{ padding: '3px 4px' }}>Random Cells</Typography>
+          <Typography variant="caption" sx={{ padding: '3px 4px' }}>Random Cells</Typography>
             <ListItem>
               <ListItemText secondary='Sheet Address' secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
               <ListItemText secondary='Cell Address' secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
@@ -99,11 +109,11 @@ function Report(props) {
               let _x = _.map(_.filter(paramsDetail, { param_type: 'r', cell_address: cellAddress }), 'param_value')
               let _prob = _.map(_.filter(paramsDetail, { param_type: 'p', cell_address: cellAddress }), 'param_value')
               return (
-                <ListItem>
+                <ListItem key={i.toString()}>
                   <ListItemText secondary={cellAddress.split('!')[0]} secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
                   <ListItemText secondary={cellAddress.split('!')[1]} secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
                   <ListItemText secondary={_x[0] + ' - ' + _x[_x.length - 1]} secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
-                  <Box key={i.toString()} sx={{ width: '114px', backgroundColor: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, .05)' : 'rgba(229, 229, 229, .05)', mx: '30px' }}>
+                  <Box sx={{ width: '114px', backgroundColor: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, .1)' : 'rgba(229, 229, 229, .05)', mx: '30px' }}>
                     <ProbChartMini
                       x={_x}
                       prob={_prob}
@@ -115,7 +125,7 @@ function Report(props) {
             })
               : null}
 
-            <Typography variant="subtitle2" sx={{ padding: '3px 4px' }}>Monitoring Cells</Typography>
+            <Typography variant="caption" sx={{ padding: '3px 4px' }}>Monitoring Cells</Typography>
 
             <ListItem>
               <ListItemText secondary='Sheet Address' secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
@@ -127,7 +137,7 @@ function Report(props) {
             {monitCells ? monitCells.map((cellAddress, i) => {
               let _m = _.map(_.filter(paramsDetail, { param_type: 'm', cell_address: cellAddress }), 'param_value')
               return (
-                <ListItem>
+                <ListItem key={i.toString()}>
                   <ListItemText secondary={cellAddress.split('!')[0]} secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
                   <ListItemText secondary={cellAddress.split('!')[1]} secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
                 </ListItem>
@@ -136,10 +146,15 @@ function Report(props) {
               : null}
           </List>
 
-          <Typography variant="subtitle2" color="text.secondary" sx={{ padding: '3px 4px' }}>
-            Samples
+          <Typography variant="subtitle1" sx={{ padding: '3px 4px' }}>
+            Scope
           </Typography>
-          <Typography variant="subtitle2" sx={{ padding: '3px 4px' }}>{filename}</Typography>
+          <Typography variant="subtitle2" color="text.secondary" sx={{ padding: '3px 4px' }}>{filename}</Typography>
+
+          <Typography variant="subtitle1" sx={{ padding: '3px 4px' }}>
+            Correlation Matrix
+          </Typography>
+          <CorrMat corrData={corrData} theme={theme} />
         </CardContent>
       </Card>
     </Modal>
