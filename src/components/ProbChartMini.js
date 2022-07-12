@@ -26,6 +26,7 @@ export default React.memo(function ProbChartMini(props) {
   }
 
   const _options = {
+    animation: false,
     // maintainAspectRatio: false,
     // transitions: {
     //   'resize': {

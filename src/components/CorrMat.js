@@ -36,6 +36,7 @@ export default React.memo(function CorrMat(props) {
   }
 
   const _options = {
+    animation: false,
     // maintainAspectRatio: false,
     // transitions: {
     //   'resize': {

@@ -55,7 +55,6 @@ function Report(props) {
     };
     axios.post(url, data, config).then((response) => {
       setSummaryData(response.data)
-      console.log(response.data)
       setLoading(prevState => ({ ...prevState, 'summary_data': false }))
     });
 
@@ -120,7 +119,7 @@ function Report(props) {
 
             <Divider sx={{ my: '3px' }} />
 
-            {randCells ? randCells.map((cellAddress, i) => {
+            {randCells && summaryData ? randCells.map((cellAddress, i) => {
               let _x = _.map(_.filter(paramsDetail, { param_type: 'r', cell_address: cellAddress }), 'param_value')
               let _prob = _.map(_.filter(paramsDetail, { param_type: 'p', cell_address: cellAddress }), 'param_value')
               function stat_val(_stat) { return _.filter(summaryData, { column: 'T: ' + cellAddress, stats: _stat })[0].value }
