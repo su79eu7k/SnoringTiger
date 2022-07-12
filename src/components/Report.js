@@ -45,7 +45,7 @@ function Report(props) {
       setLoading(prevState => ({ ...prevState, 'params_detail': false }))
     }).catch(() => { })
 
-    setLoading(prevState => ({...prevState, 'summary_data': true}))
+    setLoading(prevState => ({ ...prevState, 'summary_data': true }))
     const url = 'http://127.0.0.1:8000/get_summary';
     const data = { hash_params: hash_params }
     const config = {
@@ -56,9 +56,8 @@ function Report(props) {
     axios.post(url, data, config).then((response) => {
       setSummaryData(response.data)
       console.log(response.data)
-      setLoading(prevState => ({...prevState, 'summary_data': false}))
+      setLoading(prevState => ({ ...prevState, 'summary_data': false }))
     });
-
 
     // setLoading(prevState => ({...prevState, 'scoped_data': true}))
     // axios.get("http://127.0.0.1:8000/get_scoped_data").then((response) => {
@@ -78,7 +77,7 @@ function Report(props) {
     setMonitCells(_.uniq(_.map(_.filter(paramsDetail, { param_type: 'm' }), 'cell_address')))
   }, [paramsDetail])
 
-  let formatter = Intl.NumberFormat('en', { notation: 'compact' });
+  // let formatter = Intl.NumberFormat('en', { notation: 'compact' });
 
   return (
     <Modal
@@ -109,19 +108,14 @@ function Report(props) {
           <Typography variant="subtitle2" sx={{ padding: '3px 4px', fontSize: 13, mt: '10px' }}>Hash</Typography>
           <Typography variant="subtitle2" color="text.secondary" sx={{ padding: '3px 4px' }}>{hash_params}</Typography>
           <List>
-          <Typography variant="subtitle2" sx={{ padding: '3px 4px', fontSize: 13, mt: '10px' }}>Random Cells</Typography>
+            <Typography variant="subtitle2" sx={{ padding: '3px 4px', fontSize: 13, mt: '10px' }}>Random Cells</Typography>
             <ListItem>
-              <ListItemText secondary='Sheet' secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '60px' }} />
-              <ListItemText secondary='Cell' secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '60px' }} />
-              <ListItemText secondary='Mean' secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '60px' }} />
-              <ListItemText secondary='Std' secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '60px' }} />
-              
-              <ListItemText secondary='Min' secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '60px' }} />
-              <ListItemText secondary='25%' secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '60px' }} />
-              <ListItemText secondary='50%' secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '60px' }} />
-              <ListItemText secondary='75%' secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '60px' }} />
-              <ListItemText secondary='Max' secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '60px' }} />
-              <ListItemText secondary='Prob.' secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '60px', mx: '30px' }} />
+              {['Sheet', 'Cell', 'Mean', 'Std', '25%', '50%', '75%', 'Max', 'Prob.'].map((col) =>
+                <ListItemText
+                  secondary={col}
+                  secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }}
+                  sx={{ width: '0px', minWidth: '60px' }} />
+              )}
             </ListItem>
 
             <Divider sx={{ my: '3px' }} />
@@ -132,19 +126,13 @@ function Report(props) {
               function stat_val(_stat) { return _.filter(summaryData, { column: 'T: ' + cellAddress, stats: _stat })[0].value }
               return (
                 <ListItem key={i.toString()}>
-                  <ListItemText secondary={cellAddress.split('!')[0]} secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '60px' }} />
-                  <ListItemText secondary={cellAddress.split('!')[1]} secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '60px' }} />
-                  <ListItemText secondary={stat_val('mean')} secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '60px' }} />
-                  <ListItemText secondary={stat_val('std')} secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '60px' }} />
-                  
-                  <ListItemText secondary={stat_val('min')} secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '60px' }} />
-                  <ListItemText secondary={stat_val('25%')} secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '60px' }} />
-                  <ListItemText secondary={stat_val('50%')} secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '60px' }} />
-                  <ListItemText secondary={stat_val('75%')} secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '60px' }} />
-                  <ListItemText secondary={stat_val('max')} secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '60px' }} />
-                  
-                  {/* <ListItemText secondary={formatter.format(_x[0]) + ' - ' + formatter.format(_x[_x.length - 1])} secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} /> */}
-                  <Box sx={{ width: '60px', backgroundColor: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, .1)' : 'rgba(229, 229, 229, .05)', mx: '30px' }}>
+                  {[cellAddress.split('!')[0], cellAddress.split('!')[1], 'mean', 'std', '25%', '50%', '75%', 'max'].map((col, i) =>
+                    <ListItemText
+                      secondary={i < 2 ? col : stat_val(col)}
+                      secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }}
+                      sx={{ width: '0px', minWidth: '60px' }} />
+                  )}
+                  <Box sx={{ width: '60px', backgroundColor: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, .1)' : 'rgba(229, 229, 229, .05)' }}>
                     <ProbChartMini
                       x={_x}
                       prob={_prob}
@@ -166,7 +154,6 @@ function Report(props) {
             <Divider sx={{ my: '3px' }} />
 
             {monitCells ? monitCells.map((cellAddress, i) => {
-              let _m = _.map(_.filter(paramsDetail, { param_type: 'm', cell_address: cellAddress }), 'param_value')
               return (
                 <ListItem key={i.toString()}>
                   <ListItemText secondary={cellAddress.split('!')[0]} secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
