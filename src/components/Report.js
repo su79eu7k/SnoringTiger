@@ -26,12 +26,15 @@ function Report(props) {
   const [paramsDetail, setParamsDetail] = useState()
   const [corrData, setCorrData] = useState()
   const [summaryData, setSummaryData] = useState()
+  const [scopedData, setScopedData] = useState()
+  const [scatterSelected, setScatterSelected] = useState(0)
+  const [scatters, setScatters] = useState({})
   const [loading, setLoading] = useState({
     params_detail: false,
     summary_data: false,
     corr_data: false,
   })
-  const [lastUpdated, setLastUpdated] = useState(DateTime.now().toUnixInteger())
+  const [scopeUpdated, setScopeUpdated] = useState(DateTime.now().toUnixInteger())
 
   const [randCells, setRandCells] = useState()
   const [monitCells, setMonitCells] = useState()
@@ -69,7 +72,24 @@ function Report(props) {
       setCorrData(response.data)
       setLoading(prevState => ({ ...prevState, 'corr_data': false }))
     }).catch(() => { })
-  }, [lastUpdated])
+  }, [scopeUpdated])
+
+  useEffect(() => {
+    setLoading(true)
+    const url = 'http://127.0.0.1:8000/get_scoped_data';
+    const data = {
+      hash_params: hash_params,
+    }
+    const config = {
+      headers: {
+        'content-type': 'application/json',
+      },
+    };
+    axios.post(url, data, config).then((response) => {
+      setScopedData(response.data)
+      setLoading(false)
+    });
+  }, [scopeUpdated])
 
   useEffect(() => {
     setRandCells(_.uniq(_.map(_.filter(paramsDetail, { param_type: 'r' }), 'cell_address')))
@@ -77,6 +97,7 @@ function Report(props) {
   }, [paramsDetail])
 
   // let formatter = Intl.NumberFormat('en', { notation: 'compact' });
+
 
   return (
     <Modal
@@ -173,14 +194,17 @@ function Report(props) {
           <Typography variant="subtitle1" sx={{ padding: '3px 4px', mt: '30px' }}>
             Correlation Matrix
           </Typography>
-          <CorrMat corrData={corrData} theme={theme} setDataPoint={setDataPoint} />
+          <CorrMat corrData={corrData} theme={theme} setScatters={setScatters} scatterSelected={scatterSelected} />
 
           <Typography variant="subtitle1" sx={{ padding: '3px 4px', mt: '30px' }}>
-            Correlation Matrix
+            Scatter Plots
           </Typography>
-          {dataPoint ? 
+          {/* {dataPoint ? 
           <ScatterChart dataPoint={dataPoint} hash_params={hash_params} theme={theme} />
-          : null}
+          : null} */}
+          {_.keys(scatters).length > 0 ? _.keys(scatters).map((e, i) => 
+            <ScatterChart key={i.toString()} _key={i.toString()} scatterSelected={scatterSelected} setScatterSelected={setScatterSelected} labels={{x: scatters[e].x, y: scatters[e].y}} coords={[{x: 1, y: 5}, {x: 2, y: 6}]} theme={theme} />
+          ) : null}
 
         </CardContent>
       </Card>

@@ -7,17 +7,17 @@ import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
 import ControlButton from './ControlButton';
 import SaveIcon from '@mui/icons-material/Save';
-import axios from 'axios';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 
 Chart.register(zoomPlugin);
 
 
 export default React.memo(function ScatterChart(props) {
-  const dataPoint = props.dataPoint
-  const hash_params = props.hash_params
-
-  const [coords, setCoords] = useState()
-  const [loading, setLoading] = useState(false)
+  const scatterSelected = props.scatterSelected
+  const setScatterSelected = props.setScatterSelected
+  const labels = props.labels
+  const coords = props.coords
 
   const canvasRef = useRef()
 
@@ -52,7 +52,7 @@ export default React.memo(function ScatterChart(props) {
         },
         title: {
           display: true,
-          text: dataPoint.x
+          text: labels.x
         },
       },
       y: {
@@ -65,7 +65,7 @@ export default React.memo(function ScatterChart(props) {
         },
         title: {
           display: true,
-          text: dataPoint.y
+          text: labels.y
         },
       }
     },
@@ -92,26 +92,7 @@ export default React.memo(function ScatterChart(props) {
     }
   }
 
-  useEffect(() => {
-    setLoading(true)
-    const url = 'http://127.0.0.1:8000/get_scoped_data';
-    const data = {
-      hash_params: hash_params, 
-      x_cell_type: dataPoint.x.split(': ')[0].toLowerCase(),
-      x_cell_address: dataPoint.x.split(': ')[1],
-      y_cell_type: dataPoint.y.split(': ')[0].toLowerCase(),
-      y_cell_address: dataPoint.y.split(': ')[1],
-    }
-    const config = {
-      headers: {
-        'content-type': 'application/json',
-      },
-    };
-    axios.post(url, data, config).then((response) => {
-      setCoords(response.data)
-      setLoading(false)
-    });
-  }, [dataPoint])
+
 
   useEffect(() => {
     const ctx = canvasRef.current.getContext("2d")
@@ -154,7 +135,7 @@ export default React.memo(function ScatterChart(props) {
     if (chart !== undefined) {
       const a = document.createElement('a');
       a.href = chart.toBase64Image();
-      a.download = 'CellStorm_' + dataPoint.x + ';' + dataPoint.y + '.png';
+      a.download = 'CellStorm_' + labels.x + ';' + labels.y + '.png';
       a.click()
     }
   }
@@ -169,12 +150,22 @@ export default React.memo(function ScatterChart(props) {
           <ControlButton connStatus={1} handleClick={handleClickSave} iconComponent={
             <SaveIcon fontSize='small' sx={{ color: "text.secondary" }} />
           } />
+          {props._key == scatterSelected ?
+            <ControlButton connStatus={1} handleClick={setScatterSelected(props._key)} iconComponent={
+              <CheckBoxIcon fontSize='small' sx={{ color: "text.secondary" }} />
+            } /> :
+            <ControlButton connStatus={1} handleClick={setScatterSelected(props._key)} iconComponent={
+              <CheckBoxOutlineBlankIcon fontSize='small' sx={{ color: "text.secondary" }} />
+            } />
+          }
+
         </Stack>
         <canvas ref={canvasRef}></canvas>
       </Grid>
     </Grid>
   );
 }, (prevProps, nextProps) => (
-  JSON.stringify(prevProps.dataPoint) === JSON.stringify(nextProps.dataPoint)
+  JSON.stringify(prevProps.labels) === JSON.stringify(nextProps.labels)
+  && JSON.stringify(prevProps.coords) === JSON.stringify(nextProps.coords)
   && prevProps.theme.palette.mode === nextProps.theme.palette.mode
 ))

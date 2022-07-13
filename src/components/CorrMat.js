@@ -7,7 +7,8 @@ Chart.register(MatrixController, MatrixElement);
 
 
 export default React.memo(function CorrMat(props) {
-  const setDataPoint = props.setDataPoint
+  const scatterSelected = props.scatterSelected
+  const setScatters = props.setScatters
 
   const theme = props.theme
 
@@ -40,7 +41,7 @@ export default React.memo(function CorrMat(props) {
   const _options = {
     onClick: (e) => {
       // setDataPoint(prevState => ({...prevState, ['x']: e.chart.tooltip.dataPoints[0].raw.x, ['y']: e.chart.tooltip.dataPoints[0].raw.y}))
-      setDataPoint(e.chart.tooltip.dataPoints[0].raw)
+      setScatters(prevState => ({...prevState, [scatterSelected]: e.chart.tooltip.dataPoints[0].raw}))
     },
     animation: false,
     // maintainAspectRatio: false,
