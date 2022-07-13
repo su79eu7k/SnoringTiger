@@ -7,6 +7,8 @@ Chart.register(MatrixController, MatrixElement);
 
 
 export default React.memo(function CorrMat(props) {
+  const setDataPoint = props.setDataPoint
+
   const theme = props.theme
 
   const corrData = props.corrData
@@ -31,11 +33,14 @@ export default React.memo(function CorrMat(props) {
       // },
       // borderWidth: 1,
       width: ({chart}) => (chart.chartArea || {}).width / _.uniq(_.map(corrData, 'x')).length - 1,
-      height: ({chart}) =>(chart.chartArea || {}).height / _.uniq(_.map(corrData, 'x')).length - 1
+      height: ({chart}) => (chart.chartArea || {}).height / _.uniq(_.map(corrData, 'x')).length - 1
     }]
   }
 
   const _options = {
+    onClick: (e) => {
+      setDataPoint(prevState => ({...prevState, ['x']: e.chart.tooltip.dataPoints[0].raw.x, ['y']: e.chart.tooltip.dataPoints[0].raw.y}))
+    },
     animation: false,
     // maintainAspectRatio: false,
     // transitions: {
@@ -101,6 +106,15 @@ export default React.memo(function CorrMat(props) {
       type: 'matrix',
       data: _data,
       options: _options,
+      // plugins: [{
+      //   id: 'myEventCatcher',
+      //   beforeEvent(chart, args, pluginOptions) {
+      //     const event = args.event;
+      //     if (event.type == 'click') {
+      //       console.log(event)
+      //     }
+      //   }
+      // }]
     }
     setChart(new Chart(ctx, config))
   }, [])

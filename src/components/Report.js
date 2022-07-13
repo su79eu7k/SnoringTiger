@@ -13,6 +13,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import CorrMat from './CorrMat';
+import ScatterChart from './ScatterChart';
 
 
 function Report(props) {
@@ -21,6 +22,7 @@ function Report(props) {
   const filename = props.filename
   const hash_params = props.hash_params
 
+  const [dataPoint, setDataPoint] = useState()
   const [paramsDetail, setParamsDetail] = useState()
   const [scopedData, setScopedData] = useState()
   const [corrData, setCorrData] = useState()
@@ -109,8 +111,9 @@ function Report(props) {
           <List>
             <Typography variant="subtitle2" sx={{ padding: '3px 4px', fontSize: 13, mt: '10px' }}>Random Cells</Typography>
             <ListItem>
-              {['Sheet', 'Cell', 'Mean', 'Std', '25%', '50%', '75%', 'Max', 'Prob.'].map((col) =>
+              {['Sheet', 'Cell', 'Mean', 'Std', '25%', '50%', '75%', 'Max', 'Prob.'].map((col, i) =>
                 <ListItemText
+                  key={i.toString()}
                   secondary={col}
                   secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }}
                   sx={{ width: '0px', minWidth: '60px' }} />
@@ -127,6 +130,7 @@ function Report(props) {
                 <ListItem key={i.toString()}>
                   {[cellAddress.split('!')[0], cellAddress.split('!')[1], 'mean', 'std', '25%', '50%', '75%', 'max'].map((col, i) =>
                     <ListItemText
+                      key={i.toString()}
                       secondary={i < 2 ? col : stat_val(col)}
                       secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }}
                       sx={{ width: '0px', minWidth: '60px' }} />
@@ -171,7 +175,14 @@ function Report(props) {
           <Typography variant="subtitle1" sx={{ padding: '3px 4px', mt: '30px' }}>
             Correlation Matrix
           </Typography>
-          <CorrMat corrData={corrData} theme={theme} />
+          <CorrMat corrData={corrData} theme={theme} setDataPoint={setDataPoint} />
+
+          <Typography variant="subtitle1" sx={{ padding: '3px 4px', mt: '30px' }}>
+            Correlation Matrix
+          </Typography>
+          {dataPoint ? 
+          <ScatterChart dataPoint={dataPoint} hash_params={hash_params} theme={theme} />
+          : null}
 
         </CardContent>
       </Card>
