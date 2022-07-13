@@ -39,7 +39,8 @@ export default React.memo(function CorrMat(props) {
 
   const _options = {
     onClick: (e) => {
-      setDataPoint(prevState => ({...prevState, ['x']: e.chart.tooltip.dataPoints[0].raw.x, ['y']: e.chart.tooltip.dataPoints[0].raw.y}))
+      // setDataPoint(prevState => ({...prevState, ['x']: e.chart.tooltip.dataPoints[0].raw.x, ['y']: e.chart.tooltip.dataPoints[0].raw.y}))
+      setDataPoint(e.chart.tooltip.dataPoints[0].raw)
     },
     animation: false,
     // maintainAspectRatio: false,

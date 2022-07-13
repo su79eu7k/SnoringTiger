@@ -24,14 +24,12 @@ function Report(props) {
 
   const [dataPoint, setDataPoint] = useState()
   const [paramsDetail, setParamsDetail] = useState()
-  const [scopedData, setScopedData] = useState()
   const [corrData, setCorrData] = useState()
   const [summaryData, setSummaryData] = useState()
   const [loading, setLoading] = useState({
     params_detail: false,
-    scoped_data: false,
+    summary_data: false,
     corr_data: false,
-    summary_data: false
   })
   const [lastUpdated, setLastUpdated] = useState(DateTime.now().toUnixInteger())
 
