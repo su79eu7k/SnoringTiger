@@ -9,10 +9,9 @@ Chart.register(MatrixController, MatrixElement);
 export default React.memo(function CorrMat(props) {
   const scatterSelected = props.scatterSelected
   const setScatters = props.setScatters
+  const corrData = props.corrData
 
   const theme = props.theme
-
-  const corrData = props.corrData
 
   const [chart, setChart] = useState()
 
@@ -33,6 +32,7 @@ export default React.memo(function CorrMat(props) {
       //   return theme.palette.mode === 'light' ? 'rgba(0, 0, 0, ' + alpha + ')' : 'rgba(229, 229, 229, ' + alpha + ')';
       // },
       // borderWidth: 1,
+     
       width: ({chart}) => (chart.chartArea || {}).width / _.uniq(_.map(corrData, 'x')).length - 1,
       height: ({chart}) => (chart.chartArea || {}).height / _.uniq(_.map(corrData, 'x')).length - 1
     }]
@@ -40,7 +40,9 @@ export default React.memo(function CorrMat(props) {
 
   const _options = {
     onClick: (e) => {
-      // setDataPoint(prevState => ({...prevState, ['x']: e.chart.tooltip.dataPoints[0].raw.x, ['y']: e.chart.tooltip.dataPoints[0].raw.y}))
+      console.log("CorrMat: scatterSelected");
+      console.log("CorrMat-type: " + typeof(scatterSelected));
+      console.log("CorrMat-value: " + scatterSelected);
       setScatters(prevState => ({...prevState, [scatterSelected]: e.chart.tooltip.dataPoints[0].raw}))
     },
     animation: false,
@@ -99,6 +101,12 @@ export default React.memo(function CorrMat(props) {
   }
 
   useEffect(() => {
+    console.log("CorrMat: scatterSelected");
+    console.log("CorrMat-type: " + typeof(scatterSelected));
+    console.log("CorrMat-value: " + scatterSelected);
+  }, [scatterSelected])
+
+  useEffect(() => {
     if (chart !== undefined) {
       chart.destroy()
     }
@@ -108,15 +116,6 @@ export default React.memo(function CorrMat(props) {
       type: 'matrix',
       data: _data,
       options: _options,
-      // plugins: [{
-      //   id: 'myEventCatcher',
-      //   beforeEvent(chart, args, pluginOptions) {
-      //     const event = args.event;
-      //     if (event.type == 'click') {
-      //       console.log(event)
-      //     }
-      //   }
-      // }]
     }
     setChart(new Chart(ctx, config))
   }, [])
@@ -145,5 +144,6 @@ export default React.memo(function CorrMat(props) {
     <canvas ref={canvasRef}></canvas>
   );
 }, (prevProps, nextProps) => (
-  prevProps.theme.palette.mode === nextProps.theme.palette.mode
+  JSON.stringify(prevProps.corrData) === JSON.stringify(nextProps.corrData)
+  && prevProps.theme.palette.mode === nextProps.theme.palette.mode
 ))

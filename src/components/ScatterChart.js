@@ -7,15 +7,11 @@ import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
 import ControlButton from './ControlButton';
 import SaveIcon from '@mui/icons-material/Save';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
 
 Chart.register(zoomPlugin);
 
 
 export default React.memo(function ScatterChart(props) {
-  const scatterSelected = props.scatterSelected
-  const setScatterSelected = props.setScatterSelected
   const labels = props.labels
   const coords = props.coords
 
@@ -150,15 +146,6 @@ export default React.memo(function ScatterChart(props) {
           <ControlButton connStatus={1} handleClick={handleClickSave} iconComponent={
             <SaveIcon fontSize='small' sx={{ color: "text.secondary" }} />
           } />
-          {props._key == scatterSelected ?
-            <ControlButton connStatus={1} handleClick={setScatterSelected(props._key)} iconComponent={
-              <CheckBoxIcon fontSize='small' sx={{ color: "text.secondary" }} />
-            } /> :
-            <ControlButton connStatus={1} handleClick={setScatterSelected(props._key)} iconComponent={
-              <CheckBoxOutlineBlankIcon fontSize='small' sx={{ color: "text.secondary" }} />
-            } />
-          }
-
         </Stack>
         <canvas ref={canvasRef}></canvas>
       </Grid>

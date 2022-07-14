@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Card from '@mui/material/Card';
@@ -14,6 +14,10 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import CorrMat from './CorrMat';
 import ScatterChart from './ScatterChart';
+import ControlButton from './ControlButton';
+import SelectAllIcon from '@mui/icons-material/SelectAll';
+import DeselectIcon from '@mui/icons-material/Deselect';
+import HighlightAltIcon from '@mui/icons-material/HighlightAlt';
 
 
 function Report(props) {
@@ -22,13 +26,12 @@ function Report(props) {
   const filename = props.filename
   const hash_params = props.hash_params
 
-  const [dataPoint, setDataPoint] = useState()
   const [paramsDetail, setParamsDetail] = useState()
   const [corrData, setCorrData] = useState()
   const [summaryData, setSummaryData] = useState()
   const [scopedData, setScopedData] = useState()
-  const [scatterSelected, setScatterSelected] = useState(0)
-  const [scatters, setScatters] = useState({})
+  const [scatterSelected, setScatterSelected] = useState('0')
+  const [scatters, setScatters] = useState({0: {}})
   const [loading, setLoading] = useState({
     params_detail: false,
     summary_data: false,
@@ -96,8 +99,16 @@ function Report(props) {
     setMonitCells(_.uniq(_.map(_.filter(paramsDetail, { param_type: 'm' }), 'cell_address')))
   }, [paramsDetail])
 
-  // let formatter = Intl.NumberFormat('en', { notation: 'compact' });
 
+  useEffect(() => {
+    console.log(scatters)
+  }, [scatters])
+
+  useEffect(() => {
+    console.log("Report: scatterSelected");
+    console.log("Report-type: " + typeof(scatterSelected));
+    console.log("Report-value: " + scatterSelected);
+  }, [scatterSelected])
 
   return (
     <Modal
@@ -194,16 +205,26 @@ function Report(props) {
           <Typography variant="subtitle1" sx={{ padding: '3px 4px', mt: '30px' }}>
             Correlation Matrix
           </Typography>
-          <CorrMat corrData={corrData} theme={theme} setScatters={setScatters} scatterSelected={scatterSelected} />
+          <CorrMat key={scatterSelected} scatterSelected={scatterSelected} corrData={corrData} theme={theme} setScatters={setScatters} />
 
           <Typography variant="subtitle1" sx={{ padding: '3px 4px', mt: '30px' }}>
             Scatter Plots
           </Typography>
-          {/* {dataPoint ? 
-          <ScatterChart dataPoint={dataPoint} hash_params={hash_params} theme={theme} />
-          : null} */}
+
+          <ControlButton connStatus={1} handleClick={() => setScatters(prevState => ({ ...prevState, [Number(_.keys(scatters)[_.keys(scatters).length - 1]) + 1]: {}}))} caption={"Add"} iconComponent={
+              <HighlightAltIcon fontSize="small" sx={{ color: "text.secondary" }} />
+            } />
+            <ControlButton connStatus={1} handleClick={() => setScatters(_.omit(scatters, [Number(_.keys(scatters)[_.keys(scatters).length - 1])]))} caption={"Remove"} iconComponent={
+              <DeselectIcon fontSize="small" sx={{ color: "text.secondary" }} />
+            } />
+            
           {_.keys(scatters).length > 0 ? _.keys(scatters).map((e, i) => 
-            <ScatterChart key={i.toString()} _key={i.toString()} scatterSelected={scatterSelected} setScatterSelected={setScatterSelected} labels={{x: scatters[e].x, y: scatters[e].y}} coords={[{x: 1, y: 5}, {x: 2, y: 6}]} theme={theme} />
+            <React.Fragment key={i.toString()}>
+            <ControlButton connStatus={1} handleClick={() => setScatterSelected(e)} caption={"Select"} iconComponent={
+              <SelectAllIcon fontSize="small" sx={{ color: "text.secondary" }} />
+            } />
+            <ScatterChart labels={{x: scatters[e].x, y: scatters[e].y}} coords={[{x: 1, y: 5}, {x: 2, y: 6}]} theme={theme} />
+            </React.Fragment>
           ) : null}
 
         </CardContent>
