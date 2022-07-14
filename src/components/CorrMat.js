@@ -101,12 +101,6 @@ export default React.memo(function CorrMat(props) {
   }
 
   useEffect(() => {
-    console.log("CorrMat: scatterSelected");
-    console.log("CorrMat-type: " + typeof(scatterSelected));
-    console.log("CorrMat-value: " + scatterSelected);
-  }, [scatterSelected])
-
-  useEffect(() => {
     if (chart !== undefined) {
       chart.destroy()
     }

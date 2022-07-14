@@ -99,17 +99,6 @@ function Report(props) {
     setMonitCells(_.uniq(_.map(_.filter(paramsDetail, { param_type: 'm' }), 'cell_address')))
   }, [paramsDetail])
 
-
-  useEffect(() => {
-    console.log(scatters)
-  }, [scatters])
-
-  useEffect(() => {
-    console.log("Report: scatterSelected");
-    console.log("Report-type: " + typeof(scatterSelected));
-    console.log("Report-value: " + scatterSelected);
-  }, [scatterSelected])
-
   return (
     <Modal
       sx={{ overflow: 'scroll', }}

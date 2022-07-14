@@ -88,8 +88,6 @@ export default React.memo(function ScatterChart(props) {
     }
   }
 
-
-
   useEffect(() => {
     const ctx = canvasRef.current.getContext("2d")
     const config = {
