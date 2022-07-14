@@ -40,20 +40,9 @@ export default React.memo(function CorrMat(props) {
 
   const _options = {
     onClick: (e) => {
-      console.log("CorrMat: scatterSelected");
-      console.log("CorrMat-type: " + typeof(scatterSelected));
-      console.log("CorrMat-value: " + scatterSelected);
       setScatters(prevState => ({...prevState, [scatterSelected]: e.chart.tooltip.dataPoints[0].raw}))
     },
     animation: false,
-    // maintainAspectRatio: false,
-    // transitions: {
-    //   'resize': {
-    //     animation: {
-    //       duration: 400
-    //     }
-    //   }
-    // },
     scales: {
       x: {
         type: 'category',
@@ -90,14 +79,7 @@ export default React.memo(function CorrMat(props) {
           }
         }
       }
-      // datalabels: {
-      //   display: false,
-      // },
-      // tooltip: {
-      //   enabled: false,
-      // },
     },
-
   }
 
   useEffect(() => {
