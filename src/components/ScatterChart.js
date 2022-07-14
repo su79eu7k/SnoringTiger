@@ -7,11 +7,15 @@ import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
 import ControlButton from './ControlButton';
 import SaveIcon from '@mui/icons-material/Save';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 Chart.register(zoomPlugin);
 
 
 export default React.memo(function ScatterChart(props) {
+  const plotKey = props.plotKey
+  const scatters = props.scatters
+  const setScatters = props.setScatters
   const labels = props.labels
   const coords = props.coords
 
@@ -143,6 +147,9 @@ export default React.memo(function ScatterChart(props) {
           } />
           <ControlButton connStatus={1} handleClick={handleClickSave} iconComponent={
             <SaveIcon fontSize='small' sx={{ color: "text.secondary" }} />
+          } />
+          <ControlButton connStatus={1} handleClick={() => setScatters(_.omit(scatters, plotKey))} iconComponent={
+            <HighlightOffIcon fontSize="small" sx={{ color: "text.secondary" }} />
           } />
         </Stack>
         <canvas ref={canvasRef}></canvas>

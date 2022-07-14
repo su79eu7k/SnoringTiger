@@ -18,6 +18,7 @@ import ControlButton from './ControlButton';
 import SelectAllIcon from '@mui/icons-material/SelectAll';
 import DeselectIcon from '@mui/icons-material/Deselect';
 import HighlightAltIcon from '@mui/icons-material/HighlightAlt';
+import Stack from '@mui/material/Stack';
 
 
 function Report(props) {
@@ -31,7 +32,7 @@ function Report(props) {
   const [summaryData, setSummaryData] = useState()
   const [scopedData, setScopedData] = useState()
   const [scatterSelected, setScatterSelected] = useState('0')
-  const [scatters, setScatters] = useState({0: {}})
+  const [scatters, setScatters] = useState({ 0: {} })
   const [loading, setLoading] = useState({
     params_detail: false,
     summary_data: false,
@@ -98,6 +99,8 @@ function Report(props) {
     setRandCells(_.uniq(_.map(_.filter(paramsDetail, { param_type: 'r' }), 'cell_address')))
     setMonitCells(_.uniq(_.map(_.filter(paramsDetail, { param_type: 'm' }), 'cell_address')))
   }, [paramsDetail])
+
+  useEffect(() => {console.log(scatters)}, [scatters])
 
   return (
     <Modal
@@ -199,21 +202,24 @@ function Report(props) {
           <Typography variant="subtitle1" sx={{ padding: '3px 4px', mt: '30px' }}>
             Scatter Plots
           </Typography>
+          <Stack direction="row" justifyContent="flex-end">
+          <ControlButton connStatus={1} handleClick={() => setScatters(prevState => ({ ...prevState, [Number(_.keys(scatters)[_.keys(scatters).length - 1]) + 1]: {} }))} caption={"Add New Plot"} iconComponent={
+            <HighlightAltIcon fontSize="small" sx={{ color: "text.secondary" }} />
+          } />
+          </Stack>
 
-          <ControlButton connStatus={1} handleClick={() => setScatters(prevState => ({ ...prevState, [Number(_.keys(scatters)[_.keys(scatters).length - 1]) + 1]: {}}))} caption={"Add"} iconComponent={
-              <HighlightAltIcon fontSize="small" sx={{ color: "text.secondary" }} />
-            } />
-            <ControlButton connStatus={1} handleClick={() => setScatters(_.omit(scatters, [Number(_.keys(scatters)[_.keys(scatters).length - 1])]))} caption={"Remove"} iconComponent={
-              <DeselectIcon fontSize="small" sx={{ color: "text.secondary" }} />
-            } />
-            
-          {_.keys(scatters).length > 0 ? _.keys(scatters).map((e, i) => 
-            <React.Fragment key={i.toString()}>
-            <ControlButton connStatus={1} handleClick={() => setScatterSelected(e)} caption={"Select"} iconComponent={
-              <SelectAllIcon fontSize="small" sx={{ color: "text.secondary" }} />
-            } />
-            <ScatterChart labels={{x: scatters[e].x, y: scatters[e].y}} coords={[{x: 1, y: 5}, {x: 2, y: 6}]} theme={theme} />
-            </React.Fragment>
+          {_.keys(scatters).length > 0 ? _.keys(scatters).map((k, i) =>
+            <Box key={i.toString()} onClick={() => setScatterSelected(k)} sx={{ padding: '10px', "&:hover": {backgroundColor: 'rgba(229, 229, 229, .03)', borderRadius: '10px'}}}>
+              {/* <Stack direction="row" justifyContent="flex-end"> */}
+              {/* <ControlButton connStatus={1} handleClick={() => setScatterSelected(e)} caption={"Select"} iconComponent={
+                <SelectAllIcon fontSize="small" sx={{ color: "text.secondary" }} />
+              } /> */}
+              {/* <ControlButton connStatus={1} handleClick={() => setScatters(_.omit(scatters, k))} caption={"Remove"} iconComponent={
+                <DeselectIcon fontSize="small" sx={{ color: "text.secondary" }} />
+              } /> */}
+              {/* </Stack> */}
+              <ScatterChart plotKey={k} scatters={scatters} setScatters={setScatters} labels={{ x: scatters[k].x, y: scatters[k].y }} coords={[{ x: 1, y: 5 }, { x: 2, y: 6 }]} theme={theme} />
+            </Box>
           ) : null}
 
         </CardContent>

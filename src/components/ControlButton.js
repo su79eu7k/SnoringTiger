@@ -23,9 +23,11 @@ function ControlButton(props) {
       }
     }}>
     {iconComponent}
+    {caption != null ?
     <Typography noWrap variant="caption" color="text.secondary" sx={{ paddingLeft: "3px" }}>
     {caption}
     </Typography>
+    : null}
   </ButtonBase>
   )
 }
