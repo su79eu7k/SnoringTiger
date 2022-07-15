@@ -3,8 +3,8 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import FolderIcon from '@mui/icons-material/Folder';
-import ListHashSnap from './ListHashSnap';
 import _ from 'lodash';
+import ListHashSnap from './ListHashSnap';
 
 export default function ListFile(props) {
   const groups = props.groups
@@ -12,7 +12,6 @@ export default function ListFile(props) {
   const filename = props.filename
 
   const loading = props.loading
-
   const setLastUpdated = props.setLastUpdated
 
   return (

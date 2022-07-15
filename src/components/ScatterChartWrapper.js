@@ -2,13 +2,13 @@ import React, { useState } from 'react'
 import Chart from "chart.js/auto";
 import zoomPlugin from 'chartjs-plugin-zoom';
 import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
-import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
+import Stack from '@mui/material/Stack';
+import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
 import ControlButton from './ControlButton';
 import SaveIcon from '@mui/icons-material/Save';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import ScatterChart from './ScatterChart';
-import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
 
 Chart.register(zoomPlugin);
 
@@ -20,6 +20,7 @@ export default function ScatterChartWrapper(props) {
   const labels = props.labels
   const coords = props.coords
   const theme = props.theme
+
   const [chart, setChart] = useState()
 
   const handleClickZoomReset = (e) => {
@@ -66,7 +67,7 @@ export default function ScatterChartWrapper(props) {
             } />
           </Stack>
         </Stack>
-        <ScatterChart chart={chart} setChart={setChart} plotKey={plotKey} setLastRemoveReq={setLastRemoveReq} labels={labels} coords={coords} theme={theme} />
+        <ScatterChart chart={chart} setChart={setChart} plotKey={plotKey} labels={labels} coords={coords} theme={theme} />
       </Grid>
     </Grid>
   );

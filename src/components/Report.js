@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useTheme } from '@mui/styles'
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import ProbChartMini from './ProbChartMini';
-import _ from 'lodash'
-import { useTheme } from '@mui/styles'
-import { Box, Divider } from '@mui/material';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import CorrMat from './CorrMat';
-import ScatterChartWrapper from './ScatterChartWrapper';
+import { Box, Divider } from '@mui/material';
 import ControlButton from './ControlButton';
 import HighlightAltIcon from '@mui/icons-material/HighlightAlt';
-import Stack from '@mui/material/Stack';
+import _ from 'lodash'
+import ProbChartMini from './ProbChartMini';
+import CorrMat from './CorrMat';
+import ScatterChartWrapper from './ScatterChartWrapper';
 
 
 function Report(props) {
@@ -28,15 +28,13 @@ function Report(props) {
   const corrData = props.corrData
   const scopedData = props.scopedData
 
-  const [scatterSelected, setScatterSelected] = useState('0')
-  const [scatters, setScatters] = useState({ 0: {} })
-
   const [randCells, setRandCells] = useState()
   const [monitCells, setMonitCells] = useState()
+  const [scatters, setScatters] = useState({ 0: {} })
+  const [scatterSelected, setScatterSelected] = useState('0')
+  const [lastRemoveReq, setLastRemoveReq] = useState()
 
   const theme = useTheme()
-
-  const [lastRemoveReq, setLastRemoveReq] = useState()
 
   useEffect(() => {
     setRandCells(_.uniq(_.map(_.filter(paramsDetail, { param_type: 'r' }), 'cell_address')))

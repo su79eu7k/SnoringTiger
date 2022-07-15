@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 import Chart from "chart.js/auto";
-import _ from 'lodash'
 import { MatrixController, MatrixElement } from 'chartjs-chart-matrix';
+import _ from 'lodash'
 
 Chart.register(MatrixController, MatrixElement);
 
@@ -13,13 +13,12 @@ export default React.memo(function CorrMat(props) {
 
   const theme = props.theme
 
-  const [chart, setChart] = useState()
-
   const canvasRef = useRef()
+  const [chart, setChart] = useState()
 
   const _data = {
     datasets: [{
-      label: 'test corr. matrix',
+      label: 'Correlation Matrix',
       data: corrData,
       backgroundColor(context) {
         const value = context.dataset.data[context.dataIndex].v;

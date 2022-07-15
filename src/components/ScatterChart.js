@@ -1,19 +1,17 @@
 import React, { useRef, useEffect } from 'react'
+import Grid from '@mui/material/Grid';
 import Chart from "chart.js/auto";
 import zoomPlugin from 'chartjs-plugin-zoom';
-import Grid from '@mui/material/Grid';
 
 Chart.register(zoomPlugin);
 
 
 export default React.memo(function ScatterChart(props) {
+  const canvasRef = useRef()
   const chart = props.chart
   const setChart = props.setChart
   const labels = props.labels
   const coords = props.coords
-
-  const canvasRef = useRef()
-
   const theme = props.theme
 
   const _data = {

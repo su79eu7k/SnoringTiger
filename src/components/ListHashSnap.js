@@ -1,25 +1,25 @@
-import Stack from '@mui/material/Stack';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import DeleteIcon from '@mui/icons-material/Delete';
-import SaveIcon from '@mui/icons-material/Save';
-import CameraAltIcon from '@mui/icons-material/CameraAlt';
-import { DateTime } from "luxon";
-import ControlButton from './ControlButton';
 import { useEffect, useState } from 'react';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import Modal from '@mui/material/Modal';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ControlButton from './ControlButton';
+import SettingsIcon from '@mui/icons-material/Settings';
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import AssessmentIcon from '@mui/icons-material/Assessment';
+import SaveIcon from '@mui/icons-material/Save';
+import DeleteIcon from '@mui/icons-material/Delete';
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import Modal from '@mui/material/Modal';
 import axios from 'axios';
-import SettingsIcon from '@mui/icons-material/Settings';
+import { DateTime } from "luxon";
 import Report from './Report'
-import AssessmentIcon from '@mui/icons-material/Assessment';
 
 export default function ListHashSnap(props) {
   const groups = props.groups
@@ -28,14 +28,6 @@ export default function ListHashSnap(props) {
   const hash_params = props.hash_params
 
   const loading = props.loading
-
-  const [loadingRep, setLoadingRep] = useState({
-    params_detail: true,
-    summary_data: true,
-    scoped_data: true,
-    corr_data: true,
-  })
-
   const setLastUpdated = props.setLastUpdated
 
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
@@ -45,6 +37,13 @@ export default function ListHashSnap(props) {
   const [summaryData, setSummaryData] = useState()
   const [corrData, setCorrData] = useState()
   const [scopedData, setScopedData] = useState()
+
+  const [loadingRep, setLoadingRep] = useState({
+    params_detail: true,
+    summary_data: true,
+    scoped_data: true,
+    corr_data: true,
+  })
 
   const handleClickReport = () => {
     setLoadingRep(prevState => ({ ...prevState, 'params_detail': true }))
@@ -122,7 +121,6 @@ export default function ListHashSnap(props) {
     setOpenDeleteModal(false)
   }
 
-
   return (
     <>
       <ListItem sx={{ pl: 4 }}>
@@ -133,31 +131,31 @@ export default function ListHashSnap(props) {
         {
           !loading.histParams ?
             <ListItemText
-              secondary={"R:" + groupsParam.random + " / M: " + groupsParam.monitoring} 
-              secondaryTypographyProps={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textAlign: 'center' }} 
+              secondary={"R:" + groupsParam.random + " / M: " + groupsParam.monitoring}
+              secondaryTypographyProps={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textAlign: 'center' }}
               sx={{ width: '0px', minWidth: '90px' }} />
             : null
         }
 
         <Stack direction="row" alignItems="flex-end" justifyContent="flex-end">
-          
+
           <ControlButton connStatus={1} handleClick={handleClickReport} caption={"Report"} iconComponent={
             <AssessmentIcon fontSize="small" sx={{ color: "text.secondary" }} />
           } />
           {
-            (!loadingRep.params_detail && !loadingRep.summary_data && !loadingRep.corr_data && !loadingRep.scoped_data) ? 
-          <Report 
-            openReportModal={openReportModal} 
-            setOpenReportModal={setOpenReportModal} 
-            filename={filename} 
-            hash_params={hash_params} 
-            paramsDetail={paramsDetail}
-            summaryData={summaryData}
-            corrData={corrData}
-            scopedData={scopedData}
-            setScopedData={setScopedData}
-          /> : null
-        }          
+            (!loadingRep.params_detail && !loadingRep.summary_data && !loadingRep.corr_data && !loadingRep.scoped_data) ?
+              <Report
+                openReportModal={openReportModal}
+                setOpenReportModal={setOpenReportModal}
+                filename={filename}
+                hash_params={hash_params}
+                paramsDetail={paramsDetail}
+                summaryData={summaryData}
+                corrData={corrData}
+                scopedData={scopedData}
+                setScopedData={setScopedData}
+              /> : null
+          }
           <ControlButton connStatus={1} handleClick={handleClickExport} caption={"Export"} iconComponent={
             <SaveIcon fontSize="small" sx={{ color: "text.secondary" }} />
           } />
