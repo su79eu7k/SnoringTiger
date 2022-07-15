@@ -8,7 +8,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import { DateTime } from "luxon";
 import ControlButton from './ControlButton';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -28,11 +28,70 @@ export default function ListHashSnap(props) {
   const hash_params = props.hash_params
 
   const loading = props.loading
+  const setLoading = props.setLoading
+
+  const [loadingRep, setLoadingRep] = useState({
+    params_detail: true,
+    summary_data: true,
+    scoped_data: true,
+    corr_data: true,
+  })
 
   const setLastUpdated = props.setLastUpdated
 
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
   const [openReportModal, setOpenReportModal] = useState(false)
+
+  const [paramsDetail, setParamsDetail] = useState()
+  const [summaryData, setSummaryData] = useState()
+  const [corrData, setCorrData] = useState()
+  const [scopedData, setScopedData] = useState()
+
+  const handleClickReport = () => {
+    setLoadingRep(prevState => ({ ...prevState, 'params_detail': true }))
+    axios.get("http://127.0.0.1:8000/get_params_detail?hash_params=" + hash_params).then((response) => {
+      setParamsDetail(response.data)
+      setLoadingRep(prevState => ({ ...prevState, 'params_detail': false }))
+    }).catch(() => { })
+
+    setLoadingRep(prevState => ({ ...prevState, 'summary_data': true }))
+    const url_get_summary = 'http://127.0.0.1:8000/get_summary';
+    const data_get_summary = { hash_params: hash_params }
+    const config_get_summary = {
+      headers: {
+        'content-type': 'application/json',
+      },
+    };
+    axios.post(url_get_summary, data_get_summary, config_get_summary).then((response) => {
+      setSummaryData(response.data)
+      setLoadingRep(prevState => ({ ...prevState, 'summary_data': false }))
+    });
+
+    setLoadingRep(prevState => ({ ...prevState, 'corr_data': true }))
+    axios.get("http://127.0.0.1:8000/get_corr?hash_params=" + hash_params).then((response) => {
+      setCorrData(response.data)
+      setLoadingRep(prevState => ({ ...prevState, 'corr_data': false }))
+    }).catch(() => { })
+
+    setLoadingRep(prevState => ({ ...prevState, 'scoped_data': true }))
+    const url_scoped_data = 'http://127.0.0.1:8000/get_scoped_data';
+    const data_scoped_data = { hash_params: hash_params }
+    const config_scoped_data = {
+      headers: {
+        'content-type': 'application/json',
+      },
+    };
+    axios.post(url_scoped_data, data_scoped_data, config_scoped_data).then((response) => {
+      setScopedData(response.data)
+      setLoadingRep(prevState => ({ ...prevState, 'scoped_data': false }))
+    });
+  }
+
+  useEffect(() => {
+    if (!loading.params_detail && !loading.summary_data && !loading.corr_data && !loading.scoped_data) {
+      setOpenReportModal(true)
+    }
+  }, [loading])
 
   const handleClickExport = () => {
     axios.get("http://127.0.0.1:8000/get_csv?hash_params=" + hash_params).then((response) => {
@@ -51,8 +110,6 @@ export default function ListHashSnap(props) {
   }
 
   const handleClickDeleteConfirm = () => {
-    console.log("handleClickDeleteConfirm")
-
     const url = "http://127.0.0.1:8000/del_snapshot"
     const data = { filename: filename, hash_params: hash_params }
     const config = {
@@ -84,10 +141,24 @@ export default function ListHashSnap(props) {
         }
 
         <Stack direction="row" alignItems="flex-end" justifyContent="flex-end">
-          <ControlButton connStatus={1} handleClick={() => setOpenReportModal(true)} caption={"Report"} iconComponent={
+          
+          <ControlButton connStatus={1} handleClick={handleClickReport} caption={"Report"} iconComponent={
             <AssessmentIcon fontSize="small" sx={{ color: "text.secondary" }} />
           } />
-          <Report openReportModal={openReportModal} setOpenReportModal={setOpenReportModal} filename={filename} hash_params={hash_params} />
+          {
+            (!loadingRep.params_detail && !loadingRep.summary_data && !loadingRep.corr_data && !loadingRep.scoped_data) ? 
+          <Report 
+            openReportModal={openReportModal} 
+            setOpenReportModal={setOpenReportModal} 
+            filename={filename} 
+            hash_params={hash_params} 
+            paramsDetail={paramsDetail}
+            summaryData={summaryData}
+            corrData={corrData}
+            scopedData={scopedData}
+            setScopedData={setScopedData}
+          /> : null
+        }          
           <ControlButton connStatus={1} handleClick={handleClickExport} caption={"Export"} iconComponent={
             <SaveIcon fontSize="small" sx={{ color: "text.secondary" }} />
           } />

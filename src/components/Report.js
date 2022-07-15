@@ -25,18 +25,14 @@ function Report(props) {
   const filename = props.filename
   const hash_params = props.hash_params
 
-  const [paramsDetail, setParamsDetail] = useState()
-  const [corrData, setCorrData] = useState()
-  const [summaryData, setSummaryData] = useState()
-  const [scopedData, setScopedData] = useState()
+  const paramsDetail = props.paramsDetail
+  const summaryData = props.summaryData
+  const corrData = props.corrData
+  const scopedData = props.scopedData
+  console.log(scopedData)
+
   const [scatterSelected, setScatterSelected] = useState('0')
   const [scatters, setScatters] = useState({ 0: {} })
-  const [loading, setLoading] = useState({
-    params_detail: false,
-    summary_data: false,
-    scoped_data: false,
-    corr_data: false,
-  })
   const [scopeUpdated, setScopeUpdated] = useState(DateTime.now().toUnixInteger())
 
   const [randCells, setRandCells] = useState()
@@ -45,70 +41,6 @@ function Report(props) {
   const theme = useTheme()
 
   const [lastRemoveReq, setLastRemoveReq] = useState()
-
-  useEffect(() => {
-    setLoading(prevState => ({ ...prevState, 'params_detail': true }))
-    axios.get("http://127.0.0.1:8000/get_params_detail?hash_params=" + hash_params).then((response) => {
-      setParamsDetail(response.data)
-      setLoading(prevState => ({ ...prevState, 'params_detail': false }))
-    }).catch(() => { })
-
-    setLoading(prevState => ({ ...prevState, 'summary_data': true }))
-    const url_get_summary = 'http://127.0.0.1:8000/get_summary';
-    const data_get_summary = { hash_params: hash_params }
-    const config_get_summary = {
-      headers: {
-        'content-type': 'application/json',
-      },
-    };
-    axios.post(url_get_summary, data_get_summary, config_get_summary).then((response) => {
-      setSummaryData(response.data)
-      setLoading(prevState => ({ ...prevState, 'summary_data': false }))
-    });
-
-
-
-
-    setLoading(prevState => ({ ...prevState, 'scoped_data': true }))
-    const url_scoped_data = 'http://127.0.0.1:8000/get_scoped_data';
-    const data_scoped_data = { hash_params: hash_params }
-    const config_scoped_data = {
-      headers: {
-        'content-type': 'application/json',
-      },
-    };
-    axios.post(url_scoped_data, data_scoped_data, config_scoped_data).then((response) => {
-      setScopedData(response.data)
-      console.log(response.data)
-      setLoading(prevState => ({ ...prevState, 'scoped_data': false }))
-    });
-
-
-
-
-    setLoading(prevState => ({ ...prevState, 'corr_data': true }))
-    axios.get("http://127.0.0.1:8000/get_corr?hash_params=" + hash_params).then((response) => {
-      setCorrData(response.data)
-      setLoading(prevState => ({ ...prevState, 'corr_data': false }))
-    }).catch(() => { })
-  }, [scopeUpdated])
-
-  useEffect(() => {
-    setLoading(true)
-    const url = 'http://127.0.0.1:8000/get_scoped_data';
-    const data = {
-      hash_params: hash_params,
-    }
-    const config = {
-      headers: {
-        'content-type': 'application/json',
-      },
-    };
-    axios.post(url, data, config).then((response) => {
-      setScopedData(response.data)
-      setLoading(false)
-    });
-  }, [scopeUpdated])
 
   useEffect(() => {
     setRandCells(_.uniq(_.map(_.filter(paramsDetail, { param_type: 'r' }), 'cell_address')))
@@ -222,14 +154,20 @@ function Report(props) {
             Scatter Plots
           </Typography>
           <Stack direction="row" justifyContent="flex-end">
-          <ControlButton connStatus={1} handleClick={() => setScatters(prevState => ({ ...prevState, [Number(_.keys(scatters)[_.keys(scatters).length - 1]) + 1]: {} }))} caption={"Add New Plot"} iconComponent={
-            <HighlightAltIcon fontSize="small" sx={{ color: "text.secondary" }} />
-          } />
+            <ControlButton connStatus={1} handleClick={() => setScatters(prevState => ({ ...prevState, [Number(_.keys(scatters)[_.keys(scatters).length - 1]) + 1]: {} }))} caption={"Add New Plot"} iconComponent={
+              <HighlightAltIcon fontSize="small" sx={{ color: "text.secondary" }} />
+            } />
           </Stack>
 
           {_.keys(scatters).length > 0 ? _.keys(scatters).map((k, i) =>
-            <Box key={i.toString()} onClick={() => setScatterSelected(k)} sx={{ padding: '10px', "&:hover": {backgroundColor: 'rgba(229, 229, 229, .03)', borderRadius: '10px'}}}>
-              <ScatterChartWrapper scatterSelected={scatterSelected} plotKey={k} setLastRemoveReq={setLastRemoveReq} labels={{ x: scatters[k].x, y: scatters[k].y }} coords={[{ x: 1, y: 5 }, { x: 2, y: 6 }]} theme={theme} />
+            <Box key={i.toString()} onClick={() => setScatterSelected(k)} sx={{ padding: '10px', "&:hover": { backgroundColor: 'rgba(229, 229, 229, .03)', borderRadius: '10px' } }}>
+              <ScatterChartWrapper
+                scatterSelected={scatterSelected}
+                plotKey={k}
+                setLastRemoveReq={setLastRemoveReq}
+                labels={{ x: scatters[k].x, y: scatters[k].y }}
+                coords={_.map(scopedData, (e) => ({ x: e[scatters[k].x], y: e[scatters[k].y] }))}
+                theme={theme} />
             </Box>
           ) : null}
 
