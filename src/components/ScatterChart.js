@@ -1,13 +1,7 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect } from 'react'
 import Chart from "chart.js/auto";
 import zoomPlugin from 'chartjs-plugin-zoom';
-import _ from 'lodash'
-import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
-import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
-import ControlButton from './ControlButton';
-import SaveIcon from '@mui/icons-material/Save';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 Chart.register(zoomPlugin);
 

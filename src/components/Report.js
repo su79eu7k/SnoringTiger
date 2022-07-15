@@ -3,8 +3,6 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import { DateTime } from "luxon";
-import axios from 'axios';
 import ProbChartMini from './ProbChartMini';
 import _ from 'lodash'
 import { useTheme } from '@mui/styles'
@@ -29,11 +27,9 @@ function Report(props) {
   const summaryData = props.summaryData
   const corrData = props.corrData
   const scopedData = props.scopedData
-  console.log(scopedData)
 
   const [scatterSelected, setScatterSelected] = useState('0')
   const [scatters, setScatters] = useState({ 0: {} })
-  const [scopeUpdated, setScopeUpdated] = useState(DateTime.now().toUnixInteger())
 
   const [randCells, setRandCells] = useState()
   const [monitCells, setMonitCells] = useState()

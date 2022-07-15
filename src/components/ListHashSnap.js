@@ -28,7 +28,6 @@ export default function ListHashSnap(props) {
   const hash_params = props.hash_params
 
   const loading = props.loading
-  const setLoading = props.setLoading
 
   const [loadingRep, setLoadingRep] = useState({
     params_detail: true,
