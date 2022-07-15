@@ -51,6 +51,7 @@ export default React.memo(function CorrMat(props) {
           display: true
         },
         grid: {
+          drawBorder: false,
           display: false
         }
       },
@@ -62,6 +63,7 @@ export default React.memo(function CorrMat(props) {
           display: true
         },
         grid: {
+          drawBorder: false,
           display: false
         }
       }

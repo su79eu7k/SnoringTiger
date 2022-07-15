@@ -13,17 +13,14 @@ Chart.register(zoomPlugin);
 
 
 export default React.memo(function ScatterChart(props) {
-  const plotKey = props.plotKey
-  const scatters = props.scatters
-  const setScatters = props.setScatters
+  const chart = props.chart
+  const setChart = props.setChart
   const labels = props.labels
   const coords = props.coords
 
   const canvasRef = useRef()
 
   const theme = props.theme
-
-  const [chart, setChart] = useState()
 
   const _data = {
     datasets: [{
@@ -122,36 +119,9 @@ export default React.memo(function ScatterChart(props) {
     }
   }, [_options])
 
-  const handleClickZoomReset = (e) => {
-    e.preventDefault()
-    chart.resetZoom()
-  }
-
-  const handleClickSave = (e) => {
-    e.preventDefault()
-
-    if (chart !== undefined) {
-      const a = document.createElement('a');
-      a.href = chart.toBase64Image();
-      a.download = 'CellStorm_' + labels.x + ';' + labels.y + '.png';
-      a.click()
-    }
-  }
-
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        <Stack direction="row" justifyContent="flex-end">
-          <ControlButton connStatus={1} handleClick={handleClickZoomReset} iconComponent={
-            <ZoomOutMapIcon fontSize='small' sx={{ color: "text.secondary" }} />
-          } />
-          <ControlButton connStatus={1} handleClick={handleClickSave} iconComponent={
-            <SaveIcon fontSize='small' sx={{ color: "text.secondary" }} />
-          } />
-          <ControlButton connStatus={1} handleClick={() => setScatters(_.omit(scatters, plotKey))} iconComponent={
-            <HighlightOffIcon fontSize="small" sx={{ color: "text.secondary" }} />
-          } />
-        </Stack>
         <canvas ref={canvasRef}></canvas>
       </Grid>
     </Grid>

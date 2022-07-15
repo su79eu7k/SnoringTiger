@@ -46,7 +46,6 @@ export default function ListHashSnap(props) {
     })
   }
 
-
   const handleClickDelete = () => {
     setOpenDeleteModal(true)
   }
