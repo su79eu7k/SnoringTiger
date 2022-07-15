@@ -86,7 +86,7 @@ export default function ListHashSnap(props) {
   }
 
   useEffect(() => {
-    if (!loading.params_detail && !loading.summary_data && !loading.corr_data && !loading.scoped_data) {
+    if (!loadingRep.params_detail && !loadingRep.summary_data && !loadingRep.corr_data && !loadingRep.scoped_data) {
       setOpenReportModal(true)
     }
   }, [loadingRep])
