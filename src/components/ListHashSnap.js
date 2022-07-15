@@ -91,7 +91,7 @@ export default function ListHashSnap(props) {
     if (!loading.params_detail && !loading.summary_data && !loading.corr_data && !loading.scoped_data) {
       setOpenReportModal(true)
     }
-  }, [loading])
+  }, [loadingRep])
 
   const handleClickExport = () => {
     axios.get("http://127.0.0.1:8000/get_csv?hash_params=" + hash_params).then((response) => {
