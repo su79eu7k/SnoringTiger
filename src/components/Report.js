@@ -43,8 +43,13 @@ function Report(props) {
 
   useEffect(() => {
     const updatedScatters = _.omit(scatters, lastRemoveReq)
-    setScatters(updatedScatters);
-    setScatterSelected(_.keys(updatedScatters)[_.keys(updatedScatters).length - 1])
+
+    if (_.keys(updatedScatters).length === 0) {
+      setScatters({ 0: {} })
+    } else {
+      setScatters(updatedScatters);
+    }
+    setScatterSelected('0')
   }, [lastRemoveReq])
 
   return (
