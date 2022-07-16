@@ -83,13 +83,15 @@ export default function ListHashSnap(props) {
       setScopedData(response.data)
       setLoadingRep(prevState => ({ ...prevState, 'scoped_data': false }))
     });
+
+    setOpenReportModal(true)
   }
 
-  useEffect(() => {
-    if (!loadingRep.params_detail && !loadingRep.summary_data && !loadingRep.corr_data && !loadingRep.scoped_data) {
-      setOpenReportModal(true)
-    }
-  }, [loadingRep])
+  // useEffect(() => {
+  //   if (!loadingRep.params_detail && !loadingRep.summary_data && !loadingRep.corr_data && !loadingRep.scoped_data) {
+  //     setOpenReportModal(true)
+  //   }
+  // }, [loadingRep])
 
   const handleClickExport = () => {
     axios.get("http://127.0.0.1:8000/get_csv?hash_params=" + hash_params).then((response) => {
@@ -142,20 +144,18 @@ export default function ListHashSnap(props) {
           <ControlButton connStatus={1} handleClick={handleClickReport} caption={"Report"} iconComponent={
             <AssessmentIcon fontSize="small" sx={{ color: "text.secondary" }} />
           } />
-          {
-            (!loadingRep.params_detail && !loadingRep.summary_data && !loadingRep.corr_data && !loadingRep.scoped_data) ?
-              <Report
-                openReportModal={openReportModal}
-                setOpenReportModal={setOpenReportModal}
-                filename={filename}
-                hash_params={hash_params}
-                paramsDetail={paramsDetail}
-                summaryData={summaryData}
-                corrData={corrData}
-                scopedData={scopedData}
-                setScopedData={setScopedData}
-              /> : null
-          }
+          <Report
+            openReportModal={openReportModal}
+            setOpenReportModal={setOpenReportModal}
+            filename={filename}
+            hash_params={hash_params}
+            paramsDetail={paramsDetail}
+            summaryData={summaryData}
+            corrData={corrData}
+            scopedData={scopedData}
+            setScopedData={setScopedData}
+          />
+
           <ControlButton connStatus={1} handleClick={handleClickExport} caption={"Export"} iconComponent={
             <SaveIcon fontSize="small" sx={{ color: "text.secondary" }} />
           } />

@@ -75,69 +75,74 @@ function Report(props) {
             File
           </Typography>
           <Typography variant="subtitle2" color="text.secondary" sx={{ padding: '3px 4px' }}>{filename}</Typography>
+
           <Typography variant="subtitle1" sx={{ padding: '3px 4px', mt: '30px' }}>
             Parameters
           </Typography>
-          <Typography variant="subtitle2" sx={{ padding: '3px 4px', fontSize: 13, mt: '10px' }}>Hash</Typography>
-          <Typography variant="subtitle2" color="text.secondary" sx={{ padding: '3px 4px' }}>{hash_params}</Typography>
-          <List>
-            <Typography variant="subtitle2" sx={{ padding: '3px 4px', fontSize: 13, mt: '10px' }}>Random Cells</Typography>
-            <ListItem>
-              {['Sheet', 'Cell', 'Mean', 'Std', '25%', '50%', '75%', 'Max', 'Prob.'].map((col, i) =>
-                <ListItemText
-                  key={i.toString()}
-                  secondary={col}
-                  secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }}
-                  sx={{ width: '0px', minWidth: '60px' }} />
-              )}
-            </ListItem>
+            <>
+              <Typography variant="subtitle2" sx={{ padding: '3px 4px', fontSize: 13, mt: '10px' }}>Hash</Typography>
+              <Typography variant="subtitle2" color="text.secondary" sx={{ padding: '3px 4px' }}>{hash_params}</Typography>
 
-            <Divider sx={{ my: '3px' }} />
-
-            {randCells && summaryData ? randCells.map((cellAddress, i) => {
-              let _x = _.map(_.filter(paramsDetail, { param_type: 'r', cell_address: cellAddress }), 'param_value')
-              let _prob = _.map(_.filter(paramsDetail, { param_type: 'p', cell_address: cellAddress }), 'param_value')
-              function stat_val(_stat) { return _.filter(summaryData, { column: 'T: ' + cellAddress, stats: _stat })[0].value }
-              return (
-                <ListItem key={i.toString()}>
-                  {[cellAddress.split('!')[0], cellAddress.split('!')[1], 'mean', 'std', '25%', '50%', '75%', 'max'].map((col, i) =>
+              <List>
+                <Typography variant="subtitle2" sx={{ padding: '3px 4px', fontSize: 13, mt: '10px' }}>Random Cells</Typography>
+                <ListItem>
+                  {['Sheet', 'Cell', 'Mean', 'Std', '25%', '50%', '75%', 'Max', 'Prob.'].map((col, i) =>
                     <ListItemText
                       key={i.toString()}
-                      secondary={i < 2 ? col : stat_val(col)}
+                      secondary={col}
                       secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }}
                       sx={{ width: '0px', minWidth: '60px' }} />
                   )}
-                  <Box sx={{ width: '60px', backgroundColor: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, .1)' : 'rgba(229, 229, 229, .05)' }}>
-                    <ProbChartMini
-                      x={_x}
-                      prob={_prob}
-                      theme={theme}
-                    />
-                  </Box>
                 </ListItem>
-              )
-            })
-              : null}
 
-            <Typography variant="subtitle2" sx={{ padding: '3px 4px', fontSize: 13, mt: '10px' }}>Monitoring Cells</Typography>
+                <Divider sx={{ my: '3px' }} />
 
-            <ListItem>
-              <ListItemText secondary='Sheet Address' secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
-              <ListItemText secondary='Cell Address' secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
-            </ListItem>
+                {randCells && summaryData ? randCells.map((cellAddress, i) => {
+                  let _x = _.map(_.filter(paramsDetail, { param_type: 'r', cell_address: cellAddress }), 'param_value')
+                  let _prob = _.map(_.filter(paramsDetail, { param_type: 'p', cell_address: cellAddress }), 'param_value')
+                  function stat_val(_stat) { return _.filter(summaryData, { column: 'T: ' + cellAddress, stats: _stat })[0].value }
 
-            <Divider sx={{ my: '3px' }} />
+                  return (
+                    <ListItem key={i.toString()}>
+                      {[cellAddress.split('!')[0], cellAddress.split('!')[1], 'mean', 'std', '25%', '50%', '75%', 'max'].map((col, i) =>
+                        <ListItemText
+                          key={i.toString()}
+                          secondary={i < 2 ? col : stat_val(col)}
+                          secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }}
+                          sx={{ width: '0px', minWidth: '60px' }} />
+                      )}
+                      <Box sx={{ width: '60px', backgroundColor: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, .1)' : 'rgba(229, 229, 229, .05)' }}>
+                        <ProbChartMini
+                          x={_x}
+                          prob={_prob}
+                          theme={theme}
+                        />
+                      </Box>
+                    </ListItem>
+                  )
+                })
+                  : null}
 
-            {monitCells ? monitCells.map((cellAddress, i) => {
-              return (
-                <ListItem key={i.toString()}>
-                  <ListItemText secondary={cellAddress.split('!')[0]} secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
-                  <ListItemText secondary={cellAddress.split('!')[1]} secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
+                <Typography variant="subtitle2" sx={{ padding: '3px 4px', fontSize: 13, mt: '10px' }}>Monitoring Cells</Typography>
+
+                <ListItem>
+                  <ListItemText secondary='Sheet Address' secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
+                  <ListItemText secondary='Cell Address' secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
                 </ListItem>
-              )
-            })
-              : null}
-          </List>
+
+                <Divider sx={{ my: '3px' }} />
+
+                {monitCells ? monitCells.map((cellAddress, i) => {
+                  return (
+                    <ListItem key={i.toString()}>
+                      <ListItemText secondary={cellAddress.split('!')[0]} secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
+                      <ListItemText secondary={cellAddress.split('!')[1]} secondaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', textAlign: 'center' }} sx={{ width: '0px', minWidth: '90px' }} />
+                    </ListItem>
+                  )
+                })
+                  : null}
+              </List>
+            </>
 
           {/* <Typography variant="subtitle1" sx={{ padding: '3px 4px' }}>
             Scope
@@ -147,29 +152,35 @@ function Report(props) {
           <Typography variant="subtitle1" sx={{ padding: '3px 4px', mt: '30px' }}>
             Correlation Matrix
           </Typography>
-          <CorrMat key={scatterSelected} scatterSelected={scatterSelected} corrData={corrData} theme={theme} setScatters={setScatters} />
+          {corrData ?
+            <CorrMat key={scatterSelected} scatterSelected={scatterSelected} corrData={corrData} theme={theme} setScatters={setScatters} />
+            : null}
 
           <Typography variant="subtitle1" sx={{ padding: '3px 4px', mt: '30px' }}>
             Scatter Plots
           </Typography>
-          <Stack direction="row" justifyContent="flex-end">
-            <ControlButton connStatus={1} handleClick={() => setScatters(prevState => ({ ...prevState, [Number(_.keys(scatters)[_.keys(scatters).length - 1]) + 1]: {} }))} caption={"Add New Plot"} iconComponent={
-              <HighlightAltIcon fontSize="small" sx={{ color: "text.secondary" }} />
-            } />
-          </Stack>
+          {scopedData ?
+            <>
+              <Stack direction="row" justifyContent="flex-end">
+                <ControlButton connStatus={1} handleClick={() => setScatters(prevState => ({ ...prevState, [Number(_.keys(scatters)[_.keys(scatters).length - 1]) + 1]: {} }))} caption={"Add New Plot"} iconComponent={
+                  <HighlightAltIcon fontSize="small" sx={{ color: "text.secondary" }} />
+                } />
+              </Stack>
 
-          {_.keys(scatters).length > 0 ? _.keys(scatters).map((k, i) =>
-            <Box key={i.toString()} onClick={() => setScatterSelected(k)} sx={{ padding: '10px', "&:hover": { backgroundColor: 'rgba(229, 229, 229, .03)', borderRadius: '10px' } }}>
-              <ScatterChartWrapper
-                scatterSelected={scatterSelected}
-                plotKey={k}
-                setLastRemoveReq={setLastRemoveReq}
-                labels={{ x: scatters[k].x, y: scatters[k].y }}
-                coords={_.map(scopedData, (e) => ({ x: e[scatters[k].x], y: e[scatters[k].y] }))}
-                theme={theme} />
-            </Box>
-          ) : null}
-
+              {_.keys(scatters).length > 0 ? _.keys(scatters).map((k, i) =>
+                <Box key={i.toString()} onClick={() => setScatterSelected(k)} sx={{ padding: '10px', "&:hover": { backgroundColor: 'rgba(229, 229, 229, .03)', borderRadius: '10px' } }}>
+                  <ScatterChartWrapper
+                    scatterSelected={scatterSelected}
+                    plotKey={k}
+                    setLastRemoveReq={setLastRemoveReq}
+                    labels={{ x: scatters[k].x, y: scatters[k].y }}
+                    coords={_.map(scopedData, (e) => ({ x: e[scatters[k].x], y: e[scatters[k].y] }))}
+                    theme={theme} />
+                </Box>
+              )
+                : null}
+            </>
+            : null}
         </CardContent>
       </Card>
     </Modal>
