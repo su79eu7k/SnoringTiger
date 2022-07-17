@@ -58,7 +58,7 @@ export default function ListHashSnap(props) {
       setCorrData(response.data)
     }).catch(() => { })
 
-    const url_scoped_data = 'http://127.0.0.1:8000/get_scoped_data';
+    const url_scoped_data = 'http://127.0.0.1:8000/get_sim_data';
     const data_scoped_data = { hash_params: hash_params }
     const config_scoped_data = {
       headers: {
