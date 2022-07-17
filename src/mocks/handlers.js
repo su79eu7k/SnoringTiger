@@ -95,7 +95,7 @@ export const handlers = [
     )
   }),
 
-  rest.get('http://127.0.0.1:8000/get_hist', (req, res, ctx) => {
+  rest.get('http://127.0.0.1:8000/get_hist_list', (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json(
@@ -113,7 +113,7 @@ export const handlers = [
     )
   }),
 
-  rest.get('http://127.0.0.1:8000/get_hist_params', (req, res, ctx) => {
+  rest.get('http://127.0.0.1:8000/get_hist_list_params', (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json(
