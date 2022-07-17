@@ -73,7 +73,7 @@ export default function ListHashSnap(props) {
   }
 
   const handleClickExport = () => {
-    axios.get("http://127.0.0.1:8000/get_csv?hash_params=" + hash_params).then((response) => {
+    axios.get("http://127.0.0.1:8000/get_hist_sim_csv?hash_params=" + hash_params).then((response) => {
       const _elem = document.createElement('a')
       const _file = new Blob([response.data], {
         type: response.headers["content-type"],
@@ -89,7 +89,7 @@ export default function ListHashSnap(props) {
   }
 
   const handleClickDeleteConfirm = () => {
-    const url = "http://127.0.0.1:8000/del_snapshot"
+    const url = "http://127.0.0.1:8000/del_hist_sim"
     const data = { filename: filename, hash_params: hash_params }
     const config = {
       headers: {
