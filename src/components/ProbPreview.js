@@ -13,7 +13,7 @@ import SaveIcon from '@mui/icons-material/Save';
 Chart.register(zoomPlugin);
 
 
-export default React.memo(function PropPreview(props) {
+export default React.memo(function ProbPreview(props) {
   const connStatus = props.connStatus
   const addressSheet = props.addressSheet
   const addressCell = props.addressCell

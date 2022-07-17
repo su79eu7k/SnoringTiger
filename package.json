@@ -13,6 +13,8 @@
     "@testing-library/react": "^13.3.0",
     "axios": "^0.27.2",
     "chart.js": "^3.8.0",
+    "chartjs-chart-matrix": "^1.1.1",
+    "chartjs-plugin-datalabels": "^2.0.0",
     "chartjs-plugin-zoom": "^1.2.1",
     "luxon": "^2.4.0",
     "react": "^18.2.0",

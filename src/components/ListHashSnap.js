@@ -1,23 +1,25 @@
+import { useEffect, useState } from 'react';
 import Stack from '@mui/material/Stack';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import DeleteIcon from '@mui/icons-material/Delete';
-import SaveIcon from '@mui/icons-material/Save';
-import CameraAltIcon from '@mui/icons-material/CameraAlt';
-import { DateTime } from "luxon";
-import ControlButton from './ControlButton';
-import { useState } from 'react';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import Modal from '@mui/material/Modal';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ControlButton from './ControlButton';
+import SettingsIcon from '@mui/icons-material/Settings';
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import AssessmentIcon from '@mui/icons-material/Assessment';
+import SaveIcon from '@mui/icons-material/Save';
+import DeleteIcon from '@mui/icons-material/Delete';
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import Modal from '@mui/material/Modal';
 import axios from 'axios';
-import SettingsIcon from '@mui/icons-material/Settings';
+import { DateTime } from "luxon";
+import Report from './Report'
 
 export default function ListHashSnap(props) {
   const groups = props.groups
@@ -26,10 +28,70 @@ export default function ListHashSnap(props) {
   const hash_params = props.hash_params
 
   const loading = props.loading
-
   const setLastUpdated = props.setLastUpdated
 
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
+  const [openReportModal, setOpenReportModal] = useState(false)
+
+  const [paramsDetail, setParamsDetail] = useState()
+  const [summaryData, setSummaryData] = useState()
+  const [corrData, setCorrData] = useState()
+  const [scopedData, setScopedData] = useState()
+
+  const [loadingRep, setLoadingRep] = useState({
+    params_detail: true,
+    summary_data: true,
+    scoped_data: true,
+    corr_data: true,
+  })
+
+  const handleClickReport = () => {
+    setLoadingRep(prevState => ({ ...prevState, 'params_detail': true }))
+    axios.get("http://127.0.0.1:8000/get_params_detail?hash_params=" + hash_params).then((response) => {
+      setParamsDetail(response.data)
+      setLoadingRep(prevState => ({ ...prevState, 'params_detail': false }))
+    }).catch(() => { })
+
+    setLoadingRep(prevState => ({ ...prevState, 'summary_data': true }))
+    const url_get_summary = 'http://127.0.0.1:8000/get_summary';
+    const data_get_summary = { hash_params: hash_params }
+    const config_get_summary = {
+      headers: {
+        'content-type': 'application/json',
+      },
+    };
+    axios.post(url_get_summary, data_get_summary, config_get_summary).then((response) => {
+      setSummaryData(response.data)
+      setLoadingRep(prevState => ({ ...prevState, 'summary_data': false }))
+    });
+
+    setLoadingRep(prevState => ({ ...prevState, 'corr_data': true }))
+    axios.get("http://127.0.0.1:8000/get_corr?hash_params=" + hash_params).then((response) => {
+      setCorrData(response.data)
+      setLoadingRep(prevState => ({ ...prevState, 'corr_data': false }))
+    }).catch(() => { })
+
+    setLoadingRep(prevState => ({ ...prevState, 'scoped_data': true }))
+    const url_scoped_data = 'http://127.0.0.1:8000/get_scoped_data';
+    const data_scoped_data = { hash_params: hash_params }
+    const config_scoped_data = {
+      headers: {
+        'content-type': 'application/json',
+      },
+    };
+    axios.post(url_scoped_data, data_scoped_data, config_scoped_data).then((response) => {
+      setScopedData(response.data)
+      setLoadingRep(prevState => ({ ...prevState, 'scoped_data': false }))
+    });
+
+    setOpenReportModal(true)
+  }
+
+  // useEffect(() => {
+  //   if (!loadingRep.params_detail && !loadingRep.summary_data && !loadingRep.corr_data && !loadingRep.scoped_data) {
+  //     setOpenReportModal(true)
+  //   }
+  // }, [loadingRep])
 
   const handleClickExport = () => {
     axios.get("http://127.0.0.1:8000/get_csv?hash_params=" + hash_params).then((response) => {
@@ -43,14 +105,11 @@ export default function ListHashSnap(props) {
     })
   }
 
-
   const handleClickDelete = () => {
     setOpenDeleteModal(true)
   }
 
   const handleClickDeleteConfirm = () => {
-    console.log("handleClickDeleteConfirm")
-
     const url = "http://127.0.0.1:8000/del_snapshot"
     const data = { filename: filename, hash_params: hash_params }
     const config = {
@@ -64,7 +123,6 @@ export default function ListHashSnap(props) {
     setOpenDeleteModal(false)
   }
 
-
   return (
     <>
       <ListItem sx={{ pl: 4 }}>
@@ -72,9 +130,32 @@ export default function ListHashSnap(props) {
           <SettingsIcon fontSize="small" sx={{ color: "text.secondary" }} />
         </ListItemIcon>
         <ListItemText primary={hash_params} primaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }} sx={{ width: '0px', minWidth: '90px' }} />
-        {!loading.histParams ? <ListItemText secondary={"R:" + groupsParam.random + " / M: " + groupsParam.monitoring} secondaryTypographyProps={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textAlign: 'center' }}  sx={{ width: '0px', minWidth: '90px' }} /> : null}
+        {
+          !loading.histParams ?
+            <ListItemText
+              secondary={"R:" + groupsParam.random + " / M: " + groupsParam.monitoring}
+              secondaryTypographyProps={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textAlign: 'center' }}
+              sx={{ width: '0px', minWidth: '90px' }} />
+            : null
+        }
 
         <Stack direction="row" alignItems="flex-end" justifyContent="flex-end">
+
+          <ControlButton connStatus={1} handleClick={handleClickReport} caption={"Report"} iconComponent={
+            <AssessmentIcon fontSize="small" sx={{ color: "text.secondary" }} />
+          } />
+          <Report
+            openReportModal={openReportModal}
+            setOpenReportModal={setOpenReportModal}
+            filename={filename}
+            hash_params={hash_params}
+            paramsDetail={paramsDetail}
+            summaryData={summaryData}
+            corrData={corrData}
+            scopedData={scopedData}
+            setScopedData={setScopedData}
+          />
+
           <ControlButton connStatus={1} handleClick={handleClickExport} caption={"Export"} iconComponent={
             <SaveIcon fontSize="small" sx={{ color: "text.secondary" }} />
           } />

@@ -23,9 +23,11 @@ function ControlButton(props) {
       }
     }}>
     {iconComponent}
-    <Typography noWrap variant="caption" color="text.secondary" sx={{ paddingLeft: "3px" }}>
+    {caption != null ?
+    <Typography noWrap variant="caption" color="text.secondary" sx={{ paddingLeft: "3px", lineHeight: "inherit" }}>
     {caption}
     </Typography>
+    : null}
   </ButtonBase>
   )
 }

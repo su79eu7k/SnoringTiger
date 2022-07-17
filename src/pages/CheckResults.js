@@ -13,8 +13,8 @@ export default function CheckResults() {
   const [snapshotHist, setSnapshotHist] = useState();
   const [snapshotHistParams, setSnapshotHistParams] = useState();
   const [loading, setLoading] = useState({
-    hist: false,
-    histParams: false
+    hist: true,
+    histParams: true,
   });
   const [lastUpdated, setLastUpdated] = useState(DateTime.now().toUnixInteger())
 
@@ -46,7 +46,7 @@ export default function CheckResults() {
               !loading.hist ? 
               <List dense>
               {_.uniq(_.map(snapshotHist, (e) => (e.filename))).map((filename, i) => (
-                <ListFile key={"f-" + i.toString()} groups={_.filter(snapshotHist, { "filename": filename })} groupsParam={_.filter(snapshotHistParams, { "filename": filename })} filename={filename} setLastUpdated={setLastUpdated} loading={loading} />
+                <ListFile key={"f-" + i.toString()} groups={_.filter(snapshotHist, { "filename": filename })} groupsParam={_.filter(snapshotHistParams, { "filename": filename })} filename={filename} setLastUpdated={setLastUpdated} loading={loading} setLoading={setLoading} />
               ))}
             </List> : null
             }
