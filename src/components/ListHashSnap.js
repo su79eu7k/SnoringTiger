@@ -26,8 +26,6 @@ export default function ListHashSnap(props) {
   const groupsParam = props.groupsParam[0]
   const filename = props.filename
   const hash_params = props.hash_params
-
-  const loading = props.loading
   const setLastUpdated = props.setLastUpdated
 
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
@@ -108,15 +106,14 @@ export default function ListHashSnap(props) {
         <ListItemIcon>
           <SettingsIcon fontSize="small" sx={{ color: "text.secondary" }} />
         </ListItemIcon>
-        <ListItemText primary={hash_params} primaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }} sx={{ width: '0px', minWidth: '90px' }} />
-        {
-          !loading.histParams ?
-            <ListItemText
-              secondary={"R:" + groupsParam.random + " / M: " + groupsParam.monitoring}
-              secondaryTypographyProps={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textAlign: 'center' }}
-              sx={{ width: '0px', minWidth: '90px' }} />
-            : null
-        }
+        <ListItemText 
+          primary={hash_params} 
+          primaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }} 
+          sx={{ width: '0px', minWidth: '90px' }} />
+        <ListItemText
+          secondary={"R:" + groupsParam.random + " / M: " + groupsParam.monitoring}
+          secondaryTypographyProps={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textAlign: 'center' }}
+          sx={{ width: '0px', minWidth: '90px' }} />
 
         <Stack direction="row" alignItems="flex-end" justifyContent="flex-end">
 

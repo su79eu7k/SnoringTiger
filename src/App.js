@@ -84,7 +84,6 @@ function App() {
 
   useInterval(() => {
     axios.get("http://127.0.0.1:8000/check_connection").then((response) => {
-      // console.log(response)
       if (Object.keys(response.data).length) {
         setConnStatus(response.data.code)
         setConnedFile(response.data.message)

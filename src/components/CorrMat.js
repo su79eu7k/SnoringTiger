@@ -3,7 +3,9 @@ import Chart from "chart.js/auto";
 import { MatrixController, MatrixElement } from 'chartjs-chart-matrix';
 import _ from 'lodash'
 
-Chart.register(MatrixController, MatrixElement);
+if (process.env.NODE_ENV !== 'test') {
+  Chart.register(MatrixController, MatrixElement);
+}
 
 
 export default React.memo(function CorrMat(props) {

@@ -10,8 +10,6 @@ export default function ListFile(props) {
   const groups = props.groups
   const groupsParam = props.groupsParam
   const filename = props.filename
-
-  const loading = props.loading
   const setLastUpdated = props.setLastUpdated
 
   return (
@@ -24,7 +22,13 @@ export default function ListFile(props) {
       </ListItem>
       <List dense>
         {_.uniq(_.map(groups, (e) => (e.hash_params))).map((hash, i) => (
-          <ListHashSnap key={"h-" + i.toString()} groups={_.filter(groups, { "hash_params": hash })} groupsParam={_.filter(groupsParam, { "hash_params": hash })} filename={filename} hash_params={hash} setLastUpdated={setLastUpdated} loading={loading} />
+          <ListHashSnap 
+            key={"h-" + i.toString()} 
+            groups={_.filter(groups, { "hash_params": hash })} 
+            groupsParam={_.filter(groupsParam, { "hash_params": hash })} 
+            filename={filename} 
+            hash_params={hash} 
+            setLastUpdated={setLastUpdated} />
         ))}
       </List>
     </>

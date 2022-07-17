@@ -3,33 +3,28 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import Stack from '@mui/material/Stack';
 import List from '@mui/material/List';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import axios from 'axios';
 import _ from 'lodash';
 import { DateTime } from "luxon";
 import ListFile from '../components/ListFile';
+import ControlButton from '../components/ControlButton';
 
 export default function CheckResults() {
   const [snapshotHist, setSnapshotHist] = useState();
   const [snapshotHistParams, setSnapshotHistParams] = useState();
-  const [loading, setLoading] = useState({
-    hist: true,
-    histParams: true,
-  });
   const [lastUpdated, setLastUpdated] = useState(DateTime.now().toUnixInteger())
 
   useEffect(() => {
-    setLoading(prevState => ({...prevState, 'hist': true}))
     axios.get("http://127.0.0.1:8000/get_hist_list").then((response) => {
       setSnapshotHist(response.data)
-      setLoading(prevState => ({...prevState, 'hist': false}))
-    }).catch(() => {})
+    }).catch(() => { })
 
-    setLoading(prevState => ({...prevState, 'histParams': true}))
     axios.get("http://127.0.0.1:8000/get_hist_list_params").then((response) => {
       setSnapshotHistParams(response.data)
-      setLoading(prevState => ({...prevState, 'histParams': false}))
-    }).catch(() => {})
+    }).catch(() => { })
   }, [lastUpdated])
 
   return (
@@ -42,13 +37,27 @@ export default function CheckResults() {
       <Grid item xs={12}>
         <Card sx={{ minWidth: 445 }}>
           <CardContent>
+          <Stack direction="row" justifyContent="flex-end">
+            <ControlButton
+              connStatus={1}
+              handleClick={() => setLastUpdated(DateTime.now().toUnixInteger())}
+              caption={"Refresh"}
+              iconComponent={
+                <RefreshIcon fontSize="small" sx={{ color: "text.secondary" }} />
+              }
+            />
+            </Stack>
             {
-              !loading.hist ? 
-              <List dense>
-              {_.uniq(_.map(snapshotHist, (e) => (e.filename))).map((filename, i) => (
-                <ListFile key={"f-" + i.toString()} groups={_.filter(snapshotHist, { "filename": filename })} groupsParam={_.filter(snapshotHistParams, { "filename": filename })} filename={filename} setLastUpdated={setLastUpdated} loading={loading} setLoading={setLoading} />
-              ))}
-            </List> : null
+              (snapshotHist !== undefined) && (snapshotHistParams !== undefined) ?
+                <List dense>
+                  {_.uniq(_.map(snapshotHist, (e) => (e.filename))).map((filename, i) => (
+                    <ListFile key={"f-" + i.toString()}
+                      groups={_.filter(snapshotHist, { "filename": filename })}
+                      groupsParam={_.filter(snapshotHistParams, { "filename": filename })}
+                      filename={filename}
+                      setLastUpdated={setLastUpdated} />
+                  ))}
+                </List> : null
             }
           </CardContent>
         </Card>
