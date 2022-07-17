@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
@@ -38,21 +38,11 @@ export default function ListHashSnap(props) {
   const [corrData, setCorrData] = useState()
   const [scopedData, setScopedData] = useState()
 
-  const [loadingRep, setLoadingRep] = useState({
-    params_detail: true,
-    summary_data: true,
-    scoped_data: true,
-    corr_data: true,
-  })
-
   const handleClickReport = () => {
-    setLoadingRep(prevState => ({ ...prevState, 'params_detail': true }))
     axios.get("http://127.0.0.1:8000/get_params_detail?hash_params=" + hash_params).then((response) => {
       setParamsDetail(response.data)
-      setLoadingRep(prevState => ({ ...prevState, 'params_detail': false }))
     }).catch(() => { })
 
-    setLoadingRep(prevState => ({ ...prevState, 'summary_data': true }))
     const url_get_summary = 'http://127.0.0.1:8000/get_summary';
     const data_get_summary = { hash_params: hash_params }
     const config_get_summary = {
@@ -62,16 +52,12 @@ export default function ListHashSnap(props) {
     };
     axios.post(url_get_summary, data_get_summary, config_get_summary).then((response) => {
       setSummaryData(response.data)
-      setLoadingRep(prevState => ({ ...prevState, 'summary_data': false }))
     });
 
-    setLoadingRep(prevState => ({ ...prevState, 'corr_data': true }))
     axios.get("http://127.0.0.1:8000/get_corr?hash_params=" + hash_params).then((response) => {
       setCorrData(response.data)
-      setLoadingRep(prevState => ({ ...prevState, 'corr_data': false }))
     }).catch(() => { })
 
-    setLoadingRep(prevState => ({ ...prevState, 'scoped_data': true }))
     const url_scoped_data = 'http://127.0.0.1:8000/get_scoped_data';
     const data_scoped_data = { hash_params: hash_params }
     const config_scoped_data = {
@@ -81,17 +67,10 @@ export default function ListHashSnap(props) {
     };
     axios.post(url_scoped_data, data_scoped_data, config_scoped_data).then((response) => {
       setScopedData(response.data)
-      setLoadingRep(prevState => ({ ...prevState, 'scoped_data': false }))
     });
 
     setOpenReportModal(true)
   }
-
-  // useEffect(() => {
-  //   if (!loadingRep.params_detail && !loadingRep.summary_data && !loadingRep.corr_data && !loadingRep.scoped_data) {
-  //     setOpenReportModal(true)
-  //   }
-  // }, [loadingRep])
 
   const handleClickExport = () => {
     axios.get("http://127.0.0.1:8000/get_csv?hash_params=" + hash_params).then((response) => {

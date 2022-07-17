@@ -144,11 +144,6 @@ function Report(props) {
               </List>
             </>
 
-          {/* <Typography variant="subtitle1" sx={{ padding: '3px 4px' }}>
-            Scope
-          </Typography>
-          <Typography variant="subtitle2" color="text.secondary" sx={{ padding: '3px 4px' }}>{filename}</Typography> */}
-
           <Typography variant="subtitle1" sx={{ padding: '3px 4px', mt: '30px' }}>
             Correlation Matrix
           </Typography>
