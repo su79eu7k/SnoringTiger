@@ -48,7 +48,7 @@ export default function ResultPreview(props) {
 
     const [_x, _y] = _.keys(_.pickBy(toggledCells))
 
-    const url = 'http://127.0.0.1:8000/preview_data';
+    const url = 'http://127.0.0.1:8000/run_sim_preview';
     const data = { x: _x, y: _y }
     const config = {
       headers: {
