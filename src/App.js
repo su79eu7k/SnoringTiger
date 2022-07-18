@@ -11,8 +11,9 @@ import ProceedSimulation from './pages/ProceedSimulation';
 import CheckResults from './pages/CheckResults';
 import ColorModeContext from './contexts/ColorModeContext';
 import axios from 'axios';
+import { API_SERVER } from './helpers/url';
 
-function App() {
+export default function App() {
   const [file, setFile] = useState(null)
   const [loadingWorkbook, setLoadingWorkbook] = useState(false)
   const [connCheckDelay, setConnCheckDelay] = useState(null)
@@ -65,7 +66,7 @@ function App() {
 
   useEffect(() => {
     const init = () => {
-      axios.get("http://127.0.0.1:8000/reset").then((response) => {
+      axios.get(API_SERVER + "/reset").then((response) => {
         // console.log(response)
       }).catch(() => {})
 
@@ -83,7 +84,7 @@ function App() {
   }, [simConfig.started])
 
   useInterval(() => {
-    axios.get("http://127.0.0.1:8000/check_connection").then((response) => {
+    axios.get(API_SERVER + "/check_connection").then((response) => {
       if (Object.keys(response.data).length) {
         setConnStatus(response.data.code)
         setConnedFile(response.data.message)
@@ -135,5 +136,3 @@ function App() {
     </ColorModeContext.Provider>
   );
 }
-
-export default App;

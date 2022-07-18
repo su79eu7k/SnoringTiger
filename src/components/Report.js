@@ -17,7 +17,7 @@ import CorrMat from './CorrMat';
 import ScatterChartWrapper from './ScatterChartWrapper';
 
 
-function Report(props) {
+export default function Report(props) {
   const openReportModal = props.openReportModal
   const setOpenReportModal = props.setOpenReportModal
   const filename = props.filename
@@ -181,5 +181,3 @@ function Report(props) {
     </Modal>
   )
 }
-
-export default Report

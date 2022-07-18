@@ -12,7 +12,7 @@ import _ from 'lodash'
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import AddressInfo from './AddressInfo';
-
+import { API_SERVER } from '../helpers/url';
 
 export default function MonitoringCellCard(props) {
   const id = props.id
@@ -34,7 +34,7 @@ export default function MonitoringCellCard(props) {
   }, [id, addressSheet, addressCell, assigned, setMonitoringCells])
 
   const handleClickConn = (e) => {
-    axios.get("http://127.0.0.1:8000/get_selection").then((response) => {
+    axios.get(API_SERVER + "/get_selection").then((response) => {
       setAddressSheet(response.data.sheet)
       setAddressCell(response.data.range)
     });
@@ -48,7 +48,7 @@ export default function MonitoringCellCard(props) {
   const handleClickAssign = (e) => {
     e.preventDefault()
     if (!assigned) {
-      const url = 'http://127.0.0.1:8000/add_monitoring_cell';
+      const url = API_SERVER + '/add_monitoring_cell';
       const data = { sheet: addressSheet, cell: addressCell }
       const config = {
         headers: {
@@ -59,7 +59,7 @@ export default function MonitoringCellCard(props) {
         setAssigned(true)
       });
     } else {
-      const url = 'http://127.0.0.1:8000/remove_monitoring_cell';
+      const url = API_SERVER + '/remove_monitoring_cell';
       const data = { sheet: addressSheet, cell: addressCell }
       const config = {
         headers: {

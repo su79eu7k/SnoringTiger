@@ -18,6 +18,7 @@ import { useTheme } from '@mui/styles'
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import AddressInfo from './AddressInfo';
+import { API_SERVER } from '../helpers/url';
 
 
 export default function RandomCellCard(props) {
@@ -64,7 +65,7 @@ export default function RandomCellCard(props) {
 
 
   const handleClickConn = (e) => {
-    axios.get("http://127.0.0.1:8000/get_selection").then((response) => {
+    axios.get(API_SERVER + "/get_selection").then((response) => {
       setAddressSheet(response.data.sheet)
       setAddressCell(response.data.range)
     });
@@ -83,7 +84,7 @@ export default function RandomCellCard(props) {
   const handleClickAssign = (e) => {
     e.preventDefault()
     if (!assigned) {
-      const url = 'http://127.0.0.1:8000/add_random_cell';
+      const url = API_SERVER + '/add_random_cell';
       const data = { sheet: addressSheet, cell: addressCell, x: x, prob: prob }
       const config = {
         headers: {
@@ -94,7 +95,7 @@ export default function RandomCellCard(props) {
         setAssigned(true)
       });
     } else {
-      const url = 'http://127.0.0.1:8000/remove_random_cell';
+      const url = API_SERVER + '/remove_random_cell';
       const data = { sheet: addressSheet, cell: addressCell }
       const config = {
         headers: {

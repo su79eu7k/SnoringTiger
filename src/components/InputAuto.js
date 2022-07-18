@@ -12,7 +12,7 @@ import Stack from '@mui/material/Stack';
 import ParamsBernoulli from './ParamsBernoulli';
 import ParamsBinom from './ParamsBinom';
 import ParamsPoisson from './ParamsPoisson';
-
+import { API_SERVER } from '../helpers/url';
 
 export default function InputAuto(props) {
   const connStatus = props.connStatus
@@ -46,7 +46,7 @@ export default function InputAuto(props) {
 
   const handleClickSubmit = (e) => {
     e.preventDefault()
-    const url = 'http://127.0.0.1:8000/prob';
+    const url = API_SERVER + '/prob';
     const data = {
       dist: randomCell.dist,
       start: Number(randomCell.valueStart), end: Number(randomCell.valueEnd), step: Number(randomCell.valueStep) + 1,

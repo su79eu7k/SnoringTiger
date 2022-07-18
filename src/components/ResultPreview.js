@@ -13,7 +13,7 @@ import Divider from '@mui/material/Divider';
 import ElemSelection from './ElemSelection';
 import ResultPreviewChart from './ResultPreviewChart';
 import { useTheme } from '@mui/styles'
-
+import { API_SERVER } from '../helpers/url';
 
 export default function ResultPreview(props) {
   const setPreviewCount = props.setPreviewCount
@@ -48,7 +48,7 @@ export default function ResultPreview(props) {
 
     const [_x, _y] = _.keys(_.pickBy(toggledCells))
 
-    const url = 'http://127.0.0.1:8000/run_sim_preview';
+    const url = API_SERVER + '/run_sim_preview';
     const data = { x: _x, y: _y }
     const config = {
       headers: {

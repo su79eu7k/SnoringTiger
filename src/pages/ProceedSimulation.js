@@ -19,7 +19,7 @@ import Stack from '@mui/material/Stack';
 import ResultPreview from '../components/ResultPreview';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import LoadingButton from '@mui/lab/LoadingButton';
-
+import { API_SERVER } from '../helpers/url';
 
 export default function ProceedSimulation(props) {
   const connStatus = props.connStatus
@@ -56,7 +56,7 @@ export default function ProceedSimulation(props) {
     setStarted(true)
     setProgress(0)
     if (dataReady) {
-      const url = 'http://127.0.0.1:8000/run_sim_start';
+      const url = API_SERVER + '/run_sim_start';
       const data = { num_trials: valueTrials }
       const config = {
         headers: {
@@ -76,7 +76,7 @@ export default function ProceedSimulation(props) {
 
     setStarted(false)
     setPaused(false)
-    axios.get("http://127.0.0.1:8000/run_sim_cancel").then((response) => {
+    axios.get(API_SERVER + "/run_sim_cancel").then((response) => {
       setProgress(null)
     });
   }
@@ -85,21 +85,21 @@ export default function ProceedSimulation(props) {
     e.preventDefault()
 
     setPaused(true)
-    axios.get("http://127.0.0.1:8000/run_sim_pause").then((response) => { })
+    axios.get(API_SERVER + "/run_sim_pause").then((response) => { })
   }
 
   const handleClickResume = (e) => {
     e.preventDefault()
 
     setPaused(false)
-    axios.get("http://127.0.0.1:8000/run_sim_resume").then((response) => { })
+    axios.get(API_SERVER + "/run_sim_resume").then((response) => { })
   }
 
   const handleClickSave = (e) => {
     e.preventDefault()
 
     setSaving(true)
-    axios.get("http://127.0.0.1:8000/run_sim_save").then((response) => {
+    axios.get(API_SERVER + "/run_sim_save").then((response) => {
       setSaving(false)
     })
   }
@@ -114,7 +114,7 @@ export default function ProceedSimulation(props) {
 
   useInterval(() => {
     if (progress != null) {
-      axios.get("http://127.0.0.1:8000/run_sim_progress").then((response) => {
+      axios.get(API_SERVER + "/run_sim_progress").then((response) => {
         setProgress(response.data.progress * 100)
       })
     }

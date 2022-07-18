@@ -3,6 +3,7 @@ import Typography from '@mui/material/Typography';
 import ControlButton from './ControlButton';
 import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
 import axios from 'axios';
+import { API_SERVER } from '../helpers/url';
 
 
 function AddressInfo(props) {
@@ -11,7 +12,7 @@ function AddressInfo(props) {
   const addressCell = props.addressCell
   
   const handleClickFocus = (e) => {
-    axios.get("http://127.0.0.1:8000/select_with_focus/?sheet=" + addressSheet + "&cell=" + addressCell).then((response) => {
+    axios.get(API_SERVER + "/select_with_focus/?sheet=" + addressSheet + "&cell=" + addressCell).then((response) => {
       console.log(response)
     });
   }

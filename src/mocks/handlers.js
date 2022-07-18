@@ -1,10 +1,11 @@
 // src/mocks/handlers.js
 import { rest } from 'msw'
+import { API_SERVER } from '../helpers/url'
 
 sessionStorage.setItem('file-uploaded', 'false')
 
 export const handlers = [
-  rest.post('http://127.0.0.1:8000/upload_file', (req, res, ctx) => {
+  rest.post(API_SERVER + '/upload_file', (req, res, ctx) => {
     sessionStorage.setItem('file-uploaded', 'true')
 
     return res(
@@ -15,7 +16,7 @@ export const handlers = [
     )
   }),
 
-  rest.get('http://127.0.0.1:8000/check_connection', (req, res, ctx) => {
+  rest.get(API_SERVER + '/check_connection', (req, res, ctx) => {
     if (sessionStorage.getItem('file-uploaded') === 'true') {
       return res(
         ctx.status(200),
@@ -33,7 +34,7 @@ export const handlers = [
     )
   }),
 
-  rest.get('http://127.0.0.1:8000/reset', (req, res, ctx) => {
+  rest.get(API_SERVER + '/reset', (req, res, ctx) => {
     sessionStorage.setItem('file-uploaded', false)
 
     return res(
@@ -44,7 +45,7 @@ export const handlers = [
     )
   }),
 
-  rest.get('http://127.0.0.1:8000/get_selection', (req, res, ctx) => {
+  rest.get(API_SERVER + '/get_selection', (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json(
@@ -58,7 +59,7 @@ export const handlers = [
     )
   }),
 
-  rest.post('http://127.0.0.1:8000/prob', (req, res, ctx) => {
+  rest.post(API_SERVER + '/prob', (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json(
@@ -73,7 +74,7 @@ export const handlers = [
     )
   }),
 
-  rest.post('http://127.0.0.1:8000/add_random_cell', (req, res, ctx) => {
+  rest.post(API_SERVER + '/add_random_cell', (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json(
@@ -84,7 +85,7 @@ export const handlers = [
     )
   }),
 
-  rest.post('http://127.0.0.1:8000/remove_random_cell', (req, res, ctx) => {
+  rest.post(API_SERVER + '/remove_random_cell', (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json(
@@ -95,7 +96,7 @@ export const handlers = [
     )
   }),
 
-  rest.get('http://127.0.0.1:8000/get_hist_list', (req, res, ctx) => {
+  rest.get(API_SERVER + '/get_hist_list', (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json(
@@ -113,7 +114,7 @@ export const handlers = [
     )
   }),
 
-  rest.get('http://127.0.0.1:8000/get_hist_list_params', (req, res, ctx) => {
+  rest.get(API_SERVER + '/get_hist_list_params', (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json(
@@ -125,7 +126,7 @@ export const handlers = [
     )
   }),
 
-  rest.post('http://127.0.0.1:8000/add_monitoring_cell', (req, res, ctx) => {
+  rest.post(API_SERVER + '/add_monitoring_cell', (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json(
@@ -136,7 +137,7 @@ export const handlers = [
     )
   }),
 
-  rest.post('http://127.0.0.1:8000/remove_monitoring_cell', (req, res, ctx) => {
+  rest.post(API_SERVER + '/remove_monitoring_cell', (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json(

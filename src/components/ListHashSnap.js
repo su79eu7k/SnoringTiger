@@ -20,6 +20,7 @@ import Modal from '@mui/material/Modal';
 import axios from 'axios';
 import { DateTime } from "luxon";
 import Report from './Report'
+import { API_SERVER } from '../helpers/url';
 
 export default function ListHashSnap(props) {
   const groups = props.groups
@@ -37,11 +38,11 @@ export default function ListHashSnap(props) {
   const [scopedData, setScopedData] = useState()
 
   const handleClickReport = () => {
-    axios.get("http://127.0.0.1:8000/get_hist_sim_params?hash_params=" + hash_params).then((response) => {
+    axios.get(API_SERVER + "/get_hist_sim_params?hash_params=" + hash_params).then((response) => {
       setParamsDetail(response.data)
     }).catch(() => { })
 
-    const url_get_summary = 'http://127.0.0.1:8000/get_hist_sim_summary';
+    const url_get_summary = API_SERVER + '/get_hist_sim_summary';
     const data_get_summary = { hash_params: hash_params }
     const config_get_summary = {
       headers: {
@@ -52,11 +53,11 @@ export default function ListHashSnap(props) {
       setSummaryData(response.data)
     });
 
-    axios.get("http://127.0.0.1:8000/get_hist_sim_corr?hash_params=" + hash_params).then((response) => {
+    axios.get(API_SERVER + "/get_hist_sim_corr?hash_params=" + hash_params).then((response) => {
       setCorrData(response.data)
     }).catch(() => { })
 
-    const url_scoped_data = 'http://127.0.0.1:8000/get_hist_sim_recs';
+    const url_scoped_data = API_SERVER + '/get_hist_sim_recs';
     const data_scoped_data = { hash_params: hash_params }
     const config_scoped_data = {
       headers: {
@@ -71,7 +72,7 @@ export default function ListHashSnap(props) {
   }
 
   const handleClickExport = () => {
-    axios.get("http://127.0.0.1:8000/get_hist_sim_csv?hash_params=" + hash_params).then((response) => {
+    axios.get(API_SERVER + "/get_hist_sim_csv?hash_params=" + hash_params).then((response) => {
       const _elem = document.createElement('a')
       const _file = new Blob([response.data], {
         type: response.headers["content-type"],
@@ -87,7 +88,7 @@ export default function ListHashSnap(props) {
   }
 
   const handleClickDeleteConfirm = () => {
-    const url = "http://127.0.0.1:8000/del_hist_sim"
+    const url = API_SERVER + "/del_hist_sim"
     const data = { filename: filename, hash_params: hash_params }
     const config = {
       headers: {

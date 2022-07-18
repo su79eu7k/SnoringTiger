@@ -11,6 +11,7 @@ import _ from 'lodash';
 import { DateTime } from "luxon";
 import ListFile from '../components/ListFile';
 import ControlButton from '../components/ControlButton';
+import { API_SERVER } from '../helpers/url';
 
 export default function CheckResults() {
   const [snapshotHist, setSnapshotHist] = useState();
@@ -18,11 +19,11 @@ export default function CheckResults() {
   const [lastUpdated, setLastUpdated] = useState(DateTime.now().toUnixInteger())
 
   useEffect(() => {
-    axios.get("http://127.0.0.1:8000/get_hist_list").then((response) => {
+    axios.get(API_SERVER + "/get_hist_list").then((response) => {
       setSnapshotHist(response.data)
     }).catch(() => { })
 
-    axios.get("http://127.0.0.1:8000/get_hist_list_params").then((response) => {
+    axios.get(API_SERVER + "/get_hist_list_params").then((response) => {
       setSnapshotHistParams(response.data)
     }).catch(() => { })
   }, [lastUpdated])

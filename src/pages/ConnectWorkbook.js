@@ -12,7 +12,7 @@ import AlertTitle from '@mui/material/AlertTitle';
 import axios from 'axios';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Grid from '@mui/material/Grid';
-
+import { API_SERVER } from '../helpers/url';
 
 const Input = styled('input')({
   display: 'none',
@@ -44,7 +44,7 @@ export default function ConnectWorkbook(props) {
     setLoadingWorkbook(true)
     setConnReqStatus(0)
     if (props.file) {
-      const url = 'http://127.0.0.1:8000/upload_file';
+      const url = API_SERVER + '/upload_file';
       const formData = new FormData();
       formData.append('uploadfile', props.file);
       const config = {
@@ -54,7 +54,7 @@ export default function ConnectWorkbook(props) {
       };
       axios.post(url, formData, config).then((response) => {
         if (response.data.code === 1) {
-          axios.get("http://127.0.0.1:8000/check_connection").then((response) => {
+          axios.get(API_SERVER + "/check_connection").then((response) => {
             props.setConn(response.data.code)
             props.setConnWith(response.data.message)
             setLoadingWorkbook(false)
