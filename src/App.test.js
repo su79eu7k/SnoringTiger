@@ -30,7 +30,7 @@ describe('Integration test', () => {
     user.click(screen.getByTestId('connectWorkbook'))
 
     expect(await screen.findByTestId('BtnSelectWorkbook')).toBeInTheDocument()
-    expect(await screen.findByTestId('BtnConnWorkbook')).toBeEnabled()
+    expect(await screen.findByTestId('BtnConnWorkbook')).toBeDisabled()
   })
 
   test('Add Random Cells', async () => {
@@ -79,7 +79,7 @@ describe('Integration test', () => {
     user.click(screen.getByTestId('connectWorkbook'))
 
     expect(await screen.findByTestId('BtnSelectWorkbook')).toBeInTheDocument()
-    expect(await screen.findByTestId('BtnConnWorkbook')).toBeEnabled()
+    expect(await screen.findByTestId('BtnConnWorkbook')).toBeDisabled()
 
     user.click(await screen.findByTestId('BtnSelectWorkbook'))
 
@@ -89,6 +89,7 @@ describe('Integration test', () => {
 
     expect(await screen.findByText('test.xlsx')).toBeInTheDocument()
 
+    expect(await screen.findByTestId('BtnConnWorkbook')).toBeEnabled()
     user.click(await screen.findByTestId('BtnConnWorkbook'))
 
     expect(await screen.findByText('Connected to test.xlsx')).toBeInTheDocument()
