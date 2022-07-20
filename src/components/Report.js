@@ -86,7 +86,7 @@ export default function Report(props) {
               <List>
                 <Typography variant="subtitle2" sx={{ padding: '3px 4px', fontSize: 13, mt: '10px' }}>Random Cells</Typography>
                 <ListItem>
-                  {['Sheet', 'Cell', 'Mean', 'Std', '25%', '50%', '75%', 'Max', 'Prob.'].map((col, i) =>
+                  {['Sheet', 'Cell', 'Mean', 'Std', 'Min', '25%', '50%', '75%', 'Max', 'Prob.'].map((col, i) =>
                     <ListItemText
                       key={i.toString()}
                       secondary={col}
@@ -104,7 +104,7 @@ export default function Report(props) {
 
                   return (
                     <ListItem key={i.toString()}>
-                      {[cellAddress.split('!')[0], cellAddress.split('!')[1], 'mean', 'std', '25%', '50%', '75%', 'max'].map((col, i) =>
+                      {[cellAddress.split('!')[0], cellAddress.split('!')[1], 'mean', 'std', 'min', '25%', '50%', '75%', 'max'].map((col, i) =>
                         <ListItemText
                           key={i.toString()}
                           secondary={i < 2 ? col : stat_val(col)}
