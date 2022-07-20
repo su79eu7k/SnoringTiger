@@ -17,19 +17,35 @@ import { API_SERVER } from '../helpers/url';
 
 export default function ResultPreview(props) {
   const theme = useTheme()
+  const id = props.id
   const connStatus = props.connStatus
   const setPreviewCount = props.setPreviewCount
   const asndRandCells = props.asndRandCells
   const asndMonitCells = props.asndMonitCells
+  const resultPreviews = props.resultPreviews
+  const resultPreview = resultPreviews[id]
+  const setResultPreviews = props.setResultPreviews
 
-  const [added, setAdded] = useState(false)
-  const [toggledCells, setToggledCells] = useState([])
-  const [coords, setCoords] = useState([])
-  const [previewAvailable, setPreviewAvailable] = useState(false)
+  const [added, setAdded] = useState(resultPreview ? resultPreview.added : false)
+  const [toggledCells, setToggledCells] = useState(resultPreview ? resultPreview.toggledCells : [])
+  const [coords, setCoords] = useState(resultPreview ? resultPreview.coords : [])
+  const [previewAvailable, setPreviewAvailable] = useState(resultPreview ? resultPreview.previewAvailable : false)
 
   useEffect(() => {
     _.values(toggledCells).filter(b => b === true).length === 2 ? setPreviewAvailable(true) : setPreviewAvailable(false)
   }, [setPreviewAvailable, toggledCells])
+
+  useEffect(() => {
+    setResultPreviews(prevState => ({
+      ...prevState, [id]: {
+        ...prevState[id],
+        added: added, 
+        toggledCells: toggledCells,
+        coords: coords,
+        previewAvailable: previewAvailable,
+      }
+    }))
+  }, [setResultPreviews, id, added, toggledCells, coords, previewAvailable])
 
   const handleClickPreview = (e) => {
     e.preventDefault()

@@ -23,6 +23,7 @@ export default function App() {
 
   const [randomCells, setRandomCells] = useState({})
   const [monitoringCells, setMonitoringCells] = useState({})
+  const [resultPreviews, setResultPreviews] = useState({})
 
   const [simConfig, setSimConfig] = useState({})
   
@@ -72,6 +73,7 @@ export default function App() {
 
       setRandomCells({})
       setMonitoringCells({})
+      setResultPreviews({})
     }
     init()
     return () => {
@@ -126,6 +128,8 @@ export default function App() {
                   connStatus={connStatus}
                   randomCells={randomCells}
                   monitoringCells={monitoringCells}
+                  resultPreviews={resultPreviews}
+                  setResultPreviews={setResultPreviews}
                   simConfig={simConfig} setSimConfig={setSimConfig} />
               } />
               <Route path="check_results" element={<CheckResults />} />

@@ -25,6 +25,8 @@ export default function ProceedSimulation(props) {
   const connStatus = props.connStatus
   const randomCells = props.randomCells
   const monitoringCells = props.monitoringCells
+  const resultPreviews = props.resultPreviews
+  const setResultPreviews = props.setResultPreviews
   const simConfig = props.simConfig
   const setSimConfig = props.setSimConfig
 
@@ -253,10 +255,13 @@ export default function ProceedSimulation(props) {
         {_.range(previewCount).map((v, i) =>
           <Grid key={"PreviewCard-" + i.toString()} item xs={12}>
             <ResultPreview
+              id={i}
               connStatus={connStatus}
               setPreviewCount={setPreviewCount}
               asndRandCells={asndRandCells}
               asndMonitCells={asndMonitCells}
+              resultPreviews={resultPreviews}
+              setResultPreviews={setResultPreviews}
             />
           </Grid>
         )}
