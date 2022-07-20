@@ -23,8 +23,10 @@ import Report from './Report'
 import { API_SERVER } from '../helpers/url';
 
 export default function ListHashSnap(props) {
-  const groups = props.groups
-  const groupsParam = props.groupsParam[0]
+  const histList = props.histList
+  const setHistList = props.setHistList
+  const histListParams = props.histListParams
+  const setHistListParams = props.setHistListParams
   const filename = props.filename
   const hash_params = props.hash_params
   const setLastUpdated = props.setLastUpdated
@@ -96,6 +98,8 @@ export default function ListHashSnap(props) {
       },
     };
     axios.post(url, data, config).then((response) => {
+      setHistList()
+      setHistListParams()
       setLastUpdated(DateTime.now().toUnixInteger())
     })
     setOpenDeleteModal(false)
@@ -112,7 +116,7 @@ export default function ListHashSnap(props) {
           primaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
           sx={{ width: '0px', minWidth: '90px' }} />
         <ListItemText
-          secondary={"R:" + groupsParam.random + " / M: " + groupsParam.monitoring}
+          secondary={"R:" + histListParams.random + " / M: " + histListParams.monitoring}
           secondaryTypographyProps={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textAlign: 'center' }}
           sx={{ width: '0px', minWidth: '90px' }} />
 
@@ -179,7 +183,7 @@ export default function ListHashSnap(props) {
         </Stack>
 
       </ListItem>
-      {groups.map((record, i) => (
+      {histList.map((record, i) => (
         <List key={i.toString()} component="div" disablePadding dense>
           <ListItem sx={{ pl: 8 }}>
             <ListItemIcon>

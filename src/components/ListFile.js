@@ -8,7 +8,9 @@ import ListHashSnap from './ListHashSnap';
 
 export default function ListFile(props) {
   const histList = props.histList
+  const setHistList = props.setHistList
   const histListParams = props.histListParams
+  const setHistListParams = props.setHistListParams
   const filename = props.filename
   const setLastUpdated = props.setLastUpdated
 
@@ -20,20 +22,19 @@ export default function ListFile(props) {
         </ListItemIcon>
         <ListItemText primary={filename} />
       </ListItem>
-      {
-        (histList !== undefined) && (histListParams !== undefined) ?
-          <List dense>
-            {_.uniq(_.map(histList, (e) => (e.hash_params))).map((hash, i) => (
-              <ListHashSnap
-                key={"h-" + i.toString()}
-                groups={_.filter(histList, { "hash_params": hash })}
-                groupsParam={_.filter(histListParams, { "hash_params": hash })}
-                filename={filename}
-                hash_params={hash}
-                setLastUpdated={setLastUpdated} />
-            ))}
-          </List>
-          : null}
+      <List dense>
+        {_.uniq(_.map(histList, (e) => (e.hash_params))).map((hash, i) => (
+          <ListHashSnap
+            key={"h-" + i.toString()}
+            histList={_.filter(histList, { "hash_params": hash })}
+            setHistList={setHistList}
+            histListParams={_.filter(histListParams, { "hash_params": hash })[0]}
+            setHistListParams={setHistListParams}
+            filename={filename}
+            hash_params={hash}
+            setLastUpdated={setLastUpdated} />
+        ))}
+      </List>
     </>
   )
 }

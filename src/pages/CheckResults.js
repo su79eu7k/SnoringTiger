@@ -54,7 +54,9 @@ export default function CheckResults() {
                   {_.uniq(_.map(histList, (e) => (e.filename))).map((filename, i) => (
                     <ListFile key={"f-" + i.toString()}
                       histList={_.filter(histList, { "filename": filename })}
+                      setHistList={setHistList}
                       histListParams={_.filter(histListParams, { "filename": filename })}
+                      setHistListParams={setHistListParams}
                       filename={filename}
                       setLastUpdated={setLastUpdated} />
                   ))}
