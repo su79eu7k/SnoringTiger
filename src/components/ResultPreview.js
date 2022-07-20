@@ -16,28 +16,16 @@ import { useTheme } from '@mui/styles'
 import { API_SERVER } from '../helpers/url';
 
 export default function ResultPreview(props) {
-  const setPreviewCount = props.setPreviewCount
+  const theme = useTheme()
   const connStatus = props.connStatus
-  const randomCells = props.randomCells
-  const monitoringCells = props.monitoringCells
+  const setPreviewCount = props.setPreviewCount
+  const asndRandCells = props.asndRandCells
+  const asndMonitCells = props.asndMonitCells
 
   const [added, setAdded] = useState(false)
-
-  const [asndRandCells, setAsndRandCells] = useState([])
-  const [asndMonitCells, setAsndMonitCells] = useState([])
-
   const [toggledCells, setToggledCells] = useState([])
-
-  const [previewAvailable, setPreviewAvailable] = useState(false)
-
   const [coords, setCoords] = useState([])
-
-  const theme = useTheme()
-
-  useEffect(() => {
-    setAsndRandCells(_.filter(_.values(randomCells), ['assigned', true]))
-    setAsndMonitCells(_.filter(_.values(monitoringCells), ['assigned', true]))
-  }, [setAsndRandCells, setAsndMonitCells, randomCells, monitoringCells])
+  const [previewAvailable, setPreviewAvailable] = useState(false)
 
   useEffect(() => {
     _.values(toggledCells).filter(b => b === true).length === 2 ? setPreviewAvailable(true) : setPreviewAvailable(false)

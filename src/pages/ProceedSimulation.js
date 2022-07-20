@@ -43,6 +43,9 @@ export default function ProceedSimulation(props) {
 
   const [previewCount, setPreviewCount] = useState(1)
 
+  const [asndRandCells, setAsndRandCells] = useState([])
+  const [asndMonitCells, setAsndMonitCells] = useState([])
+
   const handleChangeTrials = (e) => {
     e.preventDefault()
 
@@ -144,6 +147,11 @@ export default function ProceedSimulation(props) {
     }
   }, [progress])
 
+  useEffect(() => {
+    setAsndRandCells(_.filter(_.values(randomCells), ['assigned', true]))
+    setAsndMonitCells(_.filter(_.values(monitoringCells), ['assigned', true]))
+  }, [setAsndRandCells, setAsndMonitCells, randomCells, monitoringCells])
+
   return (
     <>
       <Grid container spacing={2}>
@@ -244,7 +252,12 @@ export default function ProceedSimulation(props) {
         </Grid>
         {_.range(previewCount).map((v, i) =>
           <Grid key={"PreviewCard-" + i.toString()} item xs={12}>
-            <ResultPreview setPreviewCount={setPreviewCount} connStatus={connStatus} randomCells={randomCells} monitoringCells={monitoringCells} />
+            <ResultPreview
+              connStatus={connStatus}
+              setPreviewCount={setPreviewCount}
+              asndRandCells={asndRandCells}
+              asndMonitCells={asndMonitCells}
+            />
           </Grid>
         )}
       </Grid>
