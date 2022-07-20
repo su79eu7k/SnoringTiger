@@ -107,9 +107,9 @@ export default function ListHashSnap(props) {
         <ListItemIcon>
           <SettingsIcon fontSize="small" sx={{ color: "text.secondary" }} />
         </ListItemIcon>
-        <ListItemText 
-          primary={hash_params} 
-          primaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }} 
+        <ListItemText
+          primary={hash_params}
+          primaryTypographyProps={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
           sx={{ width: '0px', minWidth: '90px' }} />
         <ListItemText
           secondary={"R:" + groupsParam.random + " / M: " + groupsParam.monitoring}

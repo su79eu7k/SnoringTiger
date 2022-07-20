@@ -14,17 +14,17 @@ import ControlButton from '../components/ControlButton';
 import { API_SERVER } from '../helpers/url';
 
 export default function CheckResults() {
-  const [snapshotHist, setSnapshotHist] = useState();
-  const [snapshotHistParams, setSnapshotHistParams] = useState();
+  const [histList, setHistList] = useState();
+  const [histListParams, setHistListParams] = useState();
   const [lastUpdated, setLastUpdated] = useState(DateTime.now().toUnixInteger())
 
   useEffect(() => {
     axios.get(API_SERVER + "/get_hist_list").then((response) => {
-      setSnapshotHist(response.data)
+      setHistList(response.data)
     }).catch(() => { })
 
     axios.get(API_SERVER + "/get_hist_list_params").then((response) => {
-      setSnapshotHistParams(response.data)
+      setHistListParams(response.data)
     }).catch(() => { })
   }, [lastUpdated])
 
@@ -38,23 +38,23 @@ export default function CheckResults() {
       <Grid item xs={12}>
         <Card sx={{ minWidth: 445 }}>
           <CardContent>
-          <Stack direction="row" justifyContent="flex-end">
-            <ControlButton
-              connStatus={1}
-              handleClick={() => setLastUpdated(DateTime.now().toUnixInteger())}
-              caption={"Refresh"}
-              iconComponent={
-                <RefreshIcon fontSize="small" sx={{ color: "text.secondary" }} />
-              }
-            />
+            <Stack direction="row" justifyContent="flex-end">
+              <ControlButton
+                connStatus={1}
+                handleClick={() => setLastUpdated(DateTime.now().toUnixInteger())}
+                caption={"Refresh"}
+                iconComponent={
+                  <RefreshIcon fontSize="small" sx={{ color: "text.secondary" }} />
+                }
+              />
             </Stack>
             {
-              (snapshotHist !== undefined) && (snapshotHistParams !== undefined) ?
+              (histList !== undefined) && (histListParams !== undefined) ?
                 <List dense>
-                  {_.uniq(_.map(snapshotHist, (e) => (e.filename))).map((filename, i) => (
+                  {_.uniq(_.map(histList, (e) => (e.filename))).map((filename, i) => (
                     <ListFile key={"f-" + i.toString()}
-                      groups={_.filter(snapshotHist, { "filename": filename })}
-                      groupsParam={_.filter(snapshotHistParams, { "filename": filename })}
+                      histList={_.filter(histList, { "filename": filename })}
+                      histListParams={_.filter(histListParams, { "filename": filename })}
                       filename={filename}
                       setLastUpdated={setLastUpdated} />
                   ))}

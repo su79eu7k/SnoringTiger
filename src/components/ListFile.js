@@ -7,8 +7,8 @@ import _ from 'lodash';
 import ListHashSnap from './ListHashSnap';
 
 export default function ListFile(props) {
-  const groups = props.groups
-  const groupsParam = props.groupsParam
+  const histList = props.histList
+  const histListParams = props.histListParams
   const filename = props.filename
   const setLastUpdated = props.setLastUpdated
 
@@ -20,17 +20,20 @@ export default function ListFile(props) {
         </ListItemIcon>
         <ListItemText primary={filename} />
       </ListItem>
-      <List dense>
-        {_.uniq(_.map(groups, (e) => (e.hash_params))).map((hash, i) => (
-          <ListHashSnap 
-            key={"h-" + i.toString()} 
-            groups={_.filter(groups, { "hash_params": hash })} 
-            groupsParam={_.filter(groupsParam, { "hash_params": hash })} 
-            filename={filename} 
-            hash_params={hash} 
-            setLastUpdated={setLastUpdated} />
-        ))}
-      </List>
+      {
+        (histList !== undefined) && (histListParams !== undefined) ?
+          <List dense>
+            {_.uniq(_.map(histList, (e) => (e.hash_params))).map((hash, i) => (
+              <ListHashSnap
+                key={"h-" + i.toString()}
+                groups={_.filter(histList, { "hash_params": hash })}
+                groupsParam={_.filter(histListParams, { "hash_params": hash })}
+                filename={filename}
+                hash_params={hash}
+                setLastUpdated={setLastUpdated} />
+            ))}
+          </List>
+          : null}
     </>
   )
 }
