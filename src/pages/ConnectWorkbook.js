@@ -43,32 +43,27 @@ export default function ConnectWorkbook(props) {
 
     setLoadingWorkbook(true)
     setConnReqStatus(0)
-    if (props.file) {
-      const url = API_SERVER + '/upload_file';
-      const formData = new FormData();
-      formData.append('uploadfile', props.file);
-      const config = {
-        headers: {
-          'content-type': 'multipart/form-data',
-        },
-      };
-      axios.post(url, formData, config).then((response) => {
-        if (response.data.code === 1) {
-          axios.get(API_SERVER + "/check_connection").then((response) => {
-            props.setConn(response.data.code)
-            props.setConnWith(response.data.message)
-            setLoadingWorkbook(false)
-            setConnReqStatus(1)
-          })
-        } else {
+    const url = API_SERVER + '/upload_file';
+    const formData = new FormData();
+    formData.append('uploadfile', props.file);
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    };
+    axios.post(url, formData, config).then((response) => {
+      if (response.data.code === 1) {
+        axios.get(API_SERVER + "/check_connection").then((response) => {
+          props.setConn(response.data.code)
+          props.setConnWith(response.data.message)
           setLoadingWorkbook(false)
-          setConnReqStatus(-1)
-        }
-      });
-    } else {
-      setLoadingWorkbook(false)
-      setConnReqStatus(-1)
-    }
+          setConnReqStatus(1)
+        })
+      } else {
+        setLoadingWorkbook(false)
+        setConnReqStatus(-1)
+      }
+    });
   }
 
   return (
@@ -122,7 +117,7 @@ export default function ConnectWorkbook(props) {
                       variant="outlined"
                       onClick={handleSubmit}
                       startIcon={<CableIcon />}
-                      disabled={props.conn === 1}
+                      disabled={!props.file || props.conn === 1}
                       loading={loadingWorkbook}
                       loadingPosition={'start'}
                     >
@@ -135,14 +130,14 @@ export default function ConnectWorkbook(props) {
           </Card>
         </Grid>
         <Grid item xs={12}>
-        {connReqStatus === -1 ? <Alert severity="error" variant="outlined">
-          <AlertTitle>Error</AlertTitle>
-          File not selected — <strong>check it out!</strong>
-        </Alert> : null}
-        {connReqStatus === 1 ? <Alert severity="success" variant="outlined">
-          <AlertTitle>Success</AlertTitle>
-          Workbook connected — <strong>check it out!</strong>
-        </Alert> : null}
+          {connReqStatus === -1 ? <Alert severity="error" variant="outlined">
+            <AlertTitle>Error</AlertTitle>
+            Permission denied, file already opened — <strong>Close the workbook and Reopen!</strong>
+          </Alert> : null}
+          {connReqStatus === 1 ? <Alert severity="success" variant="outlined">
+            <AlertTitle>Success</AlertTitle>
+            File connected as a copy — <strong>Do not close the workbook during the task.</strong>
+          </Alert> : null}
         </Grid>
       </Grid>
     </>
