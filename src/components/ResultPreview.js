@@ -84,7 +84,7 @@ export default function ResultPreview(props) {
             <Grid item xs={12} container spacing={2} justifyContent="center">
               {asndRandCells.map((e, i) => (
                 <Grid item key={"Rand-" + i}>
-                  <ElemSelection connStatus={connStatus} addressSheet={e.addressSheet} addressCell={e.addressCell} type={'rand'} setToggledCells={setToggledCells} />
+                  <ElemSelection connStatus={connStatus} addressSheet={e.addressSheet} addressCell={e.addressCell} type={'rand'} toggledCells={toggledCells} setToggledCells={setToggledCells} setCoords={setCoords}  />
                 </Grid>
               ))}
               <Grid item xs={12}>
@@ -92,12 +92,12 @@ export default function ResultPreview(props) {
               </Grid>
               {asndMonitCells.map((e, i) => (
                 <Grid item key={"Monit-" + i}>
-                  <ElemSelection connStatus={connStatus} addressSheet={e.addressSheet} addressCell={e.addressCell} type={'monit'} setToggledCells={setToggledCells} />
+                  <ElemSelection connStatus={connStatus} addressSheet={e.addressSheet} addressCell={e.addressCell} type={'monit'} toggledCells={toggledCells} setToggledCells={setToggledCells} setCoords={setCoords}  />
                 </Grid>
               ))}
             </Grid>
             <Grid item xs={12}>
-              <ResultPreviewChart connStatus={connStatus} coords={coords} setCoords={setCoords} theme={theme} toggledCells={toggledCells} />
+              <ResultPreviewChart theme={theme} connStatus={connStatus} toggledCells={toggledCells} coords={coords} />
             </Grid>
           </Grid>
         </CardContent> : null}

@@ -6,19 +6,21 @@ import { useTheme } from '@mui/styles'
 
 
 function ElemSelection(props) {
+  const theme = useTheme()
   const connStatus = props.connStatus
   const addressSheet = props.addressSheet
   const addressCell = props.addressCell
   const type = props.type
+  const toggledCells = props.toggledCells
   const setToggledCells = props.setToggledCells
+  const setCoords = props.setCoords
 
-  const [selected, setSelected] = useState(false)
-
-  const theme = useTheme()
+  const [selected, setSelected] = useState(toggledCells[type + "'" + addressSheet + "!" + addressCell] ? true : false)
 
   const handleClick = (e) => {
     e.preventDefault()
     setSelected(!selected)
+    setCoords([])
   }
 
   useEffect(() => {

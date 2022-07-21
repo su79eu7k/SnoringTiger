@@ -27,6 +27,8 @@ export default function ProceedSimulation(props) {
   const monitoringCells = props.monitoringCells
   const resultPreviews = props.resultPreviews
   const setResultPreviews = props.setResultPreviews
+  const previewCount = props.previewCount
+  const setPreviewCount = props.setPreviewCount
   const simConfig = props.simConfig
   const setSimConfig = props.setSimConfig
 
@@ -42,8 +44,6 @@ export default function ProceedSimulation(props) {
   const [started, setStarted] = useState(!_.isEmpty(simConfig) ? simConfig.started : false)
   const [paused, setPaused] = useState(!_.isEmpty(simConfig) ? simConfig.paused : false)
   const [saving, setSaving] = useState(false)
-
-  const [previewCount, setPreviewCount] = useState(1)
 
   const [asndRandCells, setAsndRandCells] = useState([])
   const [asndMonitCells, setAsndMonitCells] = useState([])

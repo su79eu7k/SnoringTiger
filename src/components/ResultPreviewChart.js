@@ -12,18 +12,16 @@ Chart.register(zoomPlugin);
 
 
 export default React.memo(function ResultPreviewChart(props) {
+  const theme = props.theme
   const connStatus = props.connStatus
-  const coords = props.coords
-  const setCoords = props.setCoords
   const toggledCells = props.toggledCells
+  const coords = props.coords
+
+  const [chart, setChart] = useState()
   const [xlab, setXlab] = useState('init')
   const [ylab, setYlab] = useState('init')
 
   const canvasRef = useRef()
-
-  const theme = props.theme
-
-  const [chart, setChart] = useState()
 
   const _data = {
     datasets: [{
@@ -93,10 +91,9 @@ export default React.memo(function ResultPreviewChart(props) {
   }
 
   useEffect(() => {
-    setCoords([])
     setXlab(_.keys(_.pickBy(toggledCells, _.identity))[0])
     setYlab(_.keys(_.pickBy(toggledCells, _.identity))[1])
-  }, [setCoords, setXlab, setYlab, toggledCells])
+  }, [setXlab, setYlab, toggledCells])
 
   useEffect(() => {
     const ctx = canvasRef.current.getContext("2d")
@@ -143,6 +140,7 @@ export default React.memo(function ResultPreviewChart(props) {
       a.click()
     }
   }
+
 
   return (
     <Grid container spacing={2}>
