@@ -255,12 +255,12 @@ export default function ProceedSimulation(props) {
         {_.range(previewCount).map((v, i) =>
           <Grid key={"PreviewCard-" + i.toString()} item xs={12}>
             <ResultPreview
-              id={i}
+              id={i.toString()}
               connStatus={connStatus}
               setPreviewCount={setPreviewCount}
               asndRandCells={asndRandCells}
               asndMonitCells={asndMonitCells}
-              resultPreview={resultPreviews[i]}
+              resultPreview={resultPreviews[i.toString()]}
               setResultPreviews={setResultPreviews}
             />
           </Grid>
