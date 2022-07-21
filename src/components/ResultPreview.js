@@ -22,8 +22,7 @@ export default function ResultPreview(props) {
   const setPreviewCount = props.setPreviewCount
   const asndRandCells = props.asndRandCells
   const asndMonitCells = props.asndMonitCells
-  const resultPreviews = props.resultPreviews
-  const resultPreview = resultPreviews[id]
+  const resultPreview = props.resultPreview
   const setResultPreviews = props.setResultPreviews
 
   const [added, setAdded] = useState(resultPreview ? resultPreview.added : false)

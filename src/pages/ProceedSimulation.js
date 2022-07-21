@@ -260,7 +260,7 @@ export default function ProceedSimulation(props) {
               setPreviewCount={setPreviewCount}
               asndRandCells={asndRandCells}
               asndMonitCells={asndMonitCells}
-              resultPreviews={resultPreviews}
+              resultPreview={resultPreviews[i]}
               setResultPreviews={setResultPreviews}
             />
           </Grid>
