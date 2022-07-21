@@ -17,7 +17,7 @@ import { API_SERVER } from '../helpers/url';
 export default function MonitoringCellCard(props) {
   const id = props.id
   const connStatus = props.connStatus
-  const monitoringCell = props.monitoringCells[id]
+  const monitoringCell = props.monitoringCell
   const setMonitoringCells = props.setMonitoringCells
 
   const [addressSheet, setAddressSheet] = useState(monitoringCell ? monitoringCell.addressSheet : null)

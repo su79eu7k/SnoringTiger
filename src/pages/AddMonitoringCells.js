@@ -19,7 +19,7 @@ export default function AddMonitoringCells(props) {
         {[...Array(_.reject(props.monitoringCells, { addressSheet: null, addressCell: null }).length + 1)].map(
           (v, i) => (
             <Grid item xs={12} key={i.toString()}>
-              <MonitoringCellCard id={i.toString()} connStatus={connStatus} monitoringCells={monitoringCells} setMonitoringCells={setMonitoringCells} />
+              <MonitoringCellCard id={i.toString()} connStatus={connStatus} monitoringCell={monitoringCells[i.toString()]} setMonitoringCells={setMonitoringCells} />
             </Grid>
           )
         )}
